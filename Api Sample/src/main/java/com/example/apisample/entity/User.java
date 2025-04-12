@@ -31,21 +31,25 @@ public class User implements UserDetails {
     @Column(name = "email", length = 100)
     private String email;
 
+    @NotNull
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = Boolean.FALSE;
+
+    @Size(max = 50)
+    @Column(name = "first_name", length = 50)
+    private String firstName;
+
+    @Size(max = 50)
+    @Column(name = "last_name", length = 50)
+    private String lastName;
+
     @Size(max = 100)
     @Column(name = "password", length = 100)
     private String password;
 
-    @Size(max = 50)
-    @Column(name = "name", length = 50)
-    private String name;
-
     @Size(max = 10)
     @Column(name = "phone", length = 10)
     private String phone;
-
-    @NotNull
-    @Column(name = "is_deleted", nullable = false)
-    private Boolean isDeleted = false;
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
@@ -88,4 +92,5 @@ public class User implements UserDetails {
     public String getPassword() {
         return password;
     }
+
 }
