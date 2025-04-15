@@ -34,4 +34,4 @@ build/
 
 ### Local Configuration ###
 .env
-/log
+/logs

@@ -19,6 +19,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 
 @Service
@@ -47,15 +48,16 @@ public class JWTServiceImp implements JWTService {
 
     @Override
     public String generateToken(Map<String, Object> extraClaims, User user) { // generate token with claims (access token)
-        String token = Jwts.builder().setClaims(extraClaims)
+        String token = Jwts.builder()
+                .setHeaderParam("typ", "JWT")
+                .setClaims(extraClaims)
                 .setSubject(user.getUsername())
-                .claim("firstName", user.getFirstName())
-                .claim("lastName", user.getLastName())
-                .claim("userId", user.getId())
                 .claim("role", user.getRole().getRoleName())
+                .claim("jti", UUID.randomUUID().toString())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256).compact();
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
 
         return token;
     }

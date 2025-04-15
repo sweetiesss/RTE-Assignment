@@ -3,6 +3,10 @@ package com.example.apisample.exception;
 import com.example.apisample.exception.jwtservice.InvalidCredentialsException;
 import com.example.apisample.exception.jwtservice.RoleDoesNotExistException;
 import com.example.apisample.exception.jwtservice.TokenExpiredException;
+import com.example.apisample.exception.otpservice.InvalidOtpCodeException;
+import com.example.apisample.exception.otpservice.OtpDoesNotExistException;
+import com.example.apisample.exception.otpservice.OtpExpiredException;
+import com.example.apisample.exception.otpservice.OtpHasBeenUsedException;
 import com.example.apisample.exception.userservice.*;
 import com.example.apisample.model.ResponseObject;
 import org.apache.logging.log4j.LogManager;
@@ -145,5 +149,48 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(responseObject, HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(InvalidOtpCodeException.class)
+    public ResponseEntity<?> handleInvalidOtpCodeException(InvalidOtpCodeException ex) {
+        String errorMessage = ex.getMessage();
+        logger.error(errorMessage);
+        ResponseObject responseObject = ResponseObject.builder()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .message(errorMessage)
+                .build();
+        return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(OtpDoesNotExistException.class)
+    public ResponseEntity<?> handleOtpDoesNotExistException(OtpDoesNotExistException ex) {
+        String errorMessage = ex.getMessage();
+        logger.error(errorMessage);
+        ResponseObject responseObject = ResponseObject.builder()
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .message(errorMessage)
+                .build();
+        return new ResponseEntity<>(responseObject, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(OtpExpiredException.class)
+    public ResponseEntity<?> handleOtpExpiredException(OtpExpiredException ex) {
+        String errorMessage = ex.getMessage();
+        logger.error(errorMessage);
+        ResponseObject responseObject = ResponseObject.builder()
+                .statusCode(HttpStatus.GONE.value())
+                .message(errorMessage)
+                .build();
+        return new ResponseEntity<>(responseObject, HttpStatus.GONE);
+    }
+
+    @ExceptionHandler(OtpHasBeenUsedException.class)
+    public ResponseEntity<?> handleOtpHasBeenUsedException(OtpHasBeenUsedException ex) {
+        String errorMessage = ex.getMessage();
+        logger.error(errorMessage);
+        ResponseObject responseObject = ResponseObject.builder()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .message(errorMessage)
+                .build();
+        return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
+    }
 
 }

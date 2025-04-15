@@ -20,6 +20,10 @@ public class Product {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @Size(max = 50)
+    @Column(name = "name", length = 50)
+    private String name;
+
     @Column(name = "description")
     @Lob
     private String description;

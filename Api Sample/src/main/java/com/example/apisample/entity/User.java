@@ -3,6 +3,7 @@ package com.example.apisample.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -29,11 +30,15 @@ public class User implements UserDetails {
 
     @Size(max = 100)
     @Column(name = "email", length = 100)
+    @Email
     private String email;
 
     @NotNull
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted = Boolean.FALSE;
+
+    @Column(nullable = false)
+    private Integer tokenVersion = 0;
 
     @Size(max = 50)
     @Column(name = "first_name", length = 50)
