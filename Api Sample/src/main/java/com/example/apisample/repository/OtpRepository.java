@@ -10,4 +10,5 @@ import java.util.Optional;
 
 public interface OtpRepository extends JpaRepository<OtpCode, Long> {
     Optional<OtpCode> findTopByUserAndTypeOrderByExpiresAtDesc(User user, OtpType type);
+    long deleteByExpiresAtBeforeAndUsedFalse(java.time.LocalDateTime expiresAt);
 }

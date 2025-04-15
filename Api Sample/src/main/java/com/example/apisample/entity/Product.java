@@ -38,11 +38,11 @@ public class Product {
 
     @NotNull
     @Column(name = "is_featured", nullable = false)
-    private Boolean isFeatured = Boolean.FALSE;
+    private Boolean featured = Boolean.FALSE;
 
     @NotNull
     @Column(name = "is_deleted", nullable = false)
-    private Boolean isDeleted = Boolean.FALSE;
+    private Boolean deleted = Boolean.FALSE;
 
     @Column(name = "create_on")
     private Instant createOn;

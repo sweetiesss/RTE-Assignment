@@ -54,6 +54,7 @@ public class JWTServiceImp implements JWTService {
                 .setSubject(user.getUsername())
                 .claim("role", user.getRole().getRoleName())
                 .claim("jti", UUID.randomUUID().toString())
+                .claim("tokenVersion", user.getTokenVersion())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
@@ -63,17 +64,17 @@ public class JWTServiceImp implements JWTService {
     }
 
     @Override
-    public String generateAccessToken(User user) {
-        return generateToken(new HashMap<>(), user);
-    }
-
-    @Override
     public String generateRefreshToken(User user) {
         String jwt = Jwts.builder().setClaims(new HashMap<>()).setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7)) // 7 days refresh token
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256).compact();
         return jwt;
+    }
+
+    @Override
+    public String generateAccessToken(User user) {
+        return generateToken(new HashMap<>(), user);
     }
 
     private Key getSignInKey() {
@@ -81,9 +82,16 @@ public class JWTServiceImp implements JWTService {
     }
 
     @Override
-    public boolean isValidToken(String token, UserDetails user) {
-        final String username = extractAllClaims(token).getSubject();
-        return (username.equals(user.getUsername()) && !isTokenExpired(token));
+    public boolean isValidToken(String token, UserDetails userDetails) {
+        String username = extractUsername(token);
+        Claims claims = extractAllClaims(token);
+
+        if (!username.equals(userDetails.getUsername())) return false;
+
+        // Validate token version
+        Integer tokenVersion = claims.get("tokenVersion", Integer.class);
+        User user = (User) userDetails;
+        return tokenVersion != null && tokenVersion.equals(user.getTokenVersion()) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {

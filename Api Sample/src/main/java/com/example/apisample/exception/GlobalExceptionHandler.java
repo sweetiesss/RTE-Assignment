@@ -193,4 +193,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> BaseException(Exception ex) {
+        String errorMessage = ex.getMessage();
+        logger.error(errorMessage);
+        ResponseObject responseObject = ResponseObject.builder()
+                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .message(errorMessage)
+                .build();
+        return new ResponseEntity<>(responseObject, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

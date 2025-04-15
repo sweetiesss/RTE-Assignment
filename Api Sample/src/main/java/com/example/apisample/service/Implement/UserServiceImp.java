@@ -32,7 +32,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
                 throw new UserDoesNotExistException();
         }
 
-        if(optionalUser.getIsDeleted()){
+        if(optionalUser.getDeleted()){
             throw new UserDeletedException();
         }
 
@@ -69,6 +69,11 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     public void saveUser(User user) {
+        userRepository.save(user);
+    }
+
+    public void incrementTokenVersion(User user) {
+        user.setTokenVersion(user.getTokenVersion() + 1);
         userRepository.save(user);
     }
 }

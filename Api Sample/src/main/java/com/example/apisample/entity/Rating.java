@@ -52,6 +52,6 @@ public class Rating {
 
     @NotNull
     @Column(name = "is_deleted", nullable = false)
-    private Boolean isDeleted = Boolean.FALSE;
+    private Boolean deleted = Boolean.FALSE;
 
 }

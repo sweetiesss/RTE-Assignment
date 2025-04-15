@@ -35,7 +35,7 @@ public class User implements UserDetails {
 
     @NotNull
     @Column(name = "is_deleted", nullable = false)
-    private Boolean isDeleted = Boolean.FALSE;
+    private Boolean deleted = Boolean.FALSE;
 
     @Column(nullable = false)
     private Integer tokenVersion = 0;
