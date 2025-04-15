@@ -13,6 +13,8 @@ public class LogMessage {
     public static final String logStartLogout = "Start to sign out";
     public static final String logSuccessLogout = "Sign out successfully";
 
+    //Otp Log
+    public static final String logOtpScheduleDelete = "delete OTP schedule";
 
     //Role Controller Log
     public static final String logStartAssignRole = "Assigning role";

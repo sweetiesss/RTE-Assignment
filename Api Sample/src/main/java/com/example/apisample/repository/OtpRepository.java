@@ -5,10 +5,11 @@ import com.example.apisample.entity.User;
 import com.example.apisample.enums.OtpType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 
 public interface OtpRepository extends JpaRepository<OtpCode, Long> {
     Optional<OtpCode> findTopByUserAndTypeOrderByExpiresAtDesc(User user, OtpType type);
-    long deleteByExpiresAtBeforeAndUsedFalse(java.time.LocalDateTime expiresAt);
+    void deleteByExpiresAtBefore(LocalDateTime expiresAt);
 }

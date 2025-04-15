@@ -7,6 +7,7 @@ import com.example.apisample.exception.otpservice.InvalidOtpCodeException;
 import com.example.apisample.exception.otpservice.OtpDoesNotExistException;
 import com.example.apisample.exception.otpservice.OtpExpiredException;
 import com.example.apisample.exception.otpservice.OtpHasBeenUsedException;
+import com.example.apisample.model.dto.message.LogMessage;
 import com.example.apisample.repository.OtpRepository;
 import com.example.apisample.service.Interface.EmailService;
 import com.example.apisample.service.Interface.OtpService;
@@ -26,8 +27,9 @@ public class OtpServiceImp implements OtpService {
 
     private final OtpRepository otpCodeRepository;
     private final EmailService emailService;
-    private static final int OTP_LENGTH = 6;
     private static final int OTP_EXPIRATION_MINUTES = 2;
+    private static final int OTP_BASE = 100000;
+    private static final int OTP_CEIL = 900000;
 
 
     @Override
@@ -64,14 +66,14 @@ public class OtpServiceImp implements OtpService {
 
     private String generateRandomOtp() {
         Random random = new Random();
-        int number = 100000 + random.nextInt(900000); // 6-digit
+        int number = OTP_BASE + random.nextInt(OTP_CEIL); // 6-digit, from base to base + ceil
         return String.valueOf(number);
     }
 
     @Transactional
-    @Scheduled(fixedRate = 300000) // 300000 ms = 5 minutes
+    @Scheduled(fixedRate = 300000) // 300000 ms = 5 minutes (1000 * 60 * 5)
     public void cleanExpiredOtps() {
-        long deletedCount = otpCodeRepository.deleteByExpiresAtBeforeAndUsedFalse(java.time.LocalDateTime.now());
-        log.info("Deleted " + deletedCount + " expired OTPs.");
+        otpCodeRepository.deleteByExpiresAtBefore(java.time.LocalDateTime.now());
+        log.info(LogMessage.logOtpScheduleDelete);
     }
 }
