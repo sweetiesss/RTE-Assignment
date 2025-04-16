@@ -8,13 +8,17 @@ public class LogMessage {
     public static final String logReturningToken = "Returning new token";
     public static final String logStartRegis = "Start to register user";
     public static final String logSuccessRegis = "Register use successfully";
-    public static final String logStartAuthen = "Start to authenticate user";
+    public static final String logStartAuthentication = "Start to authenticate user";
     public static final String logAuthenticated = "User is authenticated";
     public static final String logStartLogout = "Start to sign out";
     public static final String logSuccessLogout = "Sign out successfully";
+    public static final String logStartResetPassword = "Reset password start!";
+    public static final String logSuccessResetPassword = "Reset password successfully!";
+    public static final String logRefreshTokenUnauthorize = "Sending OTP";
 
     //Otp Log
     public static final String logOtpScheduleDelete = "delete OTP schedule";
+    public static final String logOtpResetPasswordSent = "Otp has been sent due to the lack of otp code in the request";
 
     //Role Controller Log
     public static final String logStartAssignRole = "Assigning role";
@@ -34,18 +38,5 @@ public class LogMessage {
     public static final String logStartDeleteUser = "Deleting User";
     public static final String logSuccessDeleteUser = "User deleted successfully!";
 
-    // Report Controller Log
-    public static final String logStartApprovedReport = "Approving report";
-    public static final String logSuccessApprovedReport = "Report approved successfully!";
-    public static final String logStartRejectReport = "Rejecting report";
-    public static final String logSuccessRejectReport = "Report reject successfully!";
-    public static final String logStartReport = "Reporting";
-    public static final String logSuccessReport = "Reported successfully!";
-
-    // Follow Controller Log
-    public static final String logStartFollow = "Following";
-    public static final String logSuccessFollow = "Followed successfully!";
-    public static final String logStartUnfollow = "Unfollowing";
-    public static final String logSuccessUnfollow = "Unfollowed successfully!";
 
 }

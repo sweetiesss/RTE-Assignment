@@ -53,7 +53,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.7.1</version> <!-- Use the latest if needed -->
+            <version>42.7.5</version>
         </dependency>
 
         <dependency>
@@ -169,11 +169,6 @@
                 <!--                <configuration>-->
                 <!--                    <excludes>-->
                 <!--                        <exclude>com/example/UserManagement/model/**</exclude>-->
-                <!--                        <exclude>com/example/UserManagement/config/**</exclude>-->
-                <!--                        <exclude>com/example/UserManagement/entity/**</exclude>-->
-                <!--                        <exclude>com/example/UserManagement/enums/**</exclude>-->
-                <!--                        <exclude>com/example/UserManagement/exceptions/**</exclude>-->
-                <!--                        <exclude>com/example/UserManagement/controller/UserResetPasswordController.class</exclude>-->
                 <!--                    </excludes>-->
                 <!--                </configuration>-->
 

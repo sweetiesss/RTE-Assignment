@@ -2,11 +2,18 @@ package com.example.apisample.service.Implement;
 
 
 import com.example.apisample.entity.User;
+import com.example.apisample.enums.OtpType;
 import com.example.apisample.exception.jwtservice.InvalidCredentialsException;
+import com.example.apisample.exception.otpservice.InvalidOtpCodeException;
+import com.example.apisample.exception.otpservice.OtpDoesNotExistException;
+import com.example.apisample.exception.otpservice.OtpExpiredException;
+import com.example.apisample.exception.otpservice.OtpHasBeenUsedException;
 import com.example.apisample.exception.userservice.UserDeletedException;
 import com.example.apisample.exception.userservice.UserDoesNotExistException;
+import com.example.apisample.model.dto.authdto.ResetPasswordRequestDTO;
 import com.example.apisample.repository.RoleRepository;
 import com.example.apisample.repository.UserRepository;
+import com.example.apisample.service.Interface.OtpService;
 import com.example.apisample.service.Interface.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,25 +29,26 @@ public class UserServiceImp implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final OtpService otpService;
     private static final String DATE_PATTERN = "yyyy-MM-dd";
 
-    public User login(String email, String password) throws InvalidCredentialsException, UserDeletedException, UserDoesNotExistException {
+    public void login(String email, String password) throws InvalidCredentialsException, UserDeletedException, UserDoesNotExistException {
 
-        User optionalUser = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email);
 
-        if(optionalUser == null){
+        if(user == null){
                 throw new UserDoesNotExistException();
         }
 
-        if(optionalUser.getDeleted()){
+        if(user.getDeleted()){
             throw new UserDeletedException();
         }
 
-        if (!passwordEncoder.matches(password, optionalUser.getPassword())) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new InvalidCredentialsException();
         }
 
-        return optionalUser;
+        otpService.generateOtp(user, OtpType.LOGIN_2FA);
     }
 
     public User getUserByEmail(String email) throws UserDoesNotExistException {
@@ -73,6 +81,13 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     public void incrementTokenVersion(User user) {
+        user.setTokenVersion(user.getTokenVersion() + 1);
+        userRepository.save(user);
+    }
+
+    public void resetPassword(ResetPasswordRequestDTO dto, User user) throws OtpDoesNotExistException, InvalidOtpCodeException, OtpHasBeenUsedException, OtpExpiredException {
+        otpService.validateOtp(user, dto.getOtp(), OtpType.PASSWORD_RESET);
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setTokenVersion(user.getTokenVersion() + 1);
         userRepository.save(user);
     }

@@ -2,23 +2,19 @@ package com.example.apisample.controller;
 
 import com.example.apisample.entity.User;
 import com.example.apisample.enums.OtpType;
-import com.example.apisample.exception.jwtservice.TokenExpiredException;
-import com.example.apisample.exception.otpservice.InvalidOtpCodeException;
-import com.example.apisample.exception.otpservice.OtpDoesNotExistException;
-import com.example.apisample.exception.otpservice.OtpExpiredException;
-import com.example.apisample.exception.otpservice.OtpHasBeenUsedException;
-import com.example.apisample.exception.userservice.InvalidateException;
-import com.example.apisample.exception.userservice.UserDoesNotExistException;
 import com.example.apisample.model.ResponseObject;
 import com.example.apisample.model.dto.authdto.LoginRequestDTO;
 import com.example.apisample.model.dto.authdto.LoginResponseDTO;
-import com.example.apisample.model.dto.authdto.RefreshTokenRequestDTO;
+import com.example.apisample.model.dto.authdto.ResetPasswordRequestDTO;
 import com.example.apisample.model.dto.message.LogMessage;
 import com.example.apisample.model.dto.message.ResponseMessage;
-import com.example.apisample.model.dto.otpdto.OtpRequestDTO;
+import com.example.apisample.model.dto.otpdto.LoginOtpRequestDTO;
 import com.example.apisample.service.Interface.JWTService;
 import com.example.apisample.service.Interface.OtpService;
 import com.example.apisample.service.Interface.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -38,9 +34,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<ResponseObject> signIn(@RequestBody LoginRequestDTO loginUser) throws Exception {
-        User user = userService.login(loginUser.getEmail(), loginUser.getPassword());
-
-        otpService.generateOtp(user, OtpType.LOGIN_2FA);
+        userService.login(loginUser.getEmail(), loginUser.getPassword());
 
         return ResponseEntity.ok(
                 ResponseObject.builder()
@@ -50,50 +44,87 @@ public class AuthController {
         );
     }
 
-    // Step 3: OTP validation — user enters OTP
-    @PostMapping("/verify-otp")
-    public ResponseEntity<ResponseObject> verifyOtp(@RequestBody OtpRequestDTO otpRequest) throws TokenExpiredException, UserDoesNotExistException, InvalidateException, OtpDoesNotExistException, InvalidOtpCodeException, OtpHasBeenUsedException, OtpExpiredException {
-        User user = userService.getUserByEmail(otpRequest.getEmail());
 
-        otpService.validateOtp(user, otpRequest.getOtp(), otpRequest.getType());
+    @PostMapping("/login-verify-otp")
+    public ResponseEntity<ResponseObject> verifyOtp(
+            @RequestBody LoginOtpRequestDTO otpRequest,
+            HttpServletResponse response
+    ) throws Exception {
+
+        User user = userService.getUserByEmail(otpRequest.getEmail());
+        otpService.validateOtp(user, otpRequest.getOtp(), OtpType.LOGIN_2FA);
 
         String refreshToken = jwtService.generateRefreshToken(user);
         String accessToken = jwtService.generateAccessToken(refreshToken);
+
+        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setSecure(true);
+        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setMaxAge(7 * 24 * 60 * 60);
+
+        response.addCookie(refreshTokenCookie);
 
         return ResponseEntity.ok(
                 ResponseObject.builder()
                         .statusCode(HttpStatus.OK.value())
                         .message(ResponseMessage.msgSuccess)
-                        .token(new LoginResponseDTO(accessToken, refreshToken))
+                        .token(new LoginResponseDTO(accessToken))
                         .build()
         );
     }
 
-    @GetMapping("/refresh")
-    public ResponseEntity<ResponseObject> refreshToken(@RequestBody RefreshTokenRequestDTO dto) throws Exception {
+    @PostMapping("/refresh-token")
+    public ResponseEntity<ResponseObject> refreshToken(HttpServletRequest request) throws Exception {
         log.info(LogMessage.logStartRefresh);
 
         ResponseObject responseObject = new ResponseObject();
 
-        String accessToken = jwtService.generateAccessToken(dto.getToken());
+        String refreshToken = null;
 
-        if (dto.getToken() != null && !dto.getToken().isBlank()) {
-            log.info(LogMessage.logReturningToken);
-
-            responseObject.setStatusCode(HttpStatus.OK.value());
-            responseObject.setMessage(ResponseMessage.msgTokenRefresh);
-            responseObject.setToken(accessToken);
-
-            log.info(LogMessage.logSuccessRefresh);
-
-            return ResponseEntity.ok(responseObject);
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if (cookie.getName().equals("refreshToken")) {
+                    refreshToken = cookie.getValue();
+                    break;
+                }
+            }
         }
 
-        responseObject.setStatusCode(HttpStatus.UNAUTHORIZED.value());
-        responseObject.setMessage(ResponseMessage.msgUnauthorized);
+        String newAccessToken = jwtService.generateAccessToken(refreshToken);
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value())
-                .body(responseObject);
+        log.info(LogMessage.logReturningToken);
+        responseObject.setStatusCode(HttpStatus.OK.value());
+        responseObject.setMessage(ResponseMessage.msgTokenRefresh);
+        responseObject.setToken(newAccessToken);
+        log.info(LogMessage.logSuccessRefresh);
+
+        return ResponseEntity.ok(responseObject);
     }
 
+
+    @PostMapping("/reset-password-request")
+    public ResponseEntity<ResponseObject> resetPasswordRequest(@RequestBody ResetPasswordRequestDTO dto) throws Exception {
+        User user = userService.getUserByEmail(dto.getEmail());
+
+        log.info(LogMessage.logStartResetPassword);
+
+        if(dto.getOtp() == null || dto.getOtp().isBlank()){
+            log.info(LogMessage.logOtpResetPasswordSent);
+            otpService.generateOtp(user, OtpType.PASSWORD_RESET);
+            return ResponseEntity.ok(
+                    ResponseObject.builder()
+                            .statusCode(HttpStatus.OK.value())
+                            .message(ResponseMessage.msgOtpSent)
+                            .build());
+        }
+
+        userService.resetPassword(dto, user);
+        log.info(LogMessage.logSuccessResetPassword);
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message(ResponseMessage.msgResetPasswordSuccess)
+                        .build());
+    }
 }

@@ -9,6 +9,7 @@ public class ResponseMessage {
     public static final String msgOtpExpired = "Otp expired!";
     public static final String msgOtpInvalid = "Invalid Otp!";
     public static final String msgOtpDoesNotExist = "Otp code does not exist!";
+    public static final String msgOtpSent = "OTP sent to your email!";
     public static final String msgAccountSuspended = "Account Status Deactivate";
     public static final String msgInvalidCredential = "Wrong Email or Password!";
     public static final String msgNotImageFile = "Not an Image File!";
@@ -17,7 +18,5 @@ public class ResponseMessage {
     public static final String msgUserAlreadyExist = "User already exists!";
     public static final String msgUserDeleted = "User Deleted!";
     public static final String msgUserDoesNotExist = "User does not exist!";
-
-    // report
-    public static final String msgOtpSent = "OTP sent to your email!";
+    public static final String msgResetPasswordSuccess = "Password has been update successfully!";
 }
