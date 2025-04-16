@@ -4,8 +4,7 @@ import com.example.apisample.enums.OtpType;
 import lombok.Data;
 
 @Data
-public class OtpRequestDTO {
+public class LoginOtpRequestDTO {
     private String otp;
     private String email;
-    private OtpType type;
 }
