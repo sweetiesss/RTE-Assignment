@@ -1,24 +1,24 @@
-2025/04/16 10:17:29 INFO  Version:21 - HV000001: Hibernate Validator 8.0.0.Final
-2025/04/16 10:17:30 INFO  RepositoryConfigurationDelegate:138 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025/04/16 10:17:30 INFO  RepositoryConfigurationDelegate:208 - Finished Spring Data repository scanning in 73 ms. Found 3 JPA repository interfaces.
-2025/04/16 10:17:31 INFO  TomcatWebServer:108 - Tomcat initialized with port(s): 8801 (http)
-2025/04/16 10:17:31 INFO  Http11NioProtocol:173 - Initializing ProtocolHandler ["http-nio-8801"]
-2025/04/16 10:17:31 INFO  StandardService:173 - Starting service [Tomcat]
-2025/04/16 10:17:31 INFO  StandardEngine:173 - Starting Servlet engine: [Apache Tomcat/10.1.10]
-2025/04/16 10:17:31 INFO  [/]:173 - Initializing Spring embedded WebApplicationContext
-2025/04/16 10:17:31 INFO  ServletWebServerApplicationContext:291 - Root WebApplicationContext: initialization completed in 1783 ms
-2025/04/16 10:17:31 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: default]
-2025/04/16 10:17:31 INFO  Version:44 - HHH000412: Hibernate ORM core version 6.1.7.Final
-2025/04/16 10:17:32 INFO  HikariDataSource:110 - HikariPool-1 - Starting...
-2025/04/16 10:17:32 INFO  HikariPool:565 - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@5c8ab9de
-2025/04/16 10:17:32 INFO  HikariDataSource:123 - HikariPool-1 - Start completed.
-2025/04/16 10:17:32 INFO  SQL dialect:66 - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
-2025/04/16 10:17:34 INFO  JtaPlatformInitiator:51 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2025/04/16 10:17:34 INFO  LocalContainerEntityManagerFactoryBean:437 - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025/04/16 10:17:35 INFO  DefaultSecurityFilterChain:54 - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2cf97875, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2e7563f6, org.springframework.security.web.context.SecurityContextHolderFilter@3ce4eb42, org.springframework.security.web.header.HeaderWriterFilter@49bf5ec8, org.springframework.security.web.authentication.logout.LogoutFilter@6715a6da, com.example.apisample.config.JwtAuthFilter@1d4e06bb, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3054cdd3, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@62eb918, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@72fa021, org.springframework.security.web.session.SessionManagementFilter@12d28106, org.springframework.security.web.access.ExceptionTranslationFilter@10264cb0, org.springframework.security.web.access.intercept.AuthorizationFilter@718e700c]
-2025/04/16 10:17:35 INFO  Http11NioProtocol:173 - Starting ProtocolHandler ["http-nio-8801"]
-2025/04/16 10:17:35 INFO  TomcatWebServer:220 - Tomcat started on port(s): 8801 (http) with context path ''
-2025/04/16 10:17:35 DEBUG SQL:128 - 
+2025/04/17 10:02:30 INFO  Version:21 - HV000001: Hibernate Validator 8.0.0.Final
+2025/04/17 10:02:31 INFO  RepositoryConfigurationDelegate:138 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025/04/17 10:02:31 INFO  RepositoryConfigurationDelegate:208 - Finished Spring Data repository scanning in 67 ms. Found 3 JPA repository interfaces.
+2025/04/17 10:02:32 INFO  TomcatWebServer:108 - Tomcat initialized with port(s): 8801 (http)
+2025/04/17 10:02:32 INFO  Http11NioProtocol:173 - Initializing ProtocolHandler ["http-nio-8801"]
+2025/04/17 10:02:32 INFO  StandardService:173 - Starting service [Tomcat]
+2025/04/17 10:02:32 INFO  StandardEngine:173 - Starting Servlet engine: [Apache Tomcat/10.1.10]
+2025/04/17 10:02:32 INFO  [/]:173 - Initializing Spring embedded WebApplicationContext
+2025/04/17 10:02:32 INFO  ServletWebServerApplicationContext:291 - Root WebApplicationContext: initialization completed in 1762 ms
+2025/04/17 10:02:32 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025/04/17 10:02:32 INFO  Version:44 - HHH000412: Hibernate ORM core version 6.1.7.Final
+2025/04/17 10:02:33 INFO  HikariDataSource:110 - HikariPool-1 - Starting...
+2025/04/17 10:02:33 INFO  HikariPool:565 - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@4b544732
+2025/04/17 10:02:33 INFO  HikariDataSource:123 - HikariPool-1 - Start completed.
+2025/04/17 10:02:33 INFO  SQL dialect:66 - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2025/04/17 10:02:35 INFO  JtaPlatformInitiator:51 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2025/04/17 10:02:35 INFO  LocalContainerEntityManagerFactoryBean:437 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025/04/17 10:02:36 INFO  DefaultSecurityFilterChain:54 - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@8b71052, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2738a1fc, org.springframework.security.web.context.SecurityContextHolderFilter@45dfb6a4, org.springframework.security.web.header.HeaderWriterFilter@6df4d8f1, org.springframework.security.web.authentication.logout.LogoutFilter@45a40353, com.example.apisample.config.JwtAuthFilter@3e0b1f03, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@12ebcdf6, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@39a1c200, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6d7d0946, org.springframework.security.web.session.SessionManagementFilter@a5df98c, org.springframework.security.web.access.ExceptionTranslationFilter@d695f9d, org.springframework.security.web.access.intercept.AuthorizationFilter@1a5c0b8]
+2025/04/17 10:02:36 INFO  Http11NioProtocol:173 - Starting ProtocolHandler ["http-nio-8801"]
+2025/04/17 10:02:36 INFO  TomcatWebServer:220 - Tomcat started on port(s): 8801 (http) with context path ''
+2025/04/17 10:02:36 DEBUG SQL:128 - 
     select
         o1_0.id,
         o1_0.code,
@@ -30,17 +30,11 @@
         otp_codes o1_0 
     where
         o1_0.expires_at<?
-2025/04/16 10:17:35 DEBUG SQL:128 - 
-    delete 
-    from
-        otp_codes 
-    where
-        id=?
-2025/04/16 10:17:36 INFO  [/]:173 - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2025/04/16 10:17:36 INFO  DispatcherServlet:532 - Initializing Servlet 'dispatcherServlet'
-2025/04/16 10:17:36 INFO  DispatcherServlet:554 - Completed initialization in 1 ms
-2025/04/16 10:17:37 INFO  AbstractOpenApiResource:390 - Init duration for springdoc-openapi is: 293 ms
-2025/04/16 10:17:56 DEBUG SQL:128 - 
+2025/04/17 10:03:22 INFO  [/]:173 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025/04/17 10:03:22 INFO  DispatcherServlet:532 - Initializing Servlet 'dispatcherServlet'
+2025/04/17 10:03:22 INFO  DispatcherServlet:554 - Completed initialization in 4 ms
+2025/04/17 10:03:23 INFO  AbstractOpenApiResource:390 - Init duration for springdoc-openapi is: 315 ms
+2025/04/17 10:03:39 DEBUG SQL:128 - 
     select
         u1_0.id,
         u1_0.is_deleted,
@@ -55,7 +49,7 @@
         users u1_0 
     where
         u1_0.email=?
-2025/04/16 10:17:56 DEBUG SQL:128 - 
+2025/04/17 10:03:39 DEBUG SQL:128 - 
     select
         r1_0.id,
         r1_0.role_name 
@@ -63,14 +57,14 @@
         roles r1_0 
     where
         r1_0.id=?
-2025/04/16 10:17:56 DEBUG SQL:128 - 
+2025/04/17 10:03:39 DEBUG SQL:128 - 
     insert 
     into
         otp_codes
         (code, expires_at, type, is_used, user_id) 
     values
         (?, ?, ?, ?, ?)
-2025/04/16 10:18:17 DEBUG SQL:128 - 
+2025/04/17 10:04:08 DEBUG SQL:128 - 
     select
         u1_0.id,
         u1_0.is_deleted,
@@ -85,7 +79,7 @@
         users u1_0 
     where
         u1_0.email=?
-2025/04/16 10:18:17 DEBUG SQL:128 - 
+2025/04/17 10:04:08 DEBUG SQL:128 - 
     select
         r1_0.id,
         r1_0.role_name 
@@ -93,7 +87,7 @@
         roles r1_0 
     where
         r1_0.id=?
-2025/04/16 10:18:17 DEBUG SQL:128 - 
+2025/04/17 10:04:09 DEBUG SQL:128 - 
     select
         o1_0.id,
         o1_0.code,
@@ -108,7 +102,7 @@
         and o1_0.type=? 
     order by
         o1_0.expires_at desc fetch first ? rows only
-2025/04/16 10:18:17 DEBUG SQL:128 - 
+2025/04/17 10:04:09 DEBUG SQL:128 - 
     update
         otp_codes 
     set
@@ -119,7 +113,99 @@
         user_id=? 
     where
         id=?
-2025/04/16 10:18:17 DEBUG SQL:128 - 
+2025/04/17 10:04:09 DEBUG SQL:128 - 
+    select
+        u1_0.id,
+        u1_0.is_deleted,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.token_version 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025/04/17 10:04:09 DEBUG SQL:128 - 
+    select
+        r1_0.id,
+        r1_0.role_name 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025/04/17 10:04:20 DEBUG SQL:128 - 
+    select
+        u1_0.id,
+        u1_0.is_deleted,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.token_version 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025/04/17 10:04:20 DEBUG SQL:128 - 
+    select
+        r1_0.id,
+        r1_0.role_name 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025/04/17 10:04:22 DEBUG SQL:128 - 
+    select
+        u1_0.id,
+        u1_0.is_deleted,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.token_version 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025/04/17 10:04:22 DEBUG SQL:128 - 
+    select
+        r1_0.id,
+        r1_0.role_name 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025/04/17 10:04:26 DEBUG SQL:128 - 
+    select
+        u1_0.id,
+        u1_0.is_deleted,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.token_version 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025/04/17 10:04:26 DEBUG SQL:128 - 
+    select
+        r1_0.id,
+        r1_0.role_name 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025/04/17 10:04:26 DEBUG SQL:128 - 
     select
         u1_0.id,
         u1_0.is_deleted,
@@ -138,7 +224,7 @@
             on r1_0.id=u1_0.role_id 
     where
         u1_0.id=?
-2025/04/16 10:18:17 DEBUG SQL:128 - 
+2025/04/17 10:04:26 DEBUG SQL:128 - 
     update
         users 
     set
@@ -152,7 +238,7 @@
         token_version=? 
     where
         id=?
-2025/04/16 10:18:32 DEBUG SQL:128 - 
+2025/04/17 10:04:33 DEBUG SQL:128 - 
     select
         u1_0.id,
         u1_0.is_deleted,
@@ -167,7 +253,7 @@
         users u1_0 
     where
         u1_0.email=?
-2025/04/16 10:18:32 DEBUG SQL:128 - 
+2025/04/17 10:04:33 DEBUG SQL:128 - 
     select
         r1_0.id,
         r1_0.role_name 
@@ -175,14 +261,83 @@
         roles r1_0 
     where
         r1_0.id=?
-2025/04/16 10:18:32 DEBUG SQL:128 - 
+2025/04/17 10:04:35 DEBUG SQL:128 - 
+    select
+        u1_0.id,
+        u1_0.is_deleted,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.token_version 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025/04/17 10:04:35 DEBUG SQL:128 - 
+    select
+        r1_0.id,
+        r1_0.role_name 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025/04/17 10:04:53 DEBUG SQL:128 - 
+    select
+        u1_0.id,
+        u1_0.is_deleted,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.token_version 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025/04/17 10:04:53 DEBUG SQL:128 - 
+    select
+        r1_0.id,
+        r1_0.role_name 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025/04/17 10:04:53 DEBUG SQL:128 - 
+    select
+        u1_0.id,
+        u1_0.is_deleted,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.token_version 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025/04/17 10:04:53 DEBUG SQL:128 - 
+    select
+        r1_0.id,
+        r1_0.role_name 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025/04/17 10:04:53 DEBUG SQL:128 - 
     insert 
     into
         otp_codes
         (code, expires_at, type, is_used, user_id) 
     values
         (?, ?, ?, ?, ?)
-2025/04/16 10:19:03 DEBUG SQL:128 - 
+2025/04/17 10:05:11 DEBUG SQL:128 - 
     select
         u1_0.id,
         u1_0.is_deleted,
@@ -197,7 +352,7 @@
         users u1_0 
     where
         u1_0.email=?
-2025/04/16 10:19:03 DEBUG SQL:128 - 
+2025/04/17 10:05:11 DEBUG SQL:128 - 
     select
         r1_0.id,
         r1_0.role_name 
@@ -205,22 +360,7 @@
         roles r1_0 
     where
         r1_0.id=?
-2025/04/16 10:19:03 DEBUG SQL:128 - 
-    select
-        o1_0.id,
-        o1_0.code,
-        o1_0.expires_at,
-        o1_0.type,
-        o1_0.is_used,
-        o1_0.user_id 
-    from
-        otp_codes o1_0 
-    where
-        o1_0.user_id=? 
-        and o1_0.type=? 
-    order by
-        o1_0.expires_at desc fetch first ? rows only
-2025/04/16 10:19:29 DEBUG SQL:128 - 
+2025/04/17 10:05:11 DEBUG SQL:128 - 
     select
         u1_0.id,
         u1_0.is_deleted,
@@ -235,7 +375,7 @@
         users u1_0 
     where
         u1_0.email=?
-2025/04/16 10:19:29 DEBUG SQL:128 - 
+2025/04/17 10:05:11 DEBUG SQL:128 - 
     select
         r1_0.id,
         r1_0.role_name 
@@ -243,7 +383,7 @@
         roles r1_0 
     where
         r1_0.id=?
-2025/04/16 10:19:29 DEBUG SQL:128 - 
+2025/04/17 10:05:11 DEBUG SQL:128 - 
     select
         o1_0.id,
         o1_0.code,
@@ -258,7 +398,7 @@
         and o1_0.type=? 
     order by
         o1_0.expires_at desc fetch first ? rows only
-2025/04/16 10:19:29 DEBUG SQL:128 - 
+2025/04/17 10:05:11 DEBUG SQL:128 - 
     update
         otp_codes 
     set
@@ -269,7 +409,7 @@
         user_id=? 
     where
         id=?
-2025/04/16 10:19:29 DEBUG SQL:128 - 
+2025/04/17 10:05:11 DEBUG SQL:128 - 
     select
         u1_0.id,
         u1_0.is_deleted,
@@ -284,7 +424,7 @@
         users u1_0 
     where
         u1_0.email=?
-2025/04/16 10:19:29 DEBUG SQL:128 - 
+2025/04/17 10:05:11 DEBUG SQL:128 - 
     select
         r1_0.id,
         r1_0.role_name 
@@ -292,57 +432,7 @@
         roles r1_0 
     where
         r1_0.id=?
-2025/04/16 10:19:40 INFO  LocalContainerEntityManagerFactoryBean:650 - Closing JPA EntityManagerFactory for persistence unit 'default'
-2025/04/16 10:19:40 INFO  HikariDataSource:350 - HikariPool-1 - Shutdown initiated...
-2025/04/16 10:19:40 INFO  HikariDataSource:352 - HikariPool-1 - Shutdown completed.
-2025/04/16 10:20:45 INFO  Version:21 - HV000001: Hibernate Validator 8.0.0.Final
-2025/04/16 10:20:46 INFO  RepositoryConfigurationDelegate:138 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025/04/16 10:20:46 INFO  RepositoryConfigurationDelegate:208 - Finished Spring Data repository scanning in 63 ms. Found 3 JPA repository interfaces.
-2025/04/16 10:20:46 INFO  TomcatWebServer:108 - Tomcat initialized with port(s): 8801 (http)
-2025/04/16 10:20:46 INFO  Http11NioProtocol:173 - Initializing ProtocolHandler ["http-nio-8801"]
-2025/04/16 10:20:46 INFO  StandardService:173 - Starting service [Tomcat]
-2025/04/16 10:20:46 INFO  StandardEngine:173 - Starting Servlet engine: [Apache Tomcat/10.1.10]
-2025/04/16 10:20:46 INFO  [/]:173 - Initializing Spring embedded WebApplicationContext
-2025/04/16 10:20:46 INFO  ServletWebServerApplicationContext:291 - Root WebApplicationContext: initialization completed in 1550 ms
-2025/04/16 10:20:47 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: default]
-2025/04/16 10:20:47 INFO  Version:44 - HHH000412: Hibernate ORM core version 6.1.7.Final
-2025/04/16 10:20:47 INFO  HikariDataSource:110 - HikariPool-1 - Starting...
-2025/04/16 10:20:47 INFO  HikariPool:565 - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@29b8df5
-2025/04/16 10:20:47 INFO  HikariDataSource:123 - HikariPool-1 - Start completed.
-2025/04/16 10:20:47 INFO  SQL dialect:66 - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
-2025/04/16 10:20:49 INFO  JtaPlatformInitiator:51 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2025/04/16 10:20:49 INFO  LocalContainerEntityManagerFactoryBean:437 - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025/04/16 10:20:50 INFO  DefaultSecurityFilterChain:54 - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@757ad227, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4b718c45, org.springframework.security.web.context.SecurityContextHolderFilter@186537ac, org.springframework.security.web.header.HeaderWriterFilter@62682ece, org.springframework.security.web.authentication.logout.LogoutFilter@3941bdd7, com.example.apisample.config.JwtAuthFilter@6b6fde93, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@25502b1c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@14b0b7f9, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@25639668, org.springframework.security.web.session.SessionManagementFilter@44d36b56, org.springframework.security.web.access.ExceptionTranslationFilter@d79a69b, org.springframework.security.web.access.intercept.AuthorizationFilter@5b9ca528]
-2025/04/16 10:20:50 INFO  Http11NioProtocol:173 - Starting ProtocolHandler ["http-nio-8801"]
-2025/04/16 10:20:50 INFO  TomcatWebServer:220 - Tomcat started on port(s): 8801 (http) with context path ''
-2025/04/16 10:20:50 DEBUG SQL:128 - 
-    select
-        o1_0.id,
-        o1_0.code,
-        o1_0.expires_at,
-        o1_0.type,
-        o1_0.is_used,
-        o1_0.user_id 
-    from
-        otp_codes o1_0 
-    where
-        o1_0.expires_at<?
-2025/04/16 10:20:50 DEBUG SQL:128 - 
-    delete 
-    from
-        otp_codes 
-    where
-        id=?
-2025/04/16 10:20:50 DEBUG SQL:128 - 
-    delete 
-    from
-        otp_codes 
-    where
-        id=?
-2025/04/16 10:21:03 INFO  [/]:173 - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2025/04/16 10:21:03 INFO  DispatcherServlet:532 - Initializing Servlet 'dispatcherServlet'
-2025/04/16 10:21:03 INFO  DispatcherServlet:554 - Completed initialization in 1 ms
-2025/04/16 10:21:03 DEBUG SQL:128 - 
+2025/04/17 10:05:29 DEBUG SQL:128 - 
     select
         u1_0.id,
         u1_0.is_deleted,
@@ -357,7 +447,7 @@
         users u1_0 
     where
         u1_0.email=?
-2025/04/16 10:21:03 DEBUG SQL:128 - 
+2025/04/17 10:05:29 DEBUG SQL:128 - 
     select
         r1_0.id,
         r1_0.role_name 
@@ -365,81 +455,7 @@
         roles r1_0 
     where
         r1_0.id=?
-2025/04/16 10:23:22 INFO  LocalContainerEntityManagerFactoryBean:650 - Closing JPA EntityManagerFactory for persistence unit 'default'
-2025/04/16 10:23:22 INFO  HikariDataSource:350 - HikariPool-1 - Shutdown initiated...
-2025/04/16 10:23:22 INFO  HikariDataSource:352 - HikariPool-1 - Shutdown completed.
-2025/04/16 10:48:08 INFO  Version:21 - HV000001: Hibernate Validator 8.0.0.Final
-2025/04/16 10:48:09 INFO  RepositoryConfigurationDelegate:138 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025/04/16 10:48:09 INFO  RepositoryConfigurationDelegate:208 - Finished Spring Data repository scanning in 64 ms. Found 3 JPA repository interfaces.
-2025/04/16 10:48:10 INFO  TomcatWebServer:108 - Tomcat initialized with port(s): 8801 (http)
-2025/04/16 10:48:10 INFO  Http11NioProtocol:173 - Initializing ProtocolHandler ["http-nio-8801"]
-2025/04/16 10:48:10 INFO  StandardService:173 - Starting service [Tomcat]
-2025/04/16 10:48:10 INFO  StandardEngine:173 - Starting Servlet engine: [Apache Tomcat/10.1.10]
-2025/04/16 10:48:10 INFO  [/]:173 - Initializing Spring embedded WebApplicationContext
-2025/04/16 10:48:10 INFO  ServletWebServerApplicationContext:291 - Root WebApplicationContext: initialization completed in 1562 ms
-2025/04/16 10:48:10 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: default]
-2025/04/16 10:48:10 INFO  Version:44 - HHH000412: Hibernate ORM core version 6.1.7.Final
-2025/04/16 10:48:11 INFO  HikariDataSource:110 - HikariPool-1 - Starting...
-2025/04/16 10:48:11 INFO  HikariPool:565 - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@4e2109fe
-2025/04/16 10:48:11 INFO  HikariDataSource:123 - HikariPool-1 - Start completed.
-2025/04/16 10:48:11 INFO  SQL dialect:66 - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
-2025/04/16 10:48:12 INFO  JtaPlatformInitiator:51 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2025/04/16 10:48:12 INFO  LocalContainerEntityManagerFactoryBean:437 - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025/04/16 10:48:13 INFO  DefaultSecurityFilterChain:54 - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@22decfa2, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3aae9e8f, org.springframework.security.web.context.SecurityContextHolderFilter@6c2d124e, org.springframework.security.web.header.HeaderWriterFilter@57d0c779, org.springframework.security.web.authentication.logout.LogoutFilter@4733662d, com.example.apisample.config.JwtAuthFilter@73c1dda3, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@59f5a376, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7a0eb939, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2086f336, org.springframework.security.web.session.SessionManagementFilter@589a82af, org.springframework.security.web.access.ExceptionTranslationFilter@44bb6856, org.springframework.security.web.access.intercept.AuthorizationFilter@2b4675db]
-2025/04/16 10:48:13 INFO  Http11NioProtocol:173 - Starting ProtocolHandler ["http-nio-8801"]
-2025/04/16 10:48:13 INFO  TomcatWebServer:220 - Tomcat started on port(s): 8801 (http) with context path ''
-2025/04/16 10:48:14 DEBUG SQL:128 - 
-    select
-        o1_0.id,
-        o1_0.code,
-        o1_0.expires_at,
-        o1_0.type,
-        o1_0.is_used,
-        o1_0.user_id 
-    from
-        otp_codes o1_0 
-    where
-        o1_0.expires_at<?
-2025/04/16 10:48:16 INFO  LocalContainerEntityManagerFactoryBean:650 - Closing JPA EntityManagerFactory for persistence unit 'default'
-2025/04/16 10:48:16 INFO  HikariDataSource:350 - HikariPool-1 - Shutdown initiated...
-2025/04/16 10:48:16 INFO  HikariDataSource:352 - HikariPool-1 - Shutdown completed.
-2025/04/16 10:48:21 INFO  Version:21 - HV000001: Hibernate Validator 8.0.0.Final
-2025/04/16 10:48:22 INFO  RepositoryConfigurationDelegate:138 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025/04/16 10:48:22 INFO  RepositoryConfigurationDelegate:208 - Finished Spring Data repository scanning in 93 ms. Found 3 JPA repository interfaces.
-2025/04/16 10:48:23 INFO  TomcatWebServer:108 - Tomcat initialized with port(s): 8801 (http)
-2025/04/16 10:48:23 INFO  Http11NioProtocol:173 - Initializing ProtocolHandler ["http-nio-8801"]
-2025/04/16 10:48:23 INFO  StandardService:173 - Starting service [Tomcat]
-2025/04/16 10:48:23 INFO  StandardEngine:173 - Starting Servlet engine: [Apache Tomcat/10.1.10]
-2025/04/16 10:48:23 INFO  [/]:173 - Initializing Spring embedded WebApplicationContext
-2025/04/16 10:48:23 INFO  ServletWebServerApplicationContext:291 - Root WebApplicationContext: initialization completed in 1890 ms
-2025/04/16 10:48:23 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: default]
-2025/04/16 10:48:23 INFO  Version:44 - HHH000412: Hibernate ORM core version 6.1.7.Final
-2025/04/16 10:48:24 INFO  HikariDataSource:110 - HikariPool-1 - Starting...
-2025/04/16 10:48:24 INFO  HikariPool:565 - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@4cc4d454
-2025/04/16 10:48:24 INFO  HikariDataSource:123 - HikariPool-1 - Start completed.
-2025/04/16 10:48:24 INFO  SQL dialect:66 - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
-2025/04/16 10:48:26 INFO  JtaPlatformInitiator:51 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2025/04/16 10:48:26 INFO  LocalContainerEntityManagerFactoryBean:437 - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025/04/16 10:48:27 INFO  DefaultSecurityFilterChain:54 - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@59d6a4d1, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5b476930, org.springframework.security.web.context.SecurityContextHolderFilter@486d1868, org.springframework.security.web.header.HeaderWriterFilter@538fb761, org.springframework.security.web.authentication.logout.LogoutFilter@3da8a302, com.example.apisample.config.JwtAuthFilter@2284058a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@31f96cf, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@68fec965, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@18f1260, org.springframework.security.web.session.SessionManagementFilter@73ccdfc1, org.springframework.security.web.access.ExceptionTranslationFilter@12d33d7a, org.springframework.security.web.access.intercept.AuthorizationFilter@5bbb351e]
-2025/04/16 10:48:27 INFO  Http11NioProtocol:173 - Starting ProtocolHandler ["http-nio-8801"]
-2025/04/16 10:48:27 INFO  TomcatWebServer:220 - Tomcat started on port(s): 8801 (http) with context path ''
-2025/04/16 10:48:27 DEBUG SQL:128 - 
-    select
-        o1_0.id,
-        o1_0.code,
-        o1_0.expires_at,
-        o1_0.type,
-        o1_0.is_used,
-        o1_0.user_id 
-    from
-        otp_codes o1_0 
-    where
-        o1_0.expires_at<?
-2025/04/16 10:48:54 INFO  [/]:173 - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2025/04/16 10:48:54 INFO  DispatcherServlet:532 - Initializing Servlet 'dispatcherServlet'
-2025/04/16 10:48:54 INFO  DispatcherServlet:554 - Completed initialization in 1 ms
-2025/04/16 10:48:55 INFO  AbstractOpenApiResource:390 - Init duration for springdoc-openapi is: 665 ms
-2025/04/16 10:49:06 DEBUG SQL:128 - 
+2025/04/17 10:05:29 DEBUG SQL:128 - 
     select
         u1_0.id,
         u1_0.is_deleted,
@@ -454,7 +470,7 @@
         users u1_0 
     where
         u1_0.email=?
-2025/04/16 10:49:06 DEBUG SQL:128 - 
+2025/04/17 10:05:29 DEBUG SQL:128 - 
     select
         r1_0.id,
         r1_0.role_name 
@@ -462,37 +478,7 @@
         roles r1_0 
     where
         r1_0.id=?
-2025/04/16 10:49:07 DEBUG SQL:128 - 
-    insert 
-    into
-        otp_codes
-        (code, expires_at, type, is_used, user_id) 
-    values
-        (?, ?, ?, ?, ?)
-2025/04/16 10:49:45 DEBUG SQL:128 - 
-    select
-        u1_0.id,
-        u1_0.is_deleted,
-        u1_0.email,
-        u1_0.first_name,
-        u1_0.last_name,
-        u1_0.password,
-        u1_0.phone,
-        u1_0.role_id,
-        u1_0.token_version 
-    from
-        users u1_0 
-    where
-        u1_0.email=?
-2025/04/16 10:49:45 DEBUG SQL:128 - 
-    select
-        r1_0.id,
-        r1_0.role_name 
-    from
-        roles r1_0 
-    where
-        r1_0.id=?
-2025/04/16 10:49:45 DEBUG SQL:128 - 
+2025/04/17 10:05:29 DEBUG SQL:128 - 
     select
         o1_0.id,
         o1_0.code,
@@ -507,198 +493,108 @@
         and o1_0.type=? 
     order by
         o1_0.expires_at desc fetch first ? rows only
-2025/04/16 10:49:45 DEBUG SQL:128 - 
+2025/04/17 10:05:46 DEBUG SQL:128 - 
+    select
+        u1_0.id,
+        u1_0.is_deleted,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.token_version 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025/04/17 10:05:46 DEBUG SQL:128 - 
+    select
+        r1_0.id,
+        r1_0.role_name 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025/04/17 10:05:47 DEBUG SQL:128 - 
+    select
+        u1_0.id,
+        u1_0.is_deleted,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.token_version 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025/04/17 10:05:47 DEBUG SQL:128 - 
+    select
+        r1_0.id,
+        r1_0.role_name 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025/04/17 10:05:54 DEBUG SQL:128 - 
+    select
+        u1_0.id,
+        u1_0.is_deleted,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.token_version 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025/04/17 10:05:54 DEBUG SQL:128 - 
+    select
+        r1_0.id,
+        r1_0.role_name 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025/04/17 10:05:54 DEBUG SQL:128 - 
+    select
+        u1_0.id,
+        u1_0.is_deleted,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        r1_0.id,
+        r1_0.role_name,
+        u1_0.token_version 
+    from
+        users u1_0 
+    join
+        roles r1_0 
+            on r1_0.id=u1_0.role_id 
+    where
+        u1_0.id=?
+2025/04/17 10:05:54 DEBUG SQL:128 - 
     update
-        otp_codes 
+        users 
     set
-        code=?,
-        expires_at=?,
-        type=?,
-        is_used=?,
-        user_id=? 
+        is_deleted=?,
+        email=?,
+        first_name=?,
+        last_name=?,
+        password=?,
+        phone=?,
+        role_id=?,
+        token_version=? 
     where
         id=?
-2025/04/16 10:49:46 DEBUG SQL:128 - 
-    select
-        u1_0.id,
-        u1_0.is_deleted,
-        u1_0.email,
-        u1_0.first_name,
-        u1_0.last_name,
-        u1_0.password,
-        u1_0.phone,
-        u1_0.role_id,
-        u1_0.token_version 
-    from
-        users u1_0 
-    where
-        u1_0.email=?
-2025/04/16 10:49:46 DEBUG SQL:128 - 
-    select
-        r1_0.id,
-        r1_0.role_name 
-    from
-        roles r1_0 
-    where
-        r1_0.id=?
-2025/04/16 10:50:26 WARN  HikariPool:804 - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m1s995ms214µs800ns).
-2025/04/16 10:52:02 DEBUG SQL:128 - 
-    select
-        u1_0.id,
-        u1_0.is_deleted,
-        u1_0.email,
-        u1_0.first_name,
-        u1_0.last_name,
-        u1_0.password,
-        u1_0.phone,
-        u1_0.role_id,
-        u1_0.token_version 
-    from
-        users u1_0 
-    where
-        u1_0.email=?
-2025/04/16 10:52:02 DEBUG SQL:128 - 
-    select
-        r1_0.id,
-        r1_0.role_name 
-    from
-        roles r1_0 
-    where
-        r1_0.id=?
-2025/04/16 10:52:09 DEBUG SQL:128 - 
-    select
-        u1_0.id,
-        u1_0.is_deleted,
-        u1_0.email,
-        u1_0.first_name,
-        u1_0.last_name,
-        u1_0.password,
-        u1_0.phone,
-        u1_0.role_id,
-        u1_0.token_version 
-    from
-        users u1_0 
-    where
-        u1_0.email=?
-2025/04/16 10:52:09 DEBUG SQL:128 - 
-    select
-        r1_0.id,
-        r1_0.role_name 
-    from
-        roles r1_0 
-    where
-        r1_0.id=?
-2025/04/16 10:52:09 DEBUG SQL:128 - 
-    select
-        u1_0.id,
-        u1_0.is_deleted,
-        u1_0.email,
-        u1_0.first_name,
-        u1_0.last_name,
-        u1_0.password,
-        u1_0.phone,
-        u1_0.role_id,
-        u1_0.token_version 
-    from
-        users u1_0 
-    where
-        u1_0.email=?
-2025/04/16 10:52:09 DEBUG SQL:128 - 
-    select
-        r1_0.id,
-        r1_0.role_name 
-    from
-        roles r1_0 
-    where
-        r1_0.id=?
-2025/04/16 10:52:10 DEBUG SQL:128 - 
-    select
-        u1_0.id,
-        u1_0.is_deleted,
-        u1_0.email,
-        u1_0.first_name,
-        u1_0.last_name,
-        u1_0.password,
-        u1_0.phone,
-        u1_0.role_id,
-        u1_0.token_version 
-    from
-        users u1_0 
-    where
-        u1_0.email=?
-2025/04/16 10:52:10 DEBUG SQL:128 - 
-    select
-        r1_0.id,
-        r1_0.role_name 
-    from
-        roles r1_0 
-    where
-        r1_0.id=?
-2025/04/16 10:52:10 DEBUG SQL:128 - 
-    select
-        u1_0.id,
-        u1_0.is_deleted,
-        u1_0.email,
-        u1_0.first_name,
-        u1_0.last_name,
-        u1_0.password,
-        u1_0.phone,
-        u1_0.role_id,
-        u1_0.token_version 
-    from
-        users u1_0 
-    where
-        u1_0.email=?
-2025/04/16 10:52:10 DEBUG SQL:128 - 
-    select
-        r1_0.id,
-        r1_0.role_name 
-    from
-        roles r1_0 
-    where
-        r1_0.id=?
-2025/04/16 10:54:21 WARN  HikariPool:804 - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m54s883ms561µs800ns).
-2025/04/16 10:54:21 DEBUG SQL:128 - 
-    select
-        o1_0.id,
-        o1_0.code,
-        o1_0.expires_at,
-        o1_0.type,
-        o1_0.is_used,
-        o1_0.user_id 
-    from
-        otp_codes o1_0 
-    where
-        o1_0.expires_at<?
-2025/04/16 10:54:21 DEBUG SQL:128 - 
-    delete 
-    from
-        otp_codes 
-    where
-        id=?
-2025/04/16 10:54:21 DEBUG SQL:128 - 
-    select
-        u1_0.id,
-        u1_0.is_deleted,
-        u1_0.email,
-        u1_0.first_name,
-        u1_0.last_name,
-        u1_0.password,
-        u1_0.phone,
-        u1_0.role_id,
-        u1_0.token_version 
-    from
-        users u1_0 
-    where
-        u1_0.email=?
-2025/04/16 10:54:21 DEBUG SQL:128 - 
-    select
-        r1_0.id,
-        r1_0.role_name 
-    from
-        roles r1_0 
-    where
-        r1_0.id=?
-2025/04/16 10:54:21 INFO  LocalContainerEntityManagerFactoryBean:650 - Closing JPA EntityManagerFactory for persistence unit 'default'
-2025/04/16 10:54:21 INFO  HikariDataSource:350 - HikariPool-1 - Shutdown initiated...
-2025/04/16 10:54:21 INFO  HikariDataSource:352 - HikariPool-1 - Shutdown completed.
+2025/04/17 10:06:35 INFO  LocalContainerEntityManagerFactoryBean:650 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025/04/17 10:06:35 INFO  HikariDataSource:350 - HikariPool-1 - Shutdown initiated...
+2025/04/17 10:06:35 INFO  HikariDataSource:352 - HikariPool-1 - Shutdown completed.

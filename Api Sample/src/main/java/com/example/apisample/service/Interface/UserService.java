@@ -15,5 +15,6 @@ public interface UserService {
     User getUserByEmail(String email) throws UserDoesNotExistException;
     void login(String email, String password) throws UserAlreadyExistsException, InvalidCredentialsException, UserDoesNotExistException, AccountSuspendedException, UserDeletedException, InvalidateException;
     void saveUser(User user);
+    void logout(User user) throws UserDoesNotLoginException;
     void resetPassword(ResetPasswordRequestDTO dto, User user) throws OtpDoesNotExistException, InvalidOtpCodeException, OtpHasBeenUsedException, OtpExpiredException;
 }
