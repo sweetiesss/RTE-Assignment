@@ -28,6 +28,11 @@ public class JWTServiceImp implements JWTService {
     private final UserService userService;
     private static final Dotenv dotenv = Dotenv.load();
     private static final String SECRET_KEY = dotenv.get("JWT_SECRET");
+    private static final String CLAIM_NAME_TOKEN_VERSION = "token-version";
+    private static final String CLAIM_NAME_ROLE = "role";
+    private static final String CLAIM_NAME_JTI = "jti";
+    private static final String JWT_TYPE_NAME = "typ";
+    private static final String JWT_TYPE_VALUE = "JWT";
 
     @Override
     public Claims extractAllClaims(String token) {
@@ -48,29 +53,26 @@ public class JWTServiceImp implements JWTService {
 
     @Override
     public String generateToken(Map<String, Object> extraClaims, User user) { // generate token with claims (access token)
-        String token = Jwts.builder()
-                .setHeaderParam("typ", "JWT")
+        return Jwts.builder()
+                .setHeaderParam(JWT_TYPE_NAME, JWT_TYPE_VALUE)
                 .setClaims(extraClaims)
                 .setSubject(user.getUsername())
-                .claim("role", user.getRole().getRoleName())
-                .claim("jti", UUID.randomUUID().toString())
-                .claim("token-version", user.getTokenVersion())
+                .claim(CLAIM_NAME_ROLE, user.getRole().getRoleName())
+                .claim(CLAIM_NAME_JTI, UUID.randomUUID().toString())
+                .claim(CLAIM_NAME_TOKEN_VERSION, user.getTokenVersion())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 1 day access token, for dev only
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
-
-        return token;
     }
 
     @Override
     public String generateRefreshToken(User user) {
-        String jwt = Jwts.builder().setClaims(new HashMap<>()).setSubject(user.getUsername())
+        return Jwts.builder().setClaims(new HashMap<>()).setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .claim("token-version", user.getTokenVersion())
+                .claim(CLAIM_NAME_TOKEN_VERSION, user.getTokenVersion())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7)) // 7 days refresh token
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256).compact();
-        return jwt;
     }
 
     @Override
@@ -90,7 +92,7 @@ public class JWTServiceImp implements JWTService {
         if (!username.equals(userDetails.getUsername())) return false;
 
         // Validate token version
-        Integer tokenVersion = claims.get("token-version", Integer.class);
+        Integer tokenVersion = claims.get(CLAIM_NAME_TOKEN_VERSION, Integer.class);
         User user = (User) userDetails;
         return tokenVersion != null && tokenVersion.equals(user.getTokenVersion()) && !isTokenExpired(token);
     }

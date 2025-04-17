@@ -30,6 +30,7 @@ public class OtpServiceImp implements OtpService {
     private static final int OTP_EXPIRATION_MINUTES = 2;
     private static final int OTP_BASE = 100000;
     private static final int OTP_CEIL = 900000;
+    private static final int SCHEDULER_RATE = 300000; // 300000 ms = 5 minutes (1000 * 60 * 5)
 
 
     @Override
@@ -56,10 +57,11 @@ public class OtpServiceImp implements OtpService {
                 .findTopByUserAndTypeOrderByExpiresAtDesc(user, type)
                 .orElse(null);
 
-        if (otpCode == null) throw new OtpDoesNotExistException();
+        if(otpCode == null) throw new OtpDoesNotExistException();
         if(!otpCode.getCode().equals(code)) throw new InvalidOtpCodeException();
         if(!otpCode.getExpiresAt().isAfter(LocalDateTime.now())) throw new OtpExpiredException();
         if(otpCode.isUsed()) throw new OtpHasBeenUsedException();
+
         otpCode.setUsed(true);
         otpCodeRepository.save(otpCode);
     }
@@ -71,7 +73,7 @@ public class OtpServiceImp implements OtpService {
     }
 
     @Transactional
-    @Scheduled(fixedRate = 300000) // 300000 ms = 5 minutes (1000 * 60 * 5)
+    @Scheduled(fixedRate = SCHEDULER_RATE)
     public void cleanExpiredOtps() {
         otpCodeRepository.deleteByExpiresAtBefore(java.time.LocalDateTime.now());
         log.info(LogMessage.logOtpScheduleDelete);
