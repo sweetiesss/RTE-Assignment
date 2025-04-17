@@ -10,6 +10,7 @@ import com.example.apisample.exception.otpservice.OtpExpiredException;
 import com.example.apisample.exception.otpservice.OtpHasBeenUsedException;
 import com.example.apisample.exception.userservice.UserDeletedException;
 import com.example.apisample.exception.userservice.UserDoesNotExistException;
+import com.example.apisample.exception.userservice.UserDoesNotLoginException;
 import com.example.apisample.model.dto.authdto.ResetPasswordRequestDTO;
 import com.example.apisample.repository.RoleRepository;
 import com.example.apisample.repository.UserRepository;
@@ -80,15 +81,21 @@ public class UserServiceImp implements UserService, UserDetailsService {
         userRepository.save(user);
     }
 
-    public void incrementTokenVersion(User user) {
+    public void logout(User user) throws UserDoesNotLoginException {
+        if(user == null){
+            throw new UserDoesNotLoginException();
+        }
+
         user.setTokenVersion(user.getTokenVersion() + 1);
         userRepository.save(user);
     }
 
     public void resetPassword(ResetPasswordRequestDTO dto, User user) throws OtpDoesNotExistException, InvalidOtpCodeException, OtpHasBeenUsedException, OtpExpiredException {
         otpService.validateOtp(user, dto.getOtp(), OtpType.PASSWORD_RESET);
+
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setTokenVersion(user.getTokenVersion() + 1);
+
         userRepository.save(user);
     }
 }
