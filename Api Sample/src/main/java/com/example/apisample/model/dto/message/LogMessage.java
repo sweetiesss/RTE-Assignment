@@ -10,9 +10,8 @@ public class LogMessage {
     public static final String logSuccessRegis = "Register use successfully";
     public static final String logStartAuthentication = "Start to authenticate user";
     public static final String logAuthenticated = "User is authenticated";
-    public static final String logStartLogout = "Start to log out";
-    public static final String logStartLogoutCookieDelete = "Start to delete cookie in logout";
-    public static final String logSuccessLogout = "Log out successfully";
+    public static final String logStartLogout = "Start to sign out";
+    public static final String logSuccessLogout = "Sign out successfully";
     public static final String logStartResetPassword = "Reset password start!";
     public static final String logSuccessResetPassword = "Reset password successfully!";
     public static final String logRefreshTokenUnauthorize = "Sending OTP";

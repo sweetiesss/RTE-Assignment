@@ -18,7 +18,5 @@ public class ResponseMessage {
     public static final String msgUserAlreadyExist = "User already exists!";
     public static final String msgUserDeleted = "User Deleted!";
     public static final String msgUserDoesNotExist = "User does not exist!";
-    public static final String msgUserDoesNotLoggedIn = "User does not logged in!";
     public static final String msgResetPasswordSuccess = "Password has been update successfully!";
-    public static final String msgLogoutSuccess = "User logout successfully!";
 }

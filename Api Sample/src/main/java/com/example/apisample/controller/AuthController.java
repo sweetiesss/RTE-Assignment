@@ -2,7 +2,6 @@ package com.example.apisample.controller;
 
 import com.example.apisample.entity.User;
 import com.example.apisample.enums.OtpType;
-import com.example.apisample.exception.userservice.UserDoesNotLoginException;
 import com.example.apisample.model.ResponseObject;
 import com.example.apisample.model.dto.authdto.LoginRequestDTO;
 import com.example.apisample.model.dto.authdto.LoginResponseDTO;
@@ -20,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -33,7 +31,6 @@ public class AuthController {
     private final UserService userService;
     private final JWTService jwtService;
     private final OtpService otpService;
-    private final String REFRESH_TOKEN_COOKIE_NAME = "refresh-token";
 
     @PostMapping("/login")
     public ResponseEntity<ResponseObject> signIn(@RequestBody LoginRequestDTO loginUser) throws Exception {
@@ -60,7 +57,7 @@ public class AuthController {
         String refreshToken = jwtService.generateRefreshToken(user);
         String accessToken = jwtService.generateAccessToken(refreshToken);
 
-        Cookie refreshTokenCookie = new Cookie(REFRESH_TOKEN_COOKIE_NAME, refreshToken);
+        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
         refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setSecure(true);
         refreshTokenCookie.setPath("/");
@@ -87,7 +84,7 @@ public class AuthController {
 
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
-                if (cookie.getName().equals(REFRESH_TOKEN_COOKIE_NAME)) {
+                if (cookie.getName().equals("refreshToken")) {
                     refreshToken = cookie.getValue();
                     break;
                 }
@@ -130,31 +127,4 @@ public class AuthController {
                         .message(ResponseMessage.msgResetPasswordSuccess)
                         .build());
     }
-
-    @PostMapping("/logout")
-    public ResponseEntity<ResponseObject> logout(HttpServletResponse response, @AuthenticationPrincipal User user) throws UserDoesNotLoginException {
-        log.info(LogMessage.logStartLogout);
-
-        userService.logout(user);
-
-        log.info(LogMessage.logStartLogoutCookieDelete);
-
-        Cookie cookie = new Cookie(REFRESH_TOKEN_COOKIE_NAME, null);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(0);
-
-        response.addCookie(cookie);
-
-        log.info(LogMessage.logSuccessLogout);
-
-        return ResponseEntity.ok(
-                ResponseObject.builder()
-                        .statusCode(HttpStatus.OK.value())
-                        .message(ResponseMessage.msgLogoutSuccess)
-                        .build()
-        );
-    }
-
 }
