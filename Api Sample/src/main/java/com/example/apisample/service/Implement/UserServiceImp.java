@@ -11,6 +11,10 @@ import com.example.apisample.exception.otpservice.InvalidOtpCodeException;
 import com.example.apisample.exception.otpservice.OtpDoesNotExistException;
 import com.example.apisample.exception.otpservice.OtpExpiredException;
 import com.example.apisample.exception.otpservice.OtpHasBeenUsedException;
+import com.example.apisample.exception.userservice.*;
+import com.example.apisample.model.dto.auth.ResetPasswordRequestDTO;
+import com.example.apisample.model.dto.user.UserRegisterRequestDTO;
+import com.example.apisample.model.dto.user.UserUpdateRequestDTO;
 import com.example.apisample.exception.userservice.UserAlreadyExistsException;
 import com.example.apisample.exception.userservice.UserDeletedException;
 import com.example.apisample.exception.userservice.UserDoesNotExistException;
@@ -30,6 +34,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Optional;
 
 @Service
@@ -40,7 +45,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final OtpService otpService;
-    private static final String DATE_PATTERN = "yyyy-MM-dd";
     private static final Integer CUSTOMER_ROLE_ID = 2;
     private final EmailService emailService;
 
@@ -135,7 +139,57 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
         emailService.sendPasswordEmail(registerUser.getEmail(), registerUser.getPassword().trim());
 
+        userRepository.save(user);
+    }
+
+    public void register(UserRegisterRequestDTO registerUser) throws UserAlreadyExistsException, RoleDoesNotExistException, EmailCannotBeSendException {
+        User userFetched = userRepository.findByEmail(registerUser.getEmail());
+
+        if (userFetched != null) throw new UserAlreadyExistsException();
+
+        Optional<Role> optionRole = roleRepository.findById(CUSTOMER_ROLE_ID);
+
+        if(optionRole.isEmpty()) throw new RoleDoesNotExistException();
+
+        Role role = optionRole.get();
+
+        User user = User.builder()
+                .email(registerUser.getEmail())
+                .phone(registerUser.getPhone())
+                .firstName(registerUser.getFirstName())
+                .lastName(registerUser.getLastName())
+                .role(role)
+                .deleted(Boolean.FALSE)
+                .tokenVersion(registerUser.getDefaultTokenVersion())
+                .password(passwordEncoder.encode(registerUser.getPassword().trim()))
+                .createOn(Instant.now())
+                .build();
+
+        emailService.sendPasswordEmail(registerUser.getEmail(), registerUser.getPassword().trim());
+
 
         userRepository.save(user);
     }
+
+    public void update(Integer id, UserUpdateRequestDTO updateUser) throws UserDoesNotExistException {
+
+        Optional<User> optionalUser = userRepository.findByid(id);
+
+        if(optionalUser.isEmpty()){
+            throw new UserDoesNotExistException();
+        }
+
+        User existingUser = optionalUser.get();
+
+        if (updateUser.getEmail() != null) existingUser.setEmail(updateUser.getEmail());
+        if (updateUser.getFirstName() != null) existingUser.setFirstName(updateUser.getFirstName());
+        if (updateUser.getLastName() != null) existingUser.setLastName(updateUser.getLastName());
+        if (updateUser.getPhone() != null) existingUser.setPhone(updateUser.getPhone());
+        if (updateUser.getCreateOn() != null) existingUser.setCreateOn(updateUser.getCreateOn());
+        if (updateUser.getUpdateOn() != null) existingUser.setLastUpdateOn(updateUser.getUpdateOn());
+        else existingUser.setLastUpdateOn(Instant.now());
+
+        userRepository.save(existingUser);
+    }
+
 }
