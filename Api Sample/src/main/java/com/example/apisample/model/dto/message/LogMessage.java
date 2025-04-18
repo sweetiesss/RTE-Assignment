@@ -42,4 +42,9 @@ public class LogMessage {
     //Email Log
     public static final String logEmailSendFailed = "Email sending failed";
 
+    //Role Log
+    public static String logStartGetAllRoles = "Start to get all roles";
+    public static String logSuccessGetAllRoles = "Get all roles successfully";
+    public static String logStartGetAllRolesById = "Start to Get all roles by id";
+    public static String logSuccessGetAllRolesById = "Get role by id successfully";
 }
