@@ -22,4 +22,5 @@ public class ResponseMessage {
     public static final String msgResetPasswordSuccess = "Password has been update successfully!";
     public static final String msgLogoutSuccess = "User logout successfully!";
     public static final String msgEmailCannotSend = "Email cannot be sent!";
+}
 

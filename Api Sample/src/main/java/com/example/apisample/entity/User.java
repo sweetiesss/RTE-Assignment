@@ -11,6 +11,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -55,6 +57,12 @@ public class User implements UserDetails {
     @Size(max = 10)
     @Column(name = "phone", length = 10)
     private String phone;
+
+    @Column(name = "create_on")
+    private Instant createOn;
+
+    @Column(name = "last_update_on")
+    private Instant lastUpdateOn;
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
