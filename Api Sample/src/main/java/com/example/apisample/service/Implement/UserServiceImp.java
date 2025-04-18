@@ -17,6 +17,7 @@ import com.example.apisample.exception.userservice.UserDoesNotExistException;
 import com.example.apisample.exception.userservice.UserDoesNotLoginException;
 import com.example.apisample.model.dto.auth.ResetPasswordRequestDTO;
 import com.example.apisample.model.dto.user.UserRegisterRequestDTO;
+import com.example.apisample.model.dto.authdto.ResetPasswordRequestDTO;
 import com.example.apisample.repository.RoleRepository;
 import com.example.apisample.repository.UserRepository;
 import com.example.apisample.service.Interface.EmailService;
@@ -106,6 +107,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setTokenVersion(user.getTokenVersion() + 1);
 
+
         userRepository.save(user);
     }
 
@@ -132,6 +134,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
                 .build();
 
         emailService.sendPasswordEmail(registerUser.getEmail(), registerUser.getPassword().trim());
+
 
         userRepository.save(user);
     }
