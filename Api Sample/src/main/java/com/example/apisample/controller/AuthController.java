@@ -4,12 +4,13 @@ import com.example.apisample.entity.User;
 import com.example.apisample.enums.OtpType;
 import com.example.apisample.exception.userservice.UserDoesNotLoginException;
 import com.example.apisample.model.ResponseObject;
-import com.example.apisample.model.dto.authdto.LoginRequestDTO;
-import com.example.apisample.model.dto.authdto.LoginResponseDTO;
-import com.example.apisample.model.dto.authdto.ResetPasswordRequestDTO;
+import com.example.apisample.model.dto.auth.LoginRequestDTO;
+import com.example.apisample.model.dto.auth.LoginResponseDTO;
+import com.example.apisample.model.dto.auth.ResetPasswordRequestDTO;
 import com.example.apisample.model.dto.message.LogMessage;
 import com.example.apisample.model.dto.message.ResponseMessage;
-import com.example.apisample.model.dto.otpdto.LoginOtpRequestDTO;
+import com.example.apisample.model.dto.otp.LoginOtpRequestDTO;
+import com.example.apisample.model.dto.user.UserRegisterRequestDTO;
 import com.example.apisample.service.Interface.JWTService;
 import com.example.apisample.service.Interface.OtpService;
 import com.example.apisample.service.Interface.UserService;
@@ -158,4 +159,18 @@ public class AuthController {
         );
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<ResponseObject> register(@RequestBody UserRegisterRequestDTO dto) throws Exception {
+
+        log.info(LogMessage.logStartRegis);
+
+        userService.register(dto);
+
+        log.info(LogMessage.logSuccessRegis);
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message(ResponseMessage.msgSuccess)
+                        .build());
+    }
 }

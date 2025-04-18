@@ -1,4 +1,4 @@
-package com.example.apisample.model.dto.authdto;
+package com.example.apisample.model.dto.auth;
 
 import lombok.Data;
 

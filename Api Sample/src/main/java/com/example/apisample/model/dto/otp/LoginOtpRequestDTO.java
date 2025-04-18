@@ -1,6 +1,5 @@
-package com.example.apisample.model.dto.otpdto;
+package com.example.apisample.model.dto.otp;
 
-import com.example.apisample.enums.OtpType;
 import lombok.Data;
 
 @Data
