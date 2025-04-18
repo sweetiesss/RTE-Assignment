@@ -11,7 +11,6 @@ import com.example.apisample.exception.otpservice.InvalidOtpCodeException;
 import com.example.apisample.exception.otpservice.OtpDoesNotExistException;
 import com.example.apisample.exception.otpservice.OtpExpiredException;
 import com.example.apisample.exception.otpservice.OtpHasBeenUsedException;
-import com.example.apisample.exception.userservice.*;
 import com.example.apisample.model.dto.auth.ResetPasswordRequestDTO;
 import com.example.apisample.model.dto.user.UserRegisterRequestDTO;
 import com.example.apisample.model.dto.user.UserUpdateRequestDTO;
@@ -19,9 +18,6 @@ import com.example.apisample.exception.userservice.UserAlreadyExistsException;
 import com.example.apisample.exception.userservice.UserDeletedException;
 import com.example.apisample.exception.userservice.UserDoesNotExistException;
 import com.example.apisample.exception.userservice.UserDoesNotLoginException;
-import com.example.apisample.model.dto.auth.ResetPasswordRequestDTO;
-import com.example.apisample.model.dto.user.UserRegisterRequestDTO;
-import com.example.apisample.model.dto.authdto.ResetPasswordRequestDTO;
 import com.example.apisample.repository.RoleRepository;
 import com.example.apisample.repository.UserRepository;
 import com.example.apisample.service.Interface.EmailService;
@@ -111,33 +107,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setTokenVersion(user.getTokenVersion() + 1);
 
-
-        userRepository.save(user);
-    }
-
-    public void register(UserRegisterRequestDTO registerUser) throws UserAlreadyExistsException, RoleDoesNotExistException, EmailCannotBeSendException {
-        User userFetched = userRepository.findByEmail(registerUser.getEmail());
-
-        if (userFetched != null) throw new UserAlreadyExistsException();
-
-        Optional<Role> optionRole = roleRepository.findById(CUSTOMER_ROLE_ID);
-
-        if(optionRole.isEmpty()) throw new RoleDoesNotExistException();
-
-        Role role = optionRole.get();
-
-        User user = User.builder()
-                .email(registerUser.getEmail())
-                .phone(registerUser.getPhone())
-                .firstName(registerUser.getFirstName())
-                .lastName(registerUser.getLastName())
-                .role(role)
-                .deleted(Boolean.FALSE)
-                .tokenVersion(registerUser.getDefaultTokenVersion())
-                .password(passwordEncoder.encode(registerUser.getPassword().trim()))
-                .build();
-
-        emailService.sendPasswordEmail(registerUser.getEmail(), registerUser.getPassword().trim());
 
         userRepository.save(user);
     }
