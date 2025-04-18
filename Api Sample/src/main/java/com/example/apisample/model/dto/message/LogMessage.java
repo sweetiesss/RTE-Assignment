@@ -39,5 +39,7 @@ public class LogMessage {
     public static final String logStartDeleteUser = "Deleting User";
     public static final String logSuccessDeleteUser = "User deleted successfully!";
 
+    //Email Log
+    public static final String logEmailSendFailed = "Email sending failed";
 
 }
