@@ -12,6 +12,7 @@ import com.example.apisample.exception.otpservice.OtpHasBeenUsedException;
 import com.example.apisample.exception.userservice.*;
 import com.example.apisample.model.dto.auth.ResetPasswordRequestDTO;
 import com.example.apisample.model.dto.user.UserRegisterRequestDTO;
+import com.example.apisample.model.dto.user.UserUpdateRequestDTO;
 
 public interface UserService {
 
@@ -21,4 +22,5 @@ public interface UserService {
     void logout(User user) throws UserDoesNotLoginException;
     void resetPassword(ResetPasswordRequestDTO dto, User user) throws OtpDoesNotExistException, InvalidOtpCodeException, OtpHasBeenUsedException, OtpExpiredException;
     void register(UserRegisterRequestDTO dto) throws UserAlreadyExistsException, RoleDoesNotExistException, EmailCannotBeSendException;
+    void update(Integer id, UserUpdateRequestDTO updateUser) throws UserDoesNotExistException;
 }
