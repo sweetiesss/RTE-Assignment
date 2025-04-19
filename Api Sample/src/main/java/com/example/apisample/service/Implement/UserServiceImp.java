@@ -12,18 +12,25 @@ import com.example.apisample.exception.otpservice.OtpDoesNotExistException;
 import com.example.apisample.exception.otpservice.OtpExpiredException;
 import com.example.apisample.exception.otpservice.OtpHasBeenUsedException;
 import com.example.apisample.model.dto.auth.ResetPasswordRequestDTO;
+import com.example.apisample.model.dto.pagination.APIPageableResponseDTO;
 import com.example.apisample.model.dto.user.UserRegisterRequestDTO;
+import com.example.apisample.model.dto.user.UserResponseDTO;
 import com.example.apisample.model.dto.user.UserUpdateRequestDTO;
 import com.example.apisample.exception.userservice.UserAlreadyExistsException;
 import com.example.apisample.exception.userservice.UserDeletedException;
 import com.example.apisample.exception.userservice.UserDoesNotExistException;
 import com.example.apisample.exception.userservice.UserDoesNotLoginException;
+import com.example.apisample.model.mapper.UserMapper;
 import com.example.apisample.repository.RoleRepository;
 import com.example.apisample.repository.UserRepository;
 import com.example.apisample.service.Interface.EmailService;
 import com.example.apisample.service.Interface.OtpService;
 import com.example.apisample.service.Interface.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -43,6 +50,16 @@ public class UserServiceImp implements UserService, UserDetailsService {
     private final OtpService otpService;
     private static final Integer CUSTOMER_ROLE_ID = 2;
     private final EmailService emailService;
+
+    @Override
+    public APIPageableResponseDTO<UserResponseDTO> getALlUser(int pageNo, int pageSize, String search, String sortField) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+
+        Page<User> page = userRepository.findByEmailContaining(pageable, search);
+        Page<UserResponseDTO> userDtoPage = page.map(UserMapper::userToDTO);
+
+        return new APIPageableResponseDTO<>(userDtoPage);
+    }
 
     public void login(String email, String password) throws InvalidCredentialsException, UserDeletedException, UserDoesNotExistException {
 

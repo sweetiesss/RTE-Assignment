@@ -11,10 +11,13 @@ import com.example.apisample.exception.otpservice.OtpExpiredException;
 import com.example.apisample.exception.otpservice.OtpHasBeenUsedException;
 import com.example.apisample.exception.userservice.*;
 import com.example.apisample.model.dto.auth.ResetPasswordRequestDTO;
+import com.example.apisample.model.dto.pagination.APIPageableResponseDTO;
 import com.example.apisample.model.dto.user.UserRegisterRequestDTO;
+import com.example.apisample.model.dto.user.UserResponseDTO;
 import com.example.apisample.model.dto.user.UserUpdateRequestDTO;
 
 public interface UserService {
+    APIPageableResponseDTO<UserResponseDTO> getALlUser(int pageNo, int pageSize, String search, String sortField);
 
     User getUserByEmail(String email) throws UserDoesNotExistException;
     void login(String email, String password) throws UserAlreadyExistsException, InvalidCredentialsException, UserDoesNotExistException, AccountSuspendedException, UserDeletedException, InvalidateException;
