@@ -28,17 +28,14 @@ public class LogMessage {
     //User Controller Log
     public static final String logStartUpdateUser = "Updating User";
     public static final String logSuccessUpdateUser = "User updated successfully!";
-    public static final String logStartActivateUser = "Activating user";
-    public static final String logSuccessActivateUser = "User activated successfully!";
-    public static final String logStartDeactivateUser = "Deactivating user";
-    public static final String logSuccessDeactivateUser = "User deactivated successfully!";
+    public static final String getLogStartDeleteUser = "Deleting User";
+    public static final String logSuccessDeleteUser = "User deleted successfully!";
+    public static final String logStartRestoreUser = "Restoring user";
+    public static final String logSuccessRestoreUser = "User restored successfully!";
     public static final String logStartGetImage = "Getting user profile image";
     public static final String logSuccessGetImage = "User profile image get successfully!";
     public static final String logStartUploadImage = "Uploading user profile image";
     public static final String logSuccessUploadImage = "User profile image upload successfully!";
-    public static final String logStartDeleteUser = "Deleting User";
-    public static final String logSuccessDeleteUser = "User deleted successfully!";
-
     //Email Log
     public static final String logEmailSendFailed = "Email sending failed";
 
