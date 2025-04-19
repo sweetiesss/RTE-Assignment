@@ -178,4 +178,33 @@ public class UserServiceImp implements UserService, UserDetailsService {
         userRepository.save(existingUser);
     }
 
+    public void deleteUser(Integer id) throws UserDoesNotExistException {
+        Optional<User> optionalUser = userRepository.findByid(id);
+
+        if(optionalUser.isEmpty()){
+            throw new UserDoesNotExistException();
+        }
+
+        User existingUser = optionalUser.get();
+
+        existingUser.setDeleted(Boolean.TRUE);
+        existingUser.setTokenVersion(existingUser.getTokenVersion() + 1);
+
+        userRepository.save(existingUser);
+    }
+
+    public void restoreUser(Integer id) throws UserDoesNotExistException {
+        Optional<User> optionalUser = userRepository.findByid(id);
+
+        if(optionalUser.isEmpty()){
+            throw new UserDoesNotExistException();
+        }
+
+        User existingUser = optionalUser.get();
+
+        existingUser.setDeleted(Boolean.FALSE);
+
+        userRepository.save(existingUser);
+    }
+
 }

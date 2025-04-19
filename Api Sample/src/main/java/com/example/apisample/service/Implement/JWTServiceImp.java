@@ -2,7 +2,7 @@ package com.example.apisample.service.Implement;
 
 import com.example.apisample.entity.User;
 import com.example.apisample.exception.jwtservice.TokenExpiredException;
-import com.example.apisample.exception.userservice.InvalidateException;
+import com.example.apisample.exception.jwtservice.InvalidateException;
 import com.example.apisample.exception.userservice.UserDoesNotExistException;
 import com.example.apisample.service.Interface.JWTService;
 import com.example.apisample.service.Interface.UserService;

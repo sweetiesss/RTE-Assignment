@@ -2,7 +2,7 @@ package com.example.apisample.service.Interface;
 
 import com.example.apisample.entity.User;
 import com.example.apisample.exception.jwtservice.TokenExpiredException;
-import com.example.apisample.exception.userservice.InvalidateException;
+import com.example.apisample.exception.jwtservice.InvalidateException;
 import com.example.apisample.exception.userservice.UserDoesNotExistException;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.userdetails.UserDetails;

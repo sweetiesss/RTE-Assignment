@@ -1,6 +1,8 @@
 package com.example.apisample.exception;
 
+import com.example.apisample.exception.emailservice.EmailCannotBeSendException;
 import com.example.apisample.exception.jwtservice.InvalidCredentialsException;
+import com.example.apisample.exception.jwtservice.InvalidateException;
 import com.example.apisample.exception.jwtservice.RoleDoesNotExistException;
 import com.example.apisample.exception.jwtservice.TokenExpiredException;
 import com.example.apisample.exception.otpservice.InvalidOtpCodeException;
@@ -192,6 +194,40 @@ public class GlobalExceptionHandler {
                 .build();
         return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(EmailCannotBeSendException.class)
+    public ResponseEntity<?> handleEmailCannotBeSendException(EmailCannotBeSendException ex) {
+        String errorMessage = ex.getMessage();
+        logger.error(errorMessage);
+        ResponseObject responseObject = ResponseObject.builder()
+                .statusCode(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .message(errorMessage)
+                .build();
+        return new ResponseEntity<>(responseObject, HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    @ExceptionHandler(UserDoesNotLoginException.class)
+    public ResponseEntity<?> handleUserDoesNotLoginException(UserDoesNotLoginException ex) {
+        String errorMessage = ex.getMessage();
+        logger.error(errorMessage);
+        ResponseObject responseObject = ResponseObject.builder()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .message(errorMessage)
+                .build();
+        return new ResponseEntity<>(responseObject, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(NotImageFileException.class)
+    public ResponseEntity<?> handleNotImageFileException(NotImageFileException ex) {
+        String errorMessage = ex.getMessage();
+        logger.error(errorMessage);
+        ResponseObject responseObject = ResponseObject.builder()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .message(errorMessage)
+                .build();
+        return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
+    }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> BaseException(Exception ex) {

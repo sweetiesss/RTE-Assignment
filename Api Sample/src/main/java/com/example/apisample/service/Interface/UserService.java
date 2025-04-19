@@ -4,6 +4,7 @@ package com.example.apisample.service.Interface;
 import com.example.apisample.entity.User;
 import com.example.apisample.exception.emailservice.EmailCannotBeSendException;
 import com.example.apisample.exception.jwtservice.InvalidCredentialsException;
+import com.example.apisample.exception.jwtservice.InvalidateException;
 import com.example.apisample.exception.jwtservice.RoleDoesNotExistException;
 import com.example.apisample.exception.otpservice.InvalidOtpCodeException;
 import com.example.apisample.exception.otpservice.OtpDoesNotExistException;
@@ -26,4 +27,6 @@ public interface UserService {
     void resetPassword(ResetPasswordRequestDTO dto, User user) throws OtpDoesNotExistException, InvalidOtpCodeException, OtpHasBeenUsedException, OtpExpiredException;
     void register(UserRegisterRequestDTO dto) throws UserAlreadyExistsException, RoleDoesNotExistException, EmailCannotBeSendException;
     void update(Integer id, UserUpdateRequestDTO updateUser) throws UserDoesNotExistException;
+    void deleteUser(Integer id) throws UserDoesNotExistException;
+    void restoreUser(Integer id) throws UserDoesNotExistException;
 }

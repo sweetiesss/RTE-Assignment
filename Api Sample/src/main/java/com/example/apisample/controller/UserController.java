@@ -50,4 +50,35 @@ public class UserController {
         );
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ResponseObject> deleteUSer(@PathVariable Integer id) throws Exception {
+        log.info(LogMessage.getLogStartDeleteUser);
+
+        userService.deleteUser(id);
+
+        log.info(LogMessage.logSuccessDeleteUser);
+
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message(ResponseMessage.msgSuccess)
+                        .build()
+        );
+    }
+
+    @PostMapping("/restore/{id}")
+    public ResponseEntity<ResponseObject> restoreUSer(@PathVariable Integer id) throws Exception {
+        log.info(LogMessage.logStartRestoreUser);
+
+        userService.restoreUser(id);
+
+        log.info(LogMessage.logSuccessRestoreUser);
+
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message(ResponseMessage.msgSuccess)
+                        .build()
+        );
+    }
 }
