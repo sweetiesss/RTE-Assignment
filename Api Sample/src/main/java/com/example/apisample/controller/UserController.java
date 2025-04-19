@@ -1,6 +1,7 @@
 package com.example.apisample.controller;
 
 
+import com.example.apisample.entity.User;
 import com.example.apisample.model.ResponseObject;
 import com.example.apisample.model.dto.message.LogMessage;
 import com.example.apisample.model.dto.message.ResponseMessage;
@@ -25,7 +26,7 @@ public class UserController {
     final String DEFAULT_PAGE = "0";
     final String DEFAULT_PAGE_SIZE = "8";
 
-    @GetMapping("/get-all")
+    @GetMapping("/admin/get-all")
     public APIPageableResponseDTO<UserResponseDTO> getUser(@RequestParam(defaultValue = DEFAULT_PAGE, name = "page") Integer pageNo,
                                                            @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, name = "size") Integer pageSize,
                                                            @RequestParam(defaultValue = "", name = "search") String search,
@@ -33,6 +34,39 @@ public class UserController {
         return userService.getALlUser(pageNo,pageSize,search,sort);
     }
 
+    @GetMapping("/admin/get/{id}")
+    public ResponseEntity<ResponseObject> getUserById(@PathVariable Integer id) throws Exception {
+        log.info(LogMessage.logStartGetUserById);
+
+        UserResponseDTO user = userService.getUserById(id);
+
+        log.info(LogMessage.logSuccessGetUserById);
+
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message(ResponseMessage.msgSuccess)
+                        .token(user)
+                        .build()
+        );
+    }
+
+    @GetMapping("/admin/get-email")
+    public ResponseEntity<ResponseObject> getUserByEmail(@RequestBody String email) throws Exception {
+        log.info(LogMessage.logStartGetUserByEmail);
+
+        UserResponseDTO user = userService.getUserByEmail(email);
+
+        log.info(LogMessage.logSuccessGetUserByEmail);
+
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message(ResponseMessage.msgSuccess)
+                        .token(user)
+                        .build()
+        );
+    }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<ResponseObject> updateUser(@PathVariable Integer id, @RequestBody UserUpdateRequestDTO updateUser) throws Exception {
@@ -50,7 +84,7 @@ public class UserController {
         );
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/admin/delete/{id}")
     public ResponseEntity<ResponseObject> deleteUSer(@PathVariable Integer id) throws Exception {
         log.info(LogMessage.getLogStartDeleteUser);
 
@@ -66,7 +100,7 @@ public class UserController {
         );
     }
 
-    @PostMapping("/restore/{id}")
+    @PostMapping("/admin/restore/{id}")
     public ResponseEntity<ResponseObject> restoreUSer(@PathVariable Integer id) throws Exception {
         log.info(LogMessage.logStartRestoreUser);
 

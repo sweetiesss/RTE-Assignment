@@ -36,6 +36,10 @@ public class LogMessage {
     public static final String logSuccessGetImage = "User profile image get successfully!";
     public static final String logStartUploadImage = "Uploading user profile image";
     public static final String logSuccessUploadImage = "User profile image upload successfully!";
+    public static final String logStartGetUserByEmail = "Getting user by email";
+    public static final String logSuccessGetUserByEmail = "User get successfully!";
+    public static final String logStartGetUserById = "Getting user by id";
+    public static final String logSuccessGetUserById = "User get successfully!";
     //Email Log
     public static final String logEmailSendFailed = "Email sending failed";
 
