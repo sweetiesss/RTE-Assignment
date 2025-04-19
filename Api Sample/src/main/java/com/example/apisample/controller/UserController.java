@@ -4,7 +4,8 @@ package com.example.apisample.controller;
 import com.example.apisample.model.ResponseObject;
 import com.example.apisample.model.dto.message.LogMessage;
 import com.example.apisample.model.dto.message.ResponseMessage;
-import com.example.apisample.model.dto.user.UserRegisterRequestDTO;
+import com.example.apisample.model.dto.pagination.APIPageableResponseDTO;
+import com.example.apisample.model.dto.user.UserResponseDTO;
 import com.example.apisample.model.dto.user.UserUpdateRequestDTO;
 import com.example.apisample.service.Interface.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,19 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 @Slf4j
 public class UserController {
-    UserService userService;
+    private final UserService userService;
+
+    final String DEFAULT_PAGE = "0";
+    final String DEFAULT_PAGE_SIZE = "8";
+
+    @GetMapping("/get-all")
+    public APIPageableResponseDTO<UserResponseDTO> getUser(@RequestParam(defaultValue = DEFAULT_PAGE, name = "page") Integer pageNo,
+                                                           @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, name = "size") Integer pageSize,
+                                                           @RequestParam(defaultValue = "", name = "search") String search,
+                                                           @RequestParam(defaultValue = "", name="sort") String sort) {
+        return userService.getALlUser(pageNo,pageSize,search,sort);
+    }
+
 
     @PutMapping("/update/{id}")
     public ResponseEntity<ResponseObject> updateUser(@PathVariable Integer id, @RequestBody UserUpdateRequestDTO updateUser) throws Exception {
