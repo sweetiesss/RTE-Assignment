@@ -5,6 +5,7 @@ import com.example.apisample.exception.jwtservice.RoleDoesNotExistException;
 import com.example.apisample.model.ResponseObject;
 import com.example.apisample.model.dto.message.LogMessage;
 import com.example.apisample.model.dto.message.ResponseMessage;
+import com.example.apisample.model.dto.role.AssignRoleRequestDTO;
 import com.example.apisample.service.Interface.RoleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,7 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @Slf4j
 public class RoleController {
-     RoleService roleService;
+     private final RoleService roleService;
 
      @GetMapping()
      public ResponseEntity<ResponseObject> getAllRoles() {
@@ -58,10 +59,10 @@ public class RoleController {
 
 
      @PostMapping("/assign-role")
-     public ResponseEntity<ResponseObject> assignRole(@RequestBody String email, @RequestBody Integer roleId) throws Exception {
+     public ResponseEntity<ResponseObject> assignRole(@RequestBody AssignRoleRequestDTO dto) throws Exception {
          log.info(LogMessage.logStartAssignRole);
 
-         roleService.assignRole(email, roleId);
+         roleService.assignRole(dto.getEmail(), dto.getRoleId());
 
          log.info(LogMessage.logSuccessAssignRole);
 
