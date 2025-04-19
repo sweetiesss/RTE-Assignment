@@ -37,6 +37,8 @@ public class SecurityConfiguration {
                         .requestMatchers(WHITE_LIST_URL).permitAll()
                         .requestMatchers("/sample").hasAuthority("ADMIN")
                         .requestMatchers("/roles/**").hasAuthority("ADMIN")
+                        .requestMatchers("/users/**").permitAll()
+                        .requestMatchers("/users/admin/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)
