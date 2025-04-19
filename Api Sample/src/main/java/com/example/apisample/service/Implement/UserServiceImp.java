@@ -37,6 +37,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.time.Instant;
 import java.util.Optional;
 
@@ -80,16 +81,26 @@ public class UserServiceImp implements UserService, UserDetailsService {
         otpService.generateOtp(user, OtpType.LOGIN_2FA);
     }
 
-    public User getUserByEmail(String email) throws UserDoesNotExistException {
+    public UserResponseDTO getUserById(Integer id) throws UserDoesNotExistException {
+        Optional<User> optionalUser = userRepository.findByid(id);
+
+        if(optionalUser.isEmpty()){
+            throw new UserDoesNotExistException();
+        }
+
+
+        return UserMapper.userToDTO(optionalUser.get());
+    }
+
+    public UserResponseDTO getUserByEmail(String email) throws UserDoesNotExistException {
         User optionalUser = userRepository.findByEmail(email);
 
         if(optionalUser == null){
             throw new UserDoesNotExistException();
         }
 
-        return optionalUser;
+        return UserMapper.userToDTO(optionalUser);
     }
-
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User optionalUser = userRepository.findByEmail(username);

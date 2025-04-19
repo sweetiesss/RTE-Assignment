@@ -19,8 +19,8 @@ import com.example.apisample.model.dto.user.UserUpdateRequestDTO;
 
 public interface UserService {
     APIPageableResponseDTO<UserResponseDTO> getALlUser(int pageNo, int pageSize, String search, String sortField);
-
-    User getUserByEmail(String email) throws UserDoesNotExistException;
+    UserResponseDTO getUserById(Integer id) throws UserDoesNotExistException;
+    UserResponseDTO getUserByEmail(String email) throws UserDoesNotExistException;
     void login(String email, String password) throws UserAlreadyExistsException, InvalidCredentialsException, UserDoesNotExistException, AccountSuspendedException, UserDeletedException, InvalidateException;
     void saveUser(User user);
     void logout(User user) throws UserDoesNotLoginException;
