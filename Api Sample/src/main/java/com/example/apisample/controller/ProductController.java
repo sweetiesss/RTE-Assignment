@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 @Slf4j
 public class ProductController {
-
     private final ProductService productService;
 
     final String DEFAULT_PAGE = "0";
@@ -54,7 +53,7 @@ public class ProductController {
         );
     }
 
-    @PostMapping("/create")
+    @PostMapping("/admin/create")
     public ResponseEntity<ResponseObject> createProduct(@RequestBody ProductCreateDTO dto) {
         log.info(LogMessage.logStartCreateProduct);
 
@@ -70,7 +69,7 @@ public class ProductController {
         );
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/admin/update/{id}")
     public ResponseEntity<ResponseObject> updateProduct(
             @PathVariable Integer id,
             @RequestBody ProductUpdateDTO dto) throws Exception {
@@ -89,7 +88,7 @@ public class ProductController {
         );
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/admin/delete/{id}")
     public ResponseEntity<ResponseObject> deleteProduct(@PathVariable Integer id) throws Exception {
         log.info(LogMessage.logStartDeleteProduct);
 
@@ -105,7 +104,7 @@ public class ProductController {
         );
     }
 
-    @PostMapping("/restore/{id}")
+    @PostMapping("/admin/restore/{id}")
     public ResponseEntity<ResponseObject> restoreProduct(@PathVariable Integer id) throws Exception {
         log.info(LogMessage.logStartRestoreProduct);
 

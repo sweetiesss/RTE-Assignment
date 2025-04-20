@@ -9,7 +9,12 @@ import com.example.apisample.exception.otpservice.InvalidOtpCodeException;
 import com.example.apisample.exception.otpservice.OtpDoesNotExistException;
 import com.example.apisample.exception.otpservice.OtpExpiredException;
 import com.example.apisample.exception.otpservice.OtpHasBeenUsedException;
+import com.example.apisample.exception.productservice.ProductDeletedException;
 import com.example.apisample.exception.productservice.ProductNotFoundException;
+import com.example.apisample.exception.ratingservice.RatingDeletedException;
+import com.example.apisample.exception.ratingservice.RatingHasBeenMadeException;
+import com.example.apisample.exception.ratingservice.RatingHasBeenRestoreException;
+import com.example.apisample.exception.ratingservice.RatingNotFoundException;
 import com.example.apisample.exception.userservice.*;
 import com.example.apisample.model.ResponseObject;
 import org.apache.logging.log4j.LogManager;
@@ -242,6 +247,62 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(responseObject, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(ProductDeletedException.class)
+    public ResponseEntity<?> handleProductDeletedException(ProductDeletedException ex) {
+        String errorMessage = ex.getMessage();
+        logger.error(errorMessage);
+        ResponseObject responseObject = ResponseObject.builder()
+                .statusCode(HttpStatus.GONE.value())
+                .message(errorMessage)
+                .build();
+        return new ResponseEntity<>(responseObject, HttpStatus.GONE);
+    }
+
+    @ExceptionHandler(RatingDeletedException.class)
+    public ResponseEntity<?> handleRatingDeletedException(RatingDeletedException ex) {
+        String errorMessage = ex.getMessage();
+        logger.error(errorMessage);
+        ResponseObject responseObject = ResponseObject.builder()
+                .statusCode(HttpStatus.GONE.value())
+                .message(errorMessage)
+                .build();
+        return new ResponseEntity<>(responseObject, HttpStatus.GONE);
+    }
+
+    @ExceptionHandler(RatingHasBeenMadeException.class)
+    public ResponseEntity<?> handleRatingHasBeenMadeException(RatingHasBeenMadeException ex) {
+        String errorMessage = ex.getMessage();
+        logger.error(errorMessage);
+        ResponseObject responseObject = ResponseObject.builder()
+                .statusCode(HttpStatus.CONFLICT.value())
+                .message(errorMessage)
+                .build();
+        return new ResponseEntity<>(responseObject, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(RatingHasBeenRestoreException.class)
+    public ResponseEntity<?> handleRatingHasBeenMadeException(RatingHasBeenRestoreException ex) {
+        String errorMessage = ex.getMessage();
+        logger.error(errorMessage);
+        ResponseObject responseObject = ResponseObject.builder()
+                .statusCode(HttpStatus.CONFLICT.value())
+                .message(errorMessage)
+                .build();
+        return new ResponseEntity<>(responseObject, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(RatingNotFoundException.class)
+    public ResponseEntity<?> handleRatingNotFoundException(RatingNotFoundException ex) {
+        String errorMessage = ex.getMessage();
+        logger.error(errorMessage);
+        ResponseObject responseObject = ResponseObject.builder()
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .message(errorMessage)
+                .build();
+        return new ResponseEntity<>(responseObject, HttpStatus.NOT_FOUND);
+    }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> BaseException(Exception ex) {

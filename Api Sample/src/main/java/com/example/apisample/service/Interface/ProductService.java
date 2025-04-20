@@ -11,7 +11,7 @@ public interface ProductService {
     APIPageableResponseDTO<ProductResponseDTO> getALlProduct(int pageNo, int pageSize, String search, String sortField);
     ProductResponseDTO getProductById(Integer id) throws ProductNotFoundException, ProductDeletedException;
     void createProduct(ProductCreateDTO dto);
-    void updateProduct(Integer id, ProductUpdateDTO dto) throws ProductNotFoundException;
+    void updateProduct(Integer id, ProductUpdateDTO dto) throws ProductNotFoundException, ProductDeletedException;
     void deleteProduct(Integer id) throws ProductNotFoundException;
-    void restoreProduct(Integer id) throws ProductNotFoundException;
+    void restoreProduct(Integer id) throws ProductNotFoundException, ProductDeletedException;
 }
