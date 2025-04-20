@@ -60,4 +60,16 @@ public class LogMessage {
     public static final String logSuccessRestoreProduct = "Successfully restored product";
     public static final String logStartGetProductById = "Start fetching product by ID";
     public static final String logSuccessGetProductById = "Successfully fetched product by ID";
+
+    //Rating Log
+    public static final String logStartCreateRating = "Start creating rating";
+    public static final String logSuccessCreateRating = "Successfully created rating";
+    public static final String logStartGetRatingById = "Start fetching rating by ID";
+    public static final String logSuccessGetRatingById = "Successfully fetched rating by ID";
+    public static final String logStartUpdateRating = "Start updating rating";
+    public static final String logSuccessUpdateRating = "Successfully updated rating";
+    public static final String logStartDeleteRating = "Start deleting rating";
+    public static final String logSuccessDeleteRating = "Successfully deleted rating";
+    public static final String logStartRestoreRating = "Start restoring rating";
+    public static final String logSuccessRestoreRating = "Successfully restored rating";
 }

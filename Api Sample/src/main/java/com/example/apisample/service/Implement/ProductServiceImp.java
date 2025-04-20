@@ -27,7 +27,7 @@ public class ProductServiceImp implements ProductService {
     public APIPageableResponseDTO<ProductResponseDTO> getALlProduct(int pageNo, int pageSize, String search, String sortField) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
 
-        Page<Product> page = productRepository.findAll(pageable);
+        Page<Product> page = productRepository.findByDeletedFalse(pageable);
         Page<ProductResponseDTO> productDtoPage = page.map(ProductMapper::productToDTO);
 
         return new APIPageableResponseDTO<>(productDtoPage);
@@ -59,9 +59,13 @@ public class ProductServiceImp implements ProductService {
     }
 
 
-    public void updateProduct(Integer id, ProductUpdateDTO dto) throws ProductNotFoundException {
+    public void updateProduct(Integer id, ProductUpdateDTO dto) throws ProductNotFoundException, ProductDeletedException {
         Product product = productRepository.findById(id)
                 .orElseThrow(ProductNotFoundException::new);
+
+        if (!product.getDeleted()) {
+            throw new ProductDeletedException();
+        }
 
         if (dto.getName() != null) product.setName(dto.getName());
         if (dto.getDescription() != null) product.setDescription(dto.getDescription());
@@ -80,8 +84,13 @@ public class ProductServiceImp implements ProductService {
         productRepository.save(product);
     }
 
-    public void restoreProduct(Integer id) throws ProductNotFoundException {
+    public void restoreProduct(Integer id) throws ProductNotFoundException, ProductDeletedException {
         Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
+
+        if (!product.getDeleted()) {
+            throw new ProductDeletedException();
+        }
+
         product.setDeleted(Boolean.FALSE);
         product.setLastUpdateOn(Instant.now());
         productRepository.save(product);
