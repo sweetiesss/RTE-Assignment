@@ -52,7 +52,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
     private static final Integer CUSTOMER_ROLE_ID = 2;
     private final EmailService emailService;
 
-    @Override
+
     public APIPageableResponseDTO<UserResponseDTO> getALlUser(int pageNo, int pageSize, String search, String sortField) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
 
@@ -82,24 +82,19 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     public UserResponseDTO getUserById(Integer id) throws UserDoesNotExistException {
-        Optional<User> optionalUser = userRepository.findByid(id);
+        User optionalUser = userRepository.findByid(id).orElseThrow(UserDoesNotExistException::new);
 
-        if(optionalUser.isEmpty()){
-            throw new UserDoesNotExistException();
-        }
-
-
-        return UserMapper.userToDTO(optionalUser.get());
+        return UserMapper.userToDTO(optionalUser);
     }
 
-    public UserResponseDTO getUserByEmail(String email) throws UserDoesNotExistException {
+    public User getUserByEmail(String email) throws UserDoesNotExistException {
         User optionalUser = userRepository.findByEmail(email);
 
         if(optionalUser == null){
             throw new UserDoesNotExistException();
         }
 
-        return UserMapper.userToDTO(optionalUser);
+        return optionalUser;
     }
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

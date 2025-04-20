@@ -48,4 +48,8 @@ public class LogMessage {
     public static String logSuccessGetAllRoles = "Get all roles successfully";
     public static String logStartGetAllRolesById = "Start to Get all roles by id";
     public static String logSuccessGetAllRolesById = "Get role by id successfully";
+
+    //Product Log
+    public static String logStartGetProductById = "Start to get product by id";
+    public static String logSuccessGetProductById = "Success get product by id";
 }
