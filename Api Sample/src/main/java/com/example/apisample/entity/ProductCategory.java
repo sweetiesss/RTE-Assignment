@@ -12,7 +12,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "product_category", schema = "public")
+@Table(name = "product_category")
 public class ProductCategory {
 
     @EmbeddedId

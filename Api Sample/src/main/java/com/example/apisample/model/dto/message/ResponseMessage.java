@@ -23,5 +23,6 @@ public class ResponseMessage {
     public static final String msgLogoutSuccess = "User logout successfully!";
     public static final String msgEmailCannotSend = "Email cannot be sent!";
     public static final String msgProductNotFound = "Product not found!";
+    public static final String msgProductDeleted = "Product deleted!";
 }
 
