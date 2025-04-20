@@ -128,8 +128,8 @@ public class UserServiceImp implements UserService, UserDetailsService {
         otpService.validateOtp(user, dto.getOtp(), OtpType.PASSWORD_RESET);
 
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setLastUpdateOn(Instant.now());
         user.setTokenVersion(user.getTokenVersion() + 1);
-
 
         userRepository.save(user);
     }
@@ -155,6 +155,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
                 .tokenVersion(registerUser.getDefaultTokenVersion())
                 .password(passwordEncoder.encode(registerUser.getPassword().trim()))
                 .createOn(Instant.now())
+                .lastUpdateOn(Instant.now())
                 .build();
 
         emailService.sendPasswordEmail(registerUser.getEmail(), registerUser.getPassword().trim());
@@ -194,6 +195,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
         User existingUser = optionalUser.get();
 
         existingUser.setDeleted(Boolean.TRUE);
+        existingUser.setLastUpdateOn(Instant.now());
         existingUser.setTokenVersion(existingUser.getTokenVersion() + 1);
 
         userRepository.save(existingUser);
@@ -208,6 +210,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
         User existingUser = optionalUser.get();
 
+        existingUser.setLastUpdateOn(Instant.now());
         existingUser.setDeleted(Boolean.FALSE);
 
         userRepository.save(existingUser);

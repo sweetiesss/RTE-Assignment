@@ -1,12 +1,13 @@
 package com.example.apisample.model.dto.product;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.time.Instant;
 
-@Data
 @Builder
+@Data
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class ProductResponseDTO {
     private Integer id;
     private String name;

@@ -50,6 +50,14 @@ public class LogMessage {
     public static String logSuccessGetAllRolesById = "Get role by id successfully";
 
     //Product Log
-    public static String logStartGetProductById = "Start to get product by id";
-    public static String logSuccessGetProductById = "Success get product by id";
+    public static final String logStartCreateProduct = "Start creating product";
+    public static final String logSuccessCreateProduct = "Successfully created product";
+    public static final String logStartUpdateProduct = "Start updating product";
+    public static final String logSuccessUpdateProduct = "Successfully updated product";
+    public static final String logStartDeleteProduct = "Start deleting product";
+    public static final String logSuccessDeleteProduct = "Successfully deleted product";
+    public static final String logStartRestoreProduct = "Start restoring product";
+    public static final String logSuccessRestoreProduct = "Successfully restored product";
+    public static final String logStartGetProductById = "Start fetching product by ID";
+    public static final String logSuccessGetProductById = "Successfully fetched product by ID";
 }
