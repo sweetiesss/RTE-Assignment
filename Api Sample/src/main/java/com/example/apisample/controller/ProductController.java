@@ -4,10 +4,13 @@ import com.example.apisample.model.ResponseObject;
 import com.example.apisample.model.dto.message.LogMessage;
 import com.example.apisample.model.dto.message.ResponseMessage;
 import com.example.apisample.model.dto.pagination.APIPageableResponseDTO;
+import com.example.apisample.model.dto.product.ProductCreateDTO;
 import com.example.apisample.model.dto.product.ProductResponseDTO;
+import com.example.apisample.model.dto.product.ProductUpdateDTO;
 import com.example.apisample.model.dto.user.UserResponseDTO;
 import com.example.apisample.service.Interface.ProductService;
 import com.example.apisample.service.Interface.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,7 +33,7 @@ public class ProductController {
     public APIPageableResponseDTO<ProductResponseDTO> getUser(@RequestParam(defaultValue = DEFAULT_PAGE, name = "page") Integer pageNo,
                                                               @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, name = "size") Integer pageSize,
                                                               @RequestParam(defaultValue = "", name = "search") String search,
-                                                              @RequestParam(defaultValue = "", name="sort") String sort) {
+                                                              @RequestParam(defaultValue = "id", name= "sort") String sort) {
         return productService.getALlProduct(pageNo,pageSize,search,sort);
     }
 
@@ -47,6 +50,73 @@ public class ProductController {
                         .statusCode(HttpStatus.OK.value())
                         .message(ResponseMessage.msgSuccess)
                         .token(product)
+                        .build()
+        );
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<ResponseObject> createProduct(@RequestBody ProductCreateDTO dto) {
+        log.info(LogMessage.logStartCreateProduct);
+
+        productService.createProduct(dto);
+
+        log.info(LogMessage.logSuccessCreateProduct);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                ResponseObject.builder()
+                        .statusCode(HttpStatus.CREATED.value())
+                        .message(ResponseMessage.msgSuccess)
+                        .build()
+        );
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ResponseObject> updateProduct(
+            @PathVariable Integer id,
+            @RequestBody ProductUpdateDTO dto) throws Exception {
+
+        log.info(LogMessage.logStartUpdateProduct);
+
+        productService.updateProduct(id, dto);
+
+        log.info(LogMessage.logSuccessUpdateProduct);
+
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message(ResponseMessage.msgSuccess)
+                        .build()
+        );
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ResponseObject> deleteProduct(@PathVariable Integer id) throws Exception {
+        log.info(LogMessage.logStartDeleteProduct);
+
+        productService.deleteProduct(id);
+
+        log.info(LogMessage.logSuccessDeleteProduct);
+
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message(ResponseMessage.msgSuccess)
+                        .build()
+        );
+    }
+
+    @PostMapping("/restore/{id}")
+    public ResponseEntity<ResponseObject> restoreProduct(@PathVariable Integer id) throws Exception {
+        log.info(LogMessage.logStartRestoreProduct);
+
+        productService.restoreProduct(id);
+
+        log.info(LogMessage.logSuccessRestoreProduct);
+
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message(ResponseMessage.msgSuccess)
                         .build()
         );
     }
