@@ -9,6 +9,7 @@ import com.example.apisample.exception.otpservice.InvalidOtpCodeException;
 import com.example.apisample.exception.otpservice.OtpDoesNotExistException;
 import com.example.apisample.exception.otpservice.OtpExpiredException;
 import com.example.apisample.exception.otpservice.OtpHasBeenUsedException;
+import com.example.apisample.exception.productservice.ProductNotFoundException;
 import com.example.apisample.exception.userservice.*;
 import com.example.apisample.model.ResponseObject;
 import org.apache.logging.log4j.LogManager;
@@ -228,6 +229,19 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<?> handleRoleDoesNotExistException(ProductNotFoundException ex) {
+        String errorMessage = ex.getMessage();
+
+        logger.error(errorMessage);
+
+        ResponseObject responseObject = ResponseObject.builder()
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .message(errorMessage)
+                .build();
+
+        return new ResponseEntity<>(responseObject, HttpStatus.NOT_FOUND);
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> BaseException(Exception ex) {
