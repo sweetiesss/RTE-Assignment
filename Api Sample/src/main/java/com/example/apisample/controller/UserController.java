@@ -8,6 +8,7 @@ import com.example.apisample.model.dto.message.ResponseMessage;
 import com.example.apisample.model.dto.pagination.APIPageableResponseDTO;
 import com.example.apisample.model.dto.user.UserResponseDTO;
 import com.example.apisample.model.dto.user.UserUpdateRequestDTO;
+import com.example.apisample.model.mapper.UserMapper;
 import com.example.apisample.service.Interface.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,7 +56,7 @@ public class UserController {
     public ResponseEntity<ResponseObject> getUserByEmail(@RequestBody String email) throws Exception {
         log.info(LogMessage.logStartGetUserByEmail);
 
-        UserResponseDTO user = userService.getUserByEmail(email);
+        UserResponseDTO user = UserMapper.userToDTO(userService.getUserByEmail(email));
 
         log.info(LogMessage.logSuccessGetUserByEmail);
 

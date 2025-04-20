@@ -14,7 +14,6 @@ public class UserResponseDTO {
     private String deleted;
     private String firstName;
     private String lastName;
-    private String password;
     private String phone;
     private Instant createOn;
     private Instant lastUpdateOn;
