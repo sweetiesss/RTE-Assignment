@@ -39,15 +39,12 @@ public class Rating {
 
     @NotNull
     @Column(name = "description", nullable = false)
-    @Lob
     private String description;
 
-    @NotNull
-    @Column(name = "create_on", nullable = false)
+    @Column(name = "create_on")
     private Instant createOn;
 
-    @NotNull
-    @Column(name = "last_update_on", nullable = false)
+    @Column(name = "last_update_on")
     private Instant lastUpdateOn;
 
     @NotNull
