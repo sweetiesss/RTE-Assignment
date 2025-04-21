@@ -39,7 +39,6 @@ public class Rating {
 
     @NotNull
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
-    @Lob
     private String description;
 
     @Column(name = "create_on")

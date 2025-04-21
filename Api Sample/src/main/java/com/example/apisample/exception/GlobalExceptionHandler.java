@@ -11,6 +11,7 @@ import com.example.apisample.exception.otpservice.InvalidOtpCodeException;
 import com.example.apisample.exception.otpservice.OtpDoesNotExistException;
 import com.example.apisample.exception.otpservice.OtpExpiredException;
 import com.example.apisample.exception.otpservice.OtpHasBeenUsedException;
+import com.example.apisample.exception.productcategoryservice.ProductCategoryNotFoundException;
 import com.example.apisample.exception.productservice.ProductDeletedException;
 import com.example.apisample.exception.productservice.ProductNotFoundException;
 import com.example.apisample.exception.ratingservice.RatingDeletedException;
@@ -237,7 +238,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ProductNotFoundException.class)
-    public ResponseEntity<?> handleRoleDoesNotExistException(ProductNotFoundException ex) {
+    public ResponseEntity<?> handleProductNotFoundException(ProductNotFoundException ex) {
         String errorMessage = ex.getMessage();
 
         logger.error(errorMessage);
@@ -325,6 +326,15 @@ public class GlobalExceptionHandler {
                         .build(),
                 HttpStatus.CONFLICT
         );
+    }
+
+    @ExceptionHandler(ProductCategoryNotFoundException.class)
+    public ResponseEntity<ResponseObject> handleProductCategoryNotFound(ProductCategoryNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ResponseObject.builder()
+                        .statusCode(HttpStatus.NOT_FOUND.value())
+                        .message(ex.getMessage())
+                        .build());
     }
 
     @ExceptionHandler(Exception.class)

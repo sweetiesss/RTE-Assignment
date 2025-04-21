@@ -25,7 +25,6 @@ public class Product {
     private String name;
 
     @Column(name = "description", columnDefinition = "TEXT")
-    @Lob
     private String description;
 
     @NotNull

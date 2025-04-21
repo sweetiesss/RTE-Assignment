@@ -25,7 +25,6 @@ public class Category {
 
     @NotNull
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
-    @Lob
     private String description;
 
 }
