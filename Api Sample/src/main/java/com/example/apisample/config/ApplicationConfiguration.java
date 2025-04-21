@@ -1,6 +1,6 @@
 package com.example.apisample.config;
 
-import com.example.apisample.repository.UserRepository;
+import com.example.apisample.user.repository.UserRepository;
 import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
