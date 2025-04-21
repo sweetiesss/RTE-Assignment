@@ -8,6 +8,7 @@ import com.example.apisample.model.dto.message.LogMessage;
 import com.example.apisample.model.dto.message.ResponseMessage;
 import com.example.apisample.model.dto.pagination.APIPageableResponseDTO;
 import com.example.apisample.service.Interface.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -52,7 +53,7 @@ public class CategoryController {
     }
 
     @PostMapping("/admin/create")
-    public ResponseEntity<ResponseObject> createCategory(@RequestBody CategoryRequestDTO dto) throws Exception {
+    public ResponseEntity<ResponseObject> createCategory(@RequestBody @Valid CategoryRequestDTO dto) throws Exception {
         log.info(LogMessage.logStartCreateCategory);
 
         categoryService.createCategory(dto);
@@ -68,7 +69,7 @@ public class CategoryController {
     }
 
     @PutMapping("/admin/update/{id}")
-    public ResponseEntity<ResponseObject> updateCategory(@PathVariable Integer id, @RequestBody CategoryUpdateRequestDTO dto) throws Exception {
+    public ResponseEntity<ResponseObject> updateCategory(@PathVariable Integer id, @RequestBody @Valid CategoryUpdateRequestDTO dto) throws Exception {
         log.info(LogMessage.logStartUpdateCategory);
 
         categoryService.updateCategory(id, dto);

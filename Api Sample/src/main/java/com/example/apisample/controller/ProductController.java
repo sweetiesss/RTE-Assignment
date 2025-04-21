@@ -54,7 +54,7 @@ public class ProductController {
     }
 
     @PostMapping("/admin/create")
-    public ResponseEntity<ResponseObject> createProduct(@RequestBody ProductCreateDTO dto) {
+    public ResponseEntity<ResponseObject> createProduct(@RequestBody @Valid ProductCreateDTO dto) {
         log.info(LogMessage.logStartCreateProduct);
 
         productService.createProduct(dto);
@@ -72,7 +72,7 @@ public class ProductController {
     @PutMapping("/admin/update/{id}")
     public ResponseEntity<ResponseObject> updateProduct(
             @PathVariable Integer id,
-            @RequestBody ProductUpdateDTO dto) throws Exception {
+            @RequestBody @Valid ProductUpdateDTO dto) throws Exception {
 
         log.info(LogMessage.logStartUpdateProduct);
 

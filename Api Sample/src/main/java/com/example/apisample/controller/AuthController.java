@@ -17,6 +17,7 @@ import com.example.apisample.service.Interface.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -38,7 +39,7 @@ public class AuthController {
     private final String REFRESH_TOKEN_COOKIE_NAME = "refresh-token";
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseObject> signIn(@RequestBody LoginRequestDTO loginUser) throws Exception {
+    public ResponseEntity<ResponseObject> signIn(@RequestBody @Valid LoginRequestDTO loginUser) throws Exception {
         userService.login(loginUser.getEmail(), loginUser.getPassword());
 
         return ResponseEntity.ok(
@@ -109,7 +110,7 @@ public class AuthController {
 
 
     @PostMapping("/reset-password-request")
-    public ResponseEntity<ResponseObject> resetPasswordRequest(@RequestBody ResetPasswordRequestDTO dto) throws Exception {
+    public ResponseEntity<ResponseObject> resetPasswordRequest(@RequestBody @Valid ResetPasswordRequestDTO dto) throws Exception {
         User user = userService.getUserByEmail(dto.getEmail());
 
         log.info(LogMessage.logStartResetPassword);
@@ -160,7 +161,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseObject> register(@RequestBody UserRegisterRequestDTO dto) throws Exception {
+    public ResponseEntity<ResponseObject> register(@RequestBody @Valid UserRegisterRequestDTO dto) throws Exception {
 
         log.info(LogMessage.logStartRegis);
 

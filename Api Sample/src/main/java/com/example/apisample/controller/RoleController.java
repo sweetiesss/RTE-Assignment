@@ -7,6 +7,7 @@ import com.example.apisample.model.dto.message.LogMessage;
 import com.example.apisample.model.dto.message.ResponseMessage;
 import com.example.apisample.model.dto.role.AssignRoleRequestDTO;
 import com.example.apisample.service.Interface.RoleService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -59,7 +60,7 @@ public class RoleController {
 
 
      @PostMapping("/assign-role")
-     public ResponseEntity<ResponseObject> assignRole(@RequestBody AssignRoleRequestDTO dto) throws Exception {
+     public ResponseEntity<ResponseObject> assignRole(@RequestBody @Valid AssignRoleRequestDTO dto) throws Exception {
          log.info(LogMessage.logStartAssignRole);
 
          roleService.assignRole(dto.getEmail(), dto.getRoleId());

@@ -7,6 +7,7 @@ import com.example.apisample.model.dto.rating.RatingResponseDTO;
 import com.example.apisample.model.dto.message.LogMessage;
 import com.example.apisample.model.dto.message.ResponseMessage;
 import com.example.apisample.service.Interface.RatingService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class RatingController {
     final String DEFAULT_PAGE_SIZE = "8";
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseObject> createRating(@RequestBody RatingRequestDTO ratingRequest) throws Exception {
+    public ResponseEntity<ResponseObject> createRating(@RequestBody @Valid RatingRequestDTO ratingRequest) throws Exception {
         log.info(LogMessage.logStartCreateRating);
 
         RatingResponseDTO ratingResponse = ratingService.createRating(ratingRequest);
@@ -70,7 +71,7 @@ public class RatingController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseObject> updateRating(@PathVariable Integer id, @RequestBody RatingRequestDTO ratingRequest) throws Exception {
+    public ResponseEntity<ResponseObject> updateRating(@PathVariable Integer id, @RequestBody @Valid RatingRequestDTO ratingRequest) throws Exception {
         log.info(LogMessage.logStartUpdateRating);
 
         ratingService.updateRating(id, ratingRequest);
