@@ -10,6 +10,7 @@ import com.example.apisample.model.dto.productcategory.ProductCategoryResponseDT
 import com.example.apisample.model.dto.message.LogMessage;
 import com.example.apisample.model.dto.message.ResponseMessage;
 import com.example.apisample.service.Interface.ProductCategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ public class ProductCategoryController {
     final String DEFAULT_PAGE_SIZE = "8";
 
     @PostMapping("/admin/create")
-    public ResponseEntity<ResponseObject> addCategoryToProduct(@RequestBody ProductCategoryRequestDTO dto) throws CategoryNotFoundException, ProductNotFoundException {
+    public ResponseEntity<ResponseObject> addCategoryToProduct(@RequestBody @Valid ProductCategoryRequestDTO dto) throws CategoryNotFoundException, ProductNotFoundException {
         log.info(LogMessage.logStartCreateProductCategory);
         productCategoryService.addCategoryToProduct(dto);
         log.info(LogMessage.logSuccessCreateProductCategory);

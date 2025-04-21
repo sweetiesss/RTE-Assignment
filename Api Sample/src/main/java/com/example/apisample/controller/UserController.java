@@ -10,6 +10,7 @@ import com.example.apisample.model.dto.user.UserResponseDTO;
 import com.example.apisample.model.dto.user.UserUpdateRequestDTO;
 import com.example.apisample.model.mapper.UserMapper;
 import com.example.apisample.service.Interface.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -70,7 +71,7 @@ public class UserController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseObject> updateUser(@PathVariable Integer id, @RequestBody UserUpdateRequestDTO updateUser) throws Exception {
+    public ResponseEntity<ResponseObject> updateUser(@PathVariable Integer id, @RequestBody @Valid UserUpdateRequestDTO updateUser) throws Exception {
         log.info(LogMessage.logStartUpdateUser);
 
         userService.update(id, updateUser);
