@@ -72,4 +72,15 @@ public class LogMessage {
     public static final String logSuccessDeleteRating = "Successfully deleted rating";
     public static final String logStartRestoreRating = "Start restoring rating";
     public static final String logSuccessRestoreRating = "Successfully restored rating";
+
+    //Category Log
+    public static final String logStartGetCategoryById = "Start fetching category by ID";
+    public static final String logSuccessGetCategoryById = "Successfully fetched category by ID";
+    public static final String logStartCreateCategory = "Start creating new category";
+    public static final String logSuccessCreateCategory = "Successfully created new category";
+    public static final String logStartUpdateCategory = "Start updating category";
+    public static final String logSuccessUpdateCategory = "Successfully updated category";
+    public static final String logStartDeleteCategory = "Start deleting category";
+    public static final String logSuccessDeleteCategory = "Successfully deleted category";
+
 }

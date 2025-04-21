@@ -1,5 +1,7 @@
 package com.example.apisample.exception;
 
+import com.example.apisample.exception.categoryservice.CategoryAlreadyExistsException;
+import com.example.apisample.exception.categoryservice.CategoryNotFoundException;
 import com.example.apisample.exception.emailservice.EmailCannotBeSendException;
 import com.example.apisample.exception.jwtservice.InvalidCredentialsException;
 import com.example.apisample.exception.jwtservice.InvalidateException;
@@ -303,6 +305,27 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(responseObject, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<ResponseObject> handleCategoryNotFound(CategoryNotFoundException ex) {
+        return new ResponseEntity<>(
+                ResponseObject.builder()
+                        .statusCode(HttpStatus.NOT_FOUND.value())
+                        .message(ex.getMessage())
+                        .build(),
+                HttpStatus.NOT_FOUND
+        );
+    }
+
+    @ExceptionHandler(CategoryAlreadyExistsException.class)
+    public ResponseEntity<ResponseObject> handleCategoryAlreadyExists(CategoryAlreadyExistsException ex) {
+        return new ResponseEntity<>(
+                ResponseObject.builder()
+                        .statusCode(HttpStatus.CONFLICT.value())
+                        .message(ex.getMessage())
+                        .build(),
+                HttpStatus.CONFLICT
+        );
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> BaseException(Exception ex) {

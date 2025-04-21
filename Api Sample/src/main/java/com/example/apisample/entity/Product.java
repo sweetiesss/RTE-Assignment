@@ -24,7 +24,8 @@ public class Product {
     @Column(name = "name", length = 50)
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
+    @Lob
     private String description;
 
     @NotNull

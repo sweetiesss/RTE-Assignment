@@ -27,5 +27,7 @@ public class ResponseMessage {
     public static final String msgRatingDeleted = "Rating deleted!";
     public static final String msgRatingHasBeenMade = "Rating on this product has been made!";
     public static final String msgRatingHasBeenRestore = "Rating has been restore!";
+    public static final String msgCategoryNotFound = "Category not found.";
+    public static final String msgCategoryAlreadyExists = "Category already exists.";
 }
 
