@@ -16,6 +16,7 @@ import com.example.apisample.repository.RatingRepository;
 import com.example.apisample.repository.ProductRepository;
 import com.example.apisample.repository.UserRepository;
 import com.example.apisample.service.Interface.RatingService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -72,6 +73,7 @@ public class RatingServiceImpl implements RatingService {
         return RatingMapper.ratingToDTO(rating);
     }
 
+    @Transactional
     public APIPageableResponseDTO<RatingResponseDTO> getAllRating(int pageNo, int pageSize, String search, String sortField) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
 

@@ -29,5 +29,7 @@ public class ResponseMessage {
     public static final String msgRatingHasBeenRestore = "Rating has been restore!";
     public static final String msgCategoryNotFound = "Category not found.";
     public static final String msgCategoryAlreadyExists = "Category already exists.";
+    public static final String msgProductCategoryNotFound = "Product-Category relation not found.";
+
 }
 

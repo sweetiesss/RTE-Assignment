@@ -83,4 +83,15 @@ public class LogMessage {
     public static final String logStartDeleteCategory = "Start deleting category";
     public static final String logSuccessDeleteCategory = "Successfully deleted category";
 
+    // Category Log
+    public static final String logStartCreateProductCategory = "Start creating a new product-category relation.";
+    public static final String logSuccessCreateProductCategory = "Successfully created a product-category relation.";
+    public static final String logStartDeleteProductCategory = "Start deleting product-category relation.";
+    public static final String logSuccessDeleteProductCategory = "Successfully deleted product-category relation.";
+    public static final String logStartGetAllProductCategories = "Start fetching all product-category relations.";
+    public static final String logSuccessGetAllProductCategories = "Successfully fetched all product-category relations.";
+    public static final String logStartGetProductCategoryByIds = "Start fetching product-category relation by productId and categoryId.";
+    public static final String logSuccessGetProductCategoryByIds = "Successfully fetched product-category relation by productId and categoryId.";
+
+
 }
