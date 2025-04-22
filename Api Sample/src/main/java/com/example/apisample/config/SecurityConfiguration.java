@@ -30,24 +30,20 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .cors(AbstractHttpConfigurer::disable) // Enable CORS
+                .cors(AbstractHttpConfigurer::disable) // Disable CORS
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF (optional)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(WHITE_LIST_URL).permitAll()
-                        .requestMatchers("/sample").hasAuthority("ADMIN")
-                        .requestMatchers("/roles/**").hasAuthority("ADMIN")
+                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/users/**").permitAll()
-                        .requestMatchers("/users/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/ratings/**").permitAll()
                         .requestMatchers("/products/**").permitAll()
-                        .requestMatchers("/products/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/categories/**").permitAll()
-                        .requestMatchers("/categories/admin/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .httpBasic(AbstractHttpConfigurer::disable) // Optional: Disable basic authentication
+                .httpBasic(AbstractHttpConfigurer::disable) // Disable basic authentication
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

@@ -10,10 +10,9 @@ import com.example.apisample.auth.service.AuthService;
 import com.example.apisample.auth.service.JWTService;
 import com.example.apisample.auth.service.OtpService;
 import com.example.apisample.user.entity.User;
-import com.example.apisample.user.exception.UserDoesNotLoginException;
 import com.example.apisample.user.model.dto.UserRegisterRequestDTO;
 import com.example.apisample.user.service.UserService;
-import com.example.apisample.utils.ResponseObject;
+import com.example.apisample.utils.ApiResponse;
 import com.example.apisample.utils.message.LogMessage;
 import com.example.apisample.utils.message.ResponseMessage;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +24,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
 
 @RequiredArgsConstructor
 @RestController
@@ -40,11 +38,15 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseObject> signIn(@RequestBody @Valid LoginRequestDTO loginUser) {
+    public ResponseEntity<ApiResponse> signIn(@RequestBody @Valid LoginRequestDTO loginUser) {
+        log.debug(LogMessage.AUTH_LOGIN_START);
+
         authService.login(loginUser.getEmail(), loginUser.getPassword());
 
+        log.info(LogMessage.AUTH_LOGIN_SUCCESS);
+
         return ResponseEntity.ok(
-                ResponseObject.builder()
+                ApiResponse.builder()
                         .statusCode(HttpStatus.OK.value())
                         .message(ResponseMessage.msgOtpSent)
                         .build()
@@ -52,81 +54,91 @@ public class AuthController {
     }
 
     @PostMapping("/login-verify-otp")
-    public ResponseEntity<ResponseObject> verifyOtp(
+    public ResponseEntity<ApiResponse> verifyOtp(
             @RequestBody LoginOtpRequestDTO otpRequest,
             HttpServletResponse response
-    ) throws Exception {
-
+    ) {
+        log.debug(LogMessage.USER_GET_BY_EMAIL_START);
         User user = userService.getUserByEmail(otpRequest.getEmail());
+        log.debug(LogMessage.USER_GET_BY_EMAIL_SUCCESS);
+
+        log.debug(LogMessage.OTP_VERIFY_START);
         otpService.validateOtp(user, otpRequest.getOtp(), OtpType.LOGIN_2FA);
+        log.info(LogMessage.OTP_VERIFY_SUCCESS);
 
         jwtService.generateRefreshToken(response, user);
         String accessToken = jwtService.generateAccessToken(user);
+        log.info(LogMessage.AUTH_TOKEN_GENERATED);
 
         return ResponseEntity.ok(
-                ResponseObject.builder()
+                ApiResponse.builder()
                         .statusCode(HttpStatus.OK.value())
                         .message(ResponseMessage.msgSuccess)
-                        .token(new LoginResponseDTO(accessToken))
+                        .data(new LoginResponseDTO(accessToken))
                         .build()
         );
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<ResponseObject> refreshToken(HttpServletRequest request) throws TokenExpiredException {
-        log.info(LogMessage.logStartRefresh);
+    public ResponseEntity<ApiResponse> refreshToken(HttpServletRequest request) throws TokenExpiredException {
+        log.debug(LogMessage.AUTH_REFRESH_START);
 
-        ResponseObject responseObject = new ResponseObject();
+        ApiResponse apiResponse = new ApiResponse();
 
         String newAccessToken = jwtService.generateAccessTokenFromCookie(request);
 
-        log.info(LogMessage.logReturningToken);
-        responseObject.setStatusCode(HttpStatus.OK.value());
-        responseObject.setMessage(ResponseMessage.msgTokenRefresh);
-        responseObject.setToken(newAccessToken);
-        log.info(LogMessage.logSuccessRefresh);
+        log.debug(LogMessage.AUTH_RETURNING_TOKEN);
+        apiResponse.setStatusCode(HttpStatus.OK.value());
+        apiResponse.setMessage(ResponseMessage.msgTokenRefresh);
+        apiResponse.setData(newAccessToken);
+        log.info(LogMessage.AUTH_REFRESH_SUCCESS);
 
-        return ResponseEntity.ok(responseObject);
+        return ResponseEntity.ok(apiResponse);
     }
 
-
     @PostMapping("/reset-password-request")
-    public ResponseEntity<ResponseObject> resetPasswordRequest(@RequestBody @Valid ResetPasswordRequestDTO dto)  {
+    public ResponseEntity<ApiResponse> resetPasswordRequest(@RequestBody @Valid ResetPasswordRequestDTO dto) {
         User user = userService.getUserByEmail(dto.getEmail());
 
-        log.info(LogMessage.logStartResetPassword);
+        log.debug(LogMessage.AUTH_RESET_PASSWORD_START);
 
-        if(dto.getOtp() == null || dto.getOtp().isBlank()){
-            log.info(LogMessage.logOtpResetPasswordSent);
+        if (dto.getOtp() == null || dto.getOtp().isBlank()) {
+            log.debug(LogMessage.OTP_RESET_PASSWORD_SENT);
+
             otpService.generateOtp(user, OtpType.PASSWORD_RESET);
+
+            log.info(LogMessage.OTP_RESET_PASSWORD_SENT_SUCCESS);
+
             return ResponseEntity.ok(
-                    ResponseObject.builder()
+                    ApiResponse.builder()
                             .statusCode(HttpStatus.OK.value())
                             .message(ResponseMessage.msgOtpSent)
                             .build());
         }
 
         authService.resetPassword(dto, user);
-        log.info(LogMessage.logSuccessResetPassword);
+
+        log.info(LogMessage.AUTH_RESET_PASSWORD_SUCCESS);
+
         return ResponseEntity.ok(
-                ResponseObject.builder()
+                ApiResponse.builder()
                         .statusCode(HttpStatus.OK.value())
                         .message(ResponseMessage.msgResetPasswordSuccess)
                         .build());
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<ResponseObject> logout(HttpServletResponse response, @AuthenticationPrincipal User user) {
-        log.info(LogMessage.logStartLogout);
+    public ResponseEntity<ApiResponse> logout(HttpServletResponse response, @AuthenticationPrincipal User user) {
+        log.debug(LogMessage.AUTH_LOGOUT_START);
 
         authService.logout(response, user);
 
-        log.info(LogMessage.logStartLogoutCookieDelete);
+        log.debug(LogMessage.AUTH_LOGOUT_COOKIE_DELETE);
 
-        log.info(LogMessage.logSuccessLogout);
+        log.info(LogMessage.AUTH_LOGOUT_SUCCESS);
 
         return ResponseEntity.ok(
-                ResponseObject.builder()
+                ApiResponse.builder()
                         .statusCode(HttpStatus.OK.value())
                         .message(ResponseMessage.msgLogoutSuccess)
                         .build()
@@ -134,15 +146,14 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseObject> register(@RequestBody @Valid UserRegisterRequestDTO dto)  {
-
-        log.info(LogMessage.logStartRegis);
+    public ResponseEntity<ApiResponse> register(@RequestBody @Valid UserRegisterRequestDTO dto) {
+        log.debug(LogMessage.AUTH_REGISTER_START);
 
         userService.register(dto);
 
-        log.info(LogMessage.logSuccessRegis);
+        log.info(LogMessage.AUTH_REGISTER_SUCCESS);
         return ResponseEntity.ok(
-                ResponseObject.builder()
+                ApiResponse.builder()
                         .statusCode(HttpStatus.OK.value())
                         .message(ResponseMessage.msgSuccess)
                         .build());

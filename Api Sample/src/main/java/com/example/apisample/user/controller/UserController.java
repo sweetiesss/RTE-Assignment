@@ -1,11 +1,10 @@
 package com.example.apisample.user.controller;
 
-
 import com.example.apisample.user.model.dto.UserResponseDTO;
 import com.example.apisample.user.model.dto.UserUpdateRequestDTO;
 import com.example.apisample.user.model.mapper.UserMapper;
 import com.example.apisample.user.service.UserService;
-import com.example.apisample.utils.ResponseObject;
+import com.example.apisample.utils.ApiResponse;
 import com.example.apisample.utils.message.LogMessage;
 import com.example.apisample.utils.message.ResponseMessage;
 import com.example.apisample.utils.pagination.APIPageableResponseDTO;
@@ -31,54 +30,54 @@ public class UserController {
     public APIPageableResponseDTO<UserResponseDTO> getUser(@RequestParam(defaultValue = DEFAULT_PAGE, name = "page") Integer pageNo,
                                                            @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, name = "size") Integer pageSize,
                                                            @RequestParam(defaultValue = "", name = "search") String search,
-                                                           @RequestParam(defaultValue = "", name="sort") String sort) {
+                                                           @RequestParam(defaultValue = "id", name="sort") String sort) {
         return userService.getALlUser(pageNo,pageSize,search,sort);
     }
 
     @GetMapping("/admin/{id}")
-    public ResponseEntity<ResponseObject> getUserById(@PathVariable Integer id) {
-        log.info(LogMessage.logStartGetUserById);
+    public ResponseEntity<ApiResponse> getUserById(@PathVariable Integer id) {
+        log.debug(LogMessage.USER_GET_BY_ID_START);
 
         UserResponseDTO user = userService.getUserById(id);
 
-        log.info(LogMessage.logSuccessGetUserById);
+        log.info(LogMessage.USER_GET_BY_ID_SUCCESS);
 
         return ResponseEntity.ok(
-                ResponseObject.builder()
+                ApiResponse.builder()
                         .statusCode(HttpStatus.OK.value())
                         .message(ResponseMessage.msgSuccess)
-                        .token(user)
+                        .data(user)
                         .build()
         );
     }
 
     @GetMapping("/admin/get-email")
-    public ResponseEntity<ResponseObject> getUserByEmail(@RequestBody String email) {
-        log.info(LogMessage.logStartGetUserByEmail);
+    public ResponseEntity<ApiResponse> getUserByEmail(@RequestBody String email) {
+        log.debug(LogMessage.USER_GET_BY_EMAIL_START);
 
         UserResponseDTO user = UserMapper.userToDTO(userService.getUserByEmail(email));
 
-        log.info(LogMessage.logSuccessGetUserByEmail);
+        log.info(LogMessage.USER_GET_BY_EMAIL_SUCCESS);
 
         return ResponseEntity.ok(
-                ResponseObject.builder()
+                ApiResponse.builder()
                         .statusCode(HttpStatus.OK.value())
                         .message(ResponseMessage.msgSuccess)
-                        .token(user)
+                        .data(user)
                         .build()
         );
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseObject> updateUser(@PathVariable Integer id, @RequestBody @Valid UserUpdateRequestDTO updateUser) {
-        log.info(LogMessage.logStartUpdateUser);
+    public ResponseEntity<ApiResponse> updateUser(@PathVariable Integer id, @RequestBody @Valid UserUpdateRequestDTO updateUser) {
+        log.debug(LogMessage.USER_UPDATE_START);
 
         userService.update(id, updateUser);
 
-        log.info(LogMessage.logSuccessUpdateUser);
+        log.info(LogMessage.USER_UPDATE_SUCCESS);
 
         return ResponseEntity.ok(
-                ResponseObject.builder()
+                ApiResponse.builder()
                         .statusCode(HttpStatus.OK.value())
                         .message(ResponseMessage.msgSuccess)
                         .build()
@@ -86,15 +85,15 @@ public class UserController {
     }
 
     @DeleteMapping("/admin/{id}")
-    public ResponseEntity<ResponseObject> deleteUSer(@PathVariable Integer id) {
-        log.info(LogMessage.getLogStartDeleteUser);
+    public ResponseEntity<ApiResponse> deleteUSer(@PathVariable Integer id) {
+        log.debug(LogMessage.USER_DELETE_START);
 
         userService.deleteUser(id);
 
-        log.info(LogMessage.logSuccessDeleteUser);
+        log.info(LogMessage.USER_DELETE_SUCCESS);
 
         return ResponseEntity.ok(
-                ResponseObject.builder()
+                ApiResponse.builder()
                         .statusCode(HttpStatus.OK.value())
                         .message(ResponseMessage.msgSuccess)
                         .build()
@@ -102,15 +101,15 @@ public class UserController {
     }
 
     @PostMapping("/admin/restore/{id}")
-    public ResponseEntity<ResponseObject> restoreUSer(@PathVariable Integer id) {
-        log.info(LogMessage.logStartRestoreUser);
+    public ResponseEntity<ApiResponse> restoreUSer(@PathVariable Integer id) {
+        log.debug(LogMessage.USER_RESTORE_START);
 
         userService.restoreUser(id);
 
-        log.info(LogMessage.logSuccessRestoreUser);
+        log.info(LogMessage.USER_RESTORE_SUCCESS);
 
         return ResponseEntity.ok(
-                ResponseObject.builder()
+                ApiResponse.builder()
                         .statusCode(HttpStatus.OK.value())
                         .message(ResponseMessage.msgSuccess)
                         .build()
