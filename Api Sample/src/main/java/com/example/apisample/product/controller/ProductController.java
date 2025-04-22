@@ -4,7 +4,7 @@ import com.example.apisample.product.model.dto.ProductCreateDTO;
 import com.example.apisample.product.model.dto.ProductResponseDTO;
 import com.example.apisample.product.model.dto.ProductUpdateDTO;
 import com.example.apisample.product.service.ProductService;
-import com.example.apisample.utils.ResponseObject;
+import com.example.apisample.utils.ApiResponse;
 import com.example.apisample.utils.message.LogMessage;
 import com.example.apisample.utils.message.ResponseMessage;
 import com.example.apisample.utils.pagination.APIPageableResponseDTO;
@@ -30,37 +30,37 @@ public class ProductController {
     public APIPageableResponseDTO<ProductResponseDTO> getUser(@RequestParam(defaultValue = DEFAULT_PAGE, name = "page") Integer pageNo,
                                                               @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, name = "size") Integer pageSize,
                                                               @RequestParam(defaultValue = "", name = "search") String search,
-                                                              @RequestParam(defaultValue = "id", name= "sort") String sort) {
-        return productService.getALlProduct(pageNo,pageSize,search,sort);
+                                                              @RequestParam(defaultValue = "createOn", name= "sort") String sort) {
+        return productService.getALlProduct(pageNo, pageSize, search, sort);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseObject> getProductById(@PathVariable Integer id) {
-        log.info(LogMessage.logStartGetProductById);
+    public ResponseEntity<ApiResponse> getProductById(@PathVariable Integer id) {
+        log.debug(LogMessage.PRODUCT_GET_BY_ID_START);
 
         ProductResponseDTO product = productService.getProductById(id);
 
-        log.info(LogMessage.logSuccessGetProductById);
+        log.info(LogMessage.PRODUCT_GET_BY_ID_SUCCESS);
 
         return ResponseEntity.ok(
-                ResponseObject.builder()
+                ApiResponse.builder()
                         .statusCode(HttpStatus.OK.value())
                         .message(ResponseMessage.msgSuccess)
-                        .token(product)
+                        .data(product)
                         .build()
         );
     }
 
     @PostMapping("/admin")
-    public ResponseEntity<ResponseObject> createProduct(@RequestBody @Valid ProductCreateDTO dto) {
-        log.info(LogMessage.logStartCreateProduct);
+    public ResponseEntity<ApiResponse> createProduct(@RequestBody @Valid ProductCreateDTO dto) {
+        log.debug(LogMessage.PRODUCT_CREATE_START);
 
         productService.createProduct(dto);
 
-        log.info(LogMessage.logSuccessCreateProduct);
+        log.info(LogMessage.PRODUCT_CREATE_SUCCESS);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                ResponseObject.builder()
+                ApiResponse.builder()
                         .statusCode(HttpStatus.CREATED.value())
                         .message(ResponseMessage.msgSuccess)
                         .build()
@@ -68,18 +68,18 @@ public class ProductController {
     }
 
     @PutMapping("/admin/{id}")
-    public ResponseEntity<ResponseObject> updateProduct(
+    public ResponseEntity<ApiResponse> updateProduct(
             @PathVariable Integer id,
             @RequestBody @Valid ProductUpdateDTO dto) throws Exception {
 
-        log.info(LogMessage.logStartUpdateProduct);
+        log.debug(LogMessage.PRODUCT_UPDATE_START);
 
         productService.updateProduct(id, dto);
 
-        log.info(LogMessage.logSuccessUpdateProduct);
+        log.info(LogMessage.PRODUCT_UPDATE_SUCCESS);
 
         return ResponseEntity.ok(
-                ResponseObject.builder()
+                ApiResponse.builder()
                         .statusCode(HttpStatus.OK.value())
                         .message(ResponseMessage.msgSuccess)
                         .build()
@@ -87,15 +87,15 @@ public class ProductController {
     }
 
     @DeleteMapping("/admin/{id}")
-    public ResponseEntity<ResponseObject> deleteProduct(@PathVariable Integer id) {
-        log.info(LogMessage.logStartDeleteProduct);
+    public ResponseEntity<ApiResponse> deleteProduct(@PathVariable Integer id) {
+        log.debug(LogMessage.PRODUCT_DELETE_START);
 
         productService.deleteProduct(id);
 
-        log.info(LogMessage.logSuccessDeleteProduct);
+        log.info(LogMessage.PRODUCT_DELETE_SUCCESS);
 
         return ResponseEntity.ok(
-                ResponseObject.builder()
+                ApiResponse.builder()
                         .statusCode(HttpStatus.OK.value())
                         .message(ResponseMessage.msgSuccess)
                         .build()
@@ -103,15 +103,15 @@ public class ProductController {
     }
 
     @PostMapping("/admin/restore/{id}")
-    public ResponseEntity<ResponseObject> restoreProduct(@PathVariable Integer id) {
-        log.info(LogMessage.logStartRestoreProduct);
+    public ResponseEntity<ApiResponse> restoreProduct(@PathVariable Integer id) {
+        log.debug(LogMessage.PRODUCT_RESTORE_START);
 
         productService.restoreProduct(id);
 
-        log.info(LogMessage.logSuccessRestoreProduct);
+        log.info(LogMessage.PRODUCT_RESTORE_SUCCESS);
 
         return ResponseEntity.ok(
-                ResponseObject.builder()
+                ApiResponse.builder()
                         .statusCode(HttpStatus.OK.value())
                         .message(ResponseMessage.msgSuccess)
                         .build()

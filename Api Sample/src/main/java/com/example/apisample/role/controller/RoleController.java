@@ -1,10 +1,9 @@
 package com.example.apisample.role.controller;
 
 import com.example.apisample.role.entity.Role;
-import com.example.apisample.role.exception.RoleDoesNotExistException;
 import com.example.apisample.role.model.dto.AssignRoleRequestDTO;
 import com.example.apisample.role.service.RoleService;
-import com.example.apisample.utils.ResponseObject;
+import com.example.apisample.utils.ApiResponse;
 import com.example.apisample.utils.message.LogMessage;
 import com.example.apisample.utils.message.ResponseMessage;
 import jakarta.validation.Valid;
@@ -22,56 +21,55 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @Slf4j
 public class RoleController {
-     private final RoleService roleService;
+    private final RoleService roleService;
 
-     @GetMapping()
-     public ResponseEntity<ResponseObject> getAllRoles() {
-         log.info(LogMessage.logStartGetAllRoles);
+    @GetMapping("/admin")
+    public ResponseEntity<ApiResponse> getAllRoles() {
+        log.debug(LogMessage.ROLE_GET_ALL_START);
 
-         List<Role> roles = roleService.getAllRole();
+        List<Role> roles = roleService.getAllRole();
 
-         log.info(LogMessage.logSuccessGetAllRoles);
+        log.info(LogMessage.ROLE_GET_ALL_SUCCESS);
 
-         return ResponseEntity.ok(
-                 ResponseObject.builder()
-                         .statusCode(HttpStatus.OK.value())
-                         .message(ResponseMessage.msgSuccess)
-                         .token(roles)
-                         .build()
-         );
-     }
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message(ResponseMessage.msgSuccess)
+                        .data(roles)
+                        .build()
+        );
+    }
 
-     @GetMapping("/{id}")
-     public ResponseEntity<ResponseObject> getRoleById(@PathVariable int id) {
-         log.info(LogMessage.logStartGetAllRolesById);
+    @GetMapping("/admin/{id}")
+    public ResponseEntity<ApiResponse> getRoleById(@PathVariable int id) {
+        log.debug(LogMessage.ROLE_GET_BY_ID_START);
 
-         Role role = roleService.getRoleById(id);
+        Role role = roleService.getRoleById(id);
 
-         log.info(LogMessage.logSuccessGetAllRolesById);
+        log.info(LogMessage.ROLE_GET_BY_ID_SUCCESS);
 
-         return ResponseEntity.ok(
-                 ResponseObject.builder()
-                         .statusCode(HttpStatus.OK.value())
-                         .message(ResponseMessage.msgSuccess)
-                         .token(role)
-                         .build()
-         );
-     }
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message(ResponseMessage.msgSuccess)
+                        .data(role)
+                        .build()
+        );
+    }
 
+    @PostMapping("/admin/assign-role")
+    public ResponseEntity<ApiResponse> assignRole(@RequestBody @Valid AssignRoleRequestDTO dto) {
+        log.debug(LogMessage.ROLE_ASSIGN_START);
 
-     @PostMapping("/assign-role")
-     public ResponseEntity<ResponseObject> assignRole(@RequestBody @Valid AssignRoleRequestDTO dto) {
-         log.info(LogMessage.logStartAssignRole);
+        roleService.assignRole(dto.getEmail(), dto.getRoleId());
 
-         roleService.assignRole(dto.getEmail(), dto.getRoleId());
+        log.info(LogMessage.ROLE_ASSIGN_SUCCESS);
 
-         log.info(LogMessage.logSuccessAssignRole);
-
-         return ResponseEntity.ok(
-                ResponseObject.builder()
+        return ResponseEntity.ok(
+                ApiResponse.builder()
                         .statusCode(HttpStatus.OK.value())
                         .message(ResponseMessage.msgSuccess)
                         .build()
-         );
+        );
     }
 }

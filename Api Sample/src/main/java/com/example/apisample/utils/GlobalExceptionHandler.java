@@ -38,12 +38,12 @@ public class GlobalExceptionHandler {
 
         logger.error(errorMessage, ex);
 
-        ResponseObject responseObject = ResponseObject.builder()
+        ApiResponse apiResponse = ApiResponse.builder()
                 .statusCode(HttpStatus.FORBIDDEN.value())
                 .message(errorMessage)
                 .build();
 
-        return new ResponseEntity<>(responseObject, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(apiResponse, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(InvalidateException.class)
@@ -52,12 +52,12 @@ public class GlobalExceptionHandler {
 
         logger.error(errorMessage, ex);
 
-        ResponseObject responseObject = ResponseObject.builder()
+        ApiResponse apiResponse = ApiResponse.builder()
                 .statusCode(HttpStatus.PRECONDITION_FAILED.value())
                 .message(errorMessage)
                 .build();
 
-        return new ResponseEntity<>(responseObject, HttpStatus.PRECONDITION_FAILED);
+        return new ResponseEntity<>(apiResponse, HttpStatus.PRECONDITION_FAILED);
     }
 
     @ExceptionHandler(InvalidCredentialsException.class)
@@ -66,12 +66,12 @@ public class GlobalExceptionHandler {
 
         logger.error(errorMessage, ex);
 
-        ResponseObject responseObject = ResponseObject.builder()
+        ApiResponse apiResponse = ApiResponse.builder()
                 .statusCode(HttpStatus.UNAUTHORIZED.value())
                 .message(errorMessage)
                 .build();
 
-        return new ResponseEntity<>(responseObject, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(apiResponse, HttpStatus.UNAUTHORIZED);
     }
 
 
@@ -81,12 +81,12 @@ public class GlobalExceptionHandler {
 
         logger.error(errorMessage, ex);
 
-        ResponseObject responseObject = ResponseObject.builder()
+        ApiResponse apiResponse = ApiResponse.builder()
                 .statusCode(HttpStatus.NOT_FOUND.value())
                 .message(errorMessage)
                 .build();
 
-        return new ResponseEntity<>(responseObject, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(TokenExpiredException.class)
@@ -95,12 +95,12 @@ public class GlobalExceptionHandler {
 
         logger.error(errorMessage, ex);
 
-        ResponseObject responseObject = ResponseObject.builder()
+        ApiResponse apiResponse = ApiResponse.builder()
                 .statusCode(HttpStatus.UNAUTHORIZED.value())
                 .message(errorMessage)
                 .build();
 
-        return new ResponseEntity<>(responseObject, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(apiResponse, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
@@ -109,12 +109,12 @@ public class GlobalExceptionHandler {
 
         logger.error(errorMessage, ex);
 
-        ResponseObject responseObject = ResponseObject.builder()
+        ApiResponse apiResponse = ApiResponse.builder()
                 .statusCode(HttpStatus.CONFLICT.value())
                 .message(errorMessage)
                 .build();
 
-        return new ResponseEntity<>(responseObject, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(apiResponse, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(UserDeletedException.class)
@@ -123,12 +123,12 @@ public class GlobalExceptionHandler {
 
         logger.error(errorMessage, ex);
 
-        ResponseObject responseObject = ResponseObject.builder()
+        ApiResponse apiResponse = ApiResponse.builder()
                 .statusCode(HttpStatus.GONE.value())
                 .message(errorMessage)
                 .build();
 
-        return new ResponseEntity<>(responseObject, HttpStatus.GONE);
+        return new ResponseEntity<>(apiResponse, HttpStatus.GONE);
     }
 
     @ExceptionHandler(UserDoesNotExistException.class)
@@ -137,12 +137,12 @@ public class GlobalExceptionHandler {
 
         logger.error(errorMessage, ex);
 
-        ResponseObject responseObject = ResponseObject.builder()
+        ApiResponse apiResponse = ApiResponse.builder()
                 .statusCode(HttpStatus.NOT_FOUND.value())
                 .message(errorMessage)
                 .build();
 
-        return new ResponseEntity<>(responseObject, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
@@ -151,89 +151,89 @@ public class GlobalExceptionHandler {
 
         logger.error(errorMessage, ex);
 
-        ResponseObject responseObject = ResponseObject.builder()
+        ApiResponse apiResponse = ApiResponse.builder()
                 .statusCode(HttpStatus.FORBIDDEN.value())
                 .message(errorMessage)
                 .build();
 
-        return new ResponseEntity<>(responseObject, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(apiResponse, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(InvalidOtpCodeException.class)
     public ResponseEntity<?> handleInvalidOtpCodeException(InvalidOtpCodeException ex) {
         String errorMessage = ex.getMessage();
         logger.error(errorMessage, ex);
-        ResponseObject responseObject = ResponseObject.builder()
+        ApiResponse apiResponse = ApiResponse.builder()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .message(errorMessage)
                 .build();
-        return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(OtpDoesNotExistException.class)
     public ResponseEntity<?> handleOtpDoesNotExistException(OtpDoesNotExistException ex) {
         String errorMessage = ex.getMessage();
         logger.error(errorMessage, ex);
-        ResponseObject responseObject = ResponseObject.builder()
+        ApiResponse apiResponse = ApiResponse.builder()
                 .statusCode(HttpStatus.NOT_FOUND.value())
                 .message(errorMessage)
                 .build();
-        return new ResponseEntity<>(responseObject, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(OtpExpiredException.class)
     public ResponseEntity<?> handleOtpExpiredException(OtpExpiredException ex) {
         String errorMessage = ex.getMessage();
         logger.error(errorMessage, ex);
-        ResponseObject responseObject = ResponseObject.builder()
+        ApiResponse apiResponse = ApiResponse.builder()
                 .statusCode(HttpStatus.GONE.value())
                 .message(errorMessage)
                 .build();
-        return new ResponseEntity<>(responseObject, HttpStatus.GONE);
+        return new ResponseEntity<>(apiResponse, HttpStatus.GONE);
     }
 
     @ExceptionHandler(OtpHasBeenUsedException.class)
     public ResponseEntity<?> handleOtpHasBeenUsedException(OtpHasBeenUsedException ex) {
         String errorMessage = ex.getMessage();
         logger.error(errorMessage, ex);
-        ResponseObject responseObject = ResponseObject.builder()
+        ApiResponse apiResponse = ApiResponse.builder()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .message(errorMessage)
                 .build();
-        return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(EmailCannotBeSendException.class)
     public ResponseEntity<?> handleEmailCannotBeSendException(EmailCannotBeSendException ex) {
         String errorMessage = ex.getMessage();
         logger.error(errorMessage, ex);
-        ResponseObject responseObject = ResponseObject.builder()
+        ApiResponse apiResponse = ApiResponse.builder()
                 .statusCode(HttpStatus.SERVICE_UNAVAILABLE.value())
                 .message(errorMessage)
                 .build();
-        return new ResponseEntity<>(responseObject, HttpStatus.SERVICE_UNAVAILABLE);
+        return new ResponseEntity<>(apiResponse, HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     @ExceptionHandler(UserDoesNotLoginException.class)
     public ResponseEntity<?> handleUserDoesNotLoginException(UserDoesNotLoginException ex) {
         String errorMessage = ex.getMessage();
         logger.error(errorMessage, ex);
-        ResponseObject responseObject = ResponseObject.builder()
+        ApiResponse apiResponse = ApiResponse.builder()
                 .statusCode(HttpStatus.UNAUTHORIZED.value())
                 .message(errorMessage)
                 .build();
-        return new ResponseEntity<>(responseObject, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(apiResponse, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(NotImageFileException.class)
     public ResponseEntity<?> handleNotImageFileException(NotImageFileException ex) {
         String errorMessage = ex.getMessage();
         logger.error(errorMessage, ex);
-        ResponseObject responseObject = ResponseObject.builder()
+        ApiResponse apiResponse = ApiResponse.builder()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .message(errorMessage)
                 .build();
-        return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ProductNotFoundException.class)
@@ -242,75 +242,75 @@ public class GlobalExceptionHandler {
 
         logger.error(errorMessage, ex);
 
-        ResponseObject responseObject = ResponseObject.builder()
+        ApiResponse apiResponse = ApiResponse.builder()
                 .statusCode(HttpStatus.NOT_FOUND.value())
                 .message(errorMessage)
                 .build();
 
-        return new ResponseEntity<>(responseObject, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ProductDeletedException.class)
     public ResponseEntity<?> handleProductDeletedException(ProductDeletedException ex) {
         String errorMessage = ex.getMessage();
         logger.error(errorMessage, ex);
-        ResponseObject responseObject = ResponseObject.builder()
+        ApiResponse apiResponse = ApiResponse.builder()
                 .statusCode(HttpStatus.GONE.value())
                 .message(errorMessage)
                 .build();
-        return new ResponseEntity<>(responseObject, HttpStatus.GONE);
+        return new ResponseEntity<>(apiResponse, HttpStatus.GONE);
     }
 
     @ExceptionHandler(RatingDeletedException.class)
     public ResponseEntity<?> handleRatingDeletedException(RatingDeletedException ex) {
         String errorMessage = ex.getMessage();
         logger.error(errorMessage, ex);
-        ResponseObject responseObject = ResponseObject.builder()
+        ApiResponse apiResponse = ApiResponse.builder()
                 .statusCode(HttpStatus.GONE.value())
                 .message(errorMessage)
                 .build();
-        return new ResponseEntity<>(responseObject, HttpStatus.GONE);
+        return new ResponseEntity<>(apiResponse, HttpStatus.GONE);
     }
 
     @ExceptionHandler(RatingHasBeenMadeException.class)
     public ResponseEntity<?> handleRatingHasBeenMadeException(RatingHasBeenMadeException ex) {
         String errorMessage = ex.getMessage();
         logger.error(errorMessage, ex);
-        ResponseObject responseObject = ResponseObject.builder()
+        ApiResponse apiResponse = ApiResponse.builder()
                 .statusCode(HttpStatus.CONFLICT.value())
                 .message(errorMessage)
                 .build();
-        return new ResponseEntity<>(responseObject, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(apiResponse, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(RatingHasBeenRestoreException.class)
     public ResponseEntity<?> handleRatingHasBeenMadeException(RatingHasBeenRestoreException ex) {
         String errorMessage = ex.getMessage();
         logger.error(errorMessage, ex);
-        ResponseObject responseObject = ResponseObject.builder()
+        ApiResponse apiResponse = ApiResponse.builder()
                 .statusCode(HttpStatus.CONFLICT.value())
                 .message(errorMessage)
                 .build();
-        return new ResponseEntity<>(responseObject, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(apiResponse, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(RatingNotFoundException.class)
     public ResponseEntity<?> handleRatingNotFoundException(RatingNotFoundException ex) {
         String errorMessage = ex.getMessage();
         logger.error(errorMessage, ex);
-        ResponseObject responseObject = ResponseObject.builder()
+        ApiResponse apiResponse = ApiResponse.builder()
                 .statusCode(HttpStatus.NOT_FOUND.value())
                 .message(errorMessage)
                 .build();
-        return new ResponseEntity<>(responseObject, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(CategoryNotFoundException.class)
-    public ResponseEntity<ResponseObject> handleCategoryNotFound(CategoryNotFoundException ex) {
+    public ResponseEntity<ApiResponse> handleCategoryNotFound(CategoryNotFoundException ex) {
         String errorMessage = ex.getMessage();
         logger.error(errorMessage, ex);
         return new ResponseEntity<>(
-                ResponseObject.builder()
+                ApiResponse.builder()
                         .statusCode(HttpStatus.NOT_FOUND.value())
                         .message(errorMessage)
                         .build(),
@@ -319,9 +319,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(CategoryAlreadyExistsException.class)
-    public ResponseEntity<ResponseObject> handleCategoryAlreadyExists(CategoryAlreadyExistsException ex) {
+    public ResponseEntity<ApiResponse> handleCategoryAlreadyExists(CategoryAlreadyExistsException ex) {
+        logger.error(ex.getMessage(), ex);
+
         return new ResponseEntity<>(
-                ResponseObject.builder()
+                ApiResponse.builder()
                         .statusCode(HttpStatus.CONFLICT.value())
                         .message(ex.getMessage())
                         .build(),
@@ -330,9 +332,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ProductCategoryNotFoundException.class)
-    public ResponseEntity<ResponseObject> handleProductCategoryNotFound(ProductCategoryNotFoundException ex) {
+    public ResponseEntity<ApiResponse> handleProductCategoryNotFound(ProductCategoryNotFoundException ex) {
+        logger.error(ex.getMessage(), ex);
+
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(ResponseObject.builder()
+                .body(ApiResponse.builder()
                         .statusCode(HttpStatus.NOT_FOUND.value())
                         .message(ex.getMessage())
                         .build());
@@ -352,12 +356,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> BaseException(Exception ex) {
         String errorMessage = ex.getMessage();
-        logger.error(errorMessage);
-        ResponseObject responseObject = ResponseObject.builder()
+        logger.error(errorMessage, ex);
+        ApiResponse apiResponse = ApiResponse.builder()
                 .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .message(errorMessage)
                 .build();
-        return new ResponseEntity<>(responseObject, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(apiResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

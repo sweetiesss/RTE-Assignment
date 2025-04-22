@@ -19,6 +19,15 @@
             </Policies>
         </RollingFile>
 
+        <RollingFile name="DebugFile" fileName="C:/Users/Alienware/Desktop/RTE Batch 8 Nashtech/RTE-Assignment/Api Sample/log/debug/debug.log"
+                     filePattern="${log-file-path}/$${date:yyyy-MM-dd}/info-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout pattern="%d{yyyy/MM/dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+                <SizeBasedTriggeringPolicy size="10MB" />
+            </Policies>
+        </RollingFile>
+
         <RollingFile name="ErrorFile" fileName="C:\Users\Alienware\Desktop\RTE Batch 8 Nashtech\RTE-Assignment\Api Sample\log\error\error.log"
                      filePattern="${log-file-path}/$${date:yyyy-MM-dd}/error-%d{MM-dd-yyyy}-%i.log.gz">
             <PatternLayout pattern="%d{yyyy/MM/dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />

@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public APIPageableResponseDTO<UserResponseDTO> getALlUser(int pageNo, int pageSize, String search, String sortField) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortField).ascending());
 
         Page<User> page = userRepository.findByEmailContaining(pageable, search);
         Page<UserResponseDTO> userDtoPage = page.map(UserMapper::userToDTO);
@@ -63,13 +64,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User getUserByEmail(String email) {
-        User optionalUser = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email);
 
-        if(optionalUser == null){
+        if(user == null){
             throw new UserDoesNotExistException();
         }
 
-        return optionalUser;
+        return user;
     }
 
     @Override
