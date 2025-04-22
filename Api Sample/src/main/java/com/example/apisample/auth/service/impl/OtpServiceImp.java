@@ -77,6 +77,6 @@ public class OtpServiceImp implements OtpService {
     @Scheduled(fixedRate = SCHEDULER_RATE)
     public void cleanExpiredOtps() {
         otpCodeRepository.deleteByExpiresAtBefore(java.time.LocalDateTime.now());
-        log.info(LogMessage.logOtpScheduleDelete);
+        log.info(LogMessage.OTP_SCHEDULE_DELETE);
     }
 }

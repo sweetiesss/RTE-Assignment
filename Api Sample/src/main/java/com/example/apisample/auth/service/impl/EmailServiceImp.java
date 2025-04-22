@@ -24,8 +24,13 @@ public class EmailServiceImp implements EmailService {
 
     @Override
     public void sendOtpEmail(String to, String otp) {
-        SimpleMailMessage message = templateBuilder.buildOtpEmail(from, to, otp);
-        mailSender.send(message);
+        try {
+            SimpleMailMessage message = templateBuilder.buildOtpEmail(from, to, otp);
+            mailSender.send(message);
+        } catch (Exception e) {
+            log.error(LogMessage.EMAIL_OTP_SEND_FAILED + " From: {}, To: {}, Exception: {}", from, to, e.getMessage(), e);
+            throw new EmailCannotBeSendException();
+        }
     }
 
     @Override
@@ -34,9 +39,8 @@ public class EmailServiceImp implements EmailService {
             SimpleMailMessage message = templateBuilder.buildPasswordEmail(from, to, password);
             mailSender.send(message);
         } catch (Exception e) {
-            log.error(LogMessage.logEmailSendFailed);
+            log.error(LogMessage.EMAIL_PASSWORD_SEND_FAILED + " From: {}, To: {}, Exception: {}", from, to, e.getMessage(), e);
             throw new EmailCannotBeSendException();
         }
     }
-
 }

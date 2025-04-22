@@ -4,7 +4,7 @@ import com.example.apisample.category.model.dto.CategoryRequestDTO;
 import com.example.apisample.category.model.dto.CategoryResponseDTO;
 import com.example.apisample.category.model.dto.CategoryUpdateRequestDTO;
 import com.example.apisample.category.service.CategoryService;
-import com.example.apisample.utils.ResponseObject;
+import com.example.apisample.utils.ApiResponse;
 import com.example.apisample.utils.message.LogMessage;
 import com.example.apisample.utils.message.ResponseMessage;
 import com.example.apisample.utils.pagination.APIPageableResponseDTO;
@@ -27,41 +27,41 @@ public class CategoryController {
     final String DEFAULT_PAGE = "0";
     final String DEFAULT_PAGE_SIZE = "8";
 
-    @GetMapping("/gets")
+    @GetMapping()
     public APIPageableResponseDTO<CategoryResponseDTO> getAllCategory(@RequestParam(defaultValue = DEFAULT_PAGE, name = "page") Integer pageNo,
                                                                       @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, name = "size") Integer pageSize,
                                                                       @RequestParam(defaultValue = "", name = "search") String search,
-                                                                      @RequestParam(defaultValue = "", name = "sort") String sort) {
+                                                                      @RequestParam(defaultValue = "id", name = "sort") String sort) {
         return categoryService.getAllCategories(pageNo, pageSize, search, sort);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseObject> getCategoryById(@PathVariable Integer id) {
-        log.info(LogMessage.logStartGetCategoryById);
+    public ResponseEntity<ApiResponse> getCategoryById(@PathVariable Integer id) {
+        log.debug(LogMessage.CATEGORY_GET_BY_ID_START);
 
         CategoryResponseDTO category = categoryService.getCategoryById(id);
 
-        log.info(LogMessage.logSuccessGetCategoryById);
+        log.info(LogMessage.CATEGORY_GET_BY_ID_SUCCESS);
 
         return ResponseEntity.ok(
-                ResponseObject.builder()
+                ApiResponse.builder()
                         .statusCode(HttpStatus.OK.value())
                         .message(ResponseMessage.msgSuccess)
-                        .token(category)
+                        .data(category)
                         .build()
         );
     }
 
     @PostMapping("/admin/create")
-    public ResponseEntity<ResponseObject> createCategory(@RequestBody @Valid CategoryRequestDTO dto) {
-        log.info(LogMessage.logStartCreateCategory);
+    public ResponseEntity<ApiResponse> createCategory(@RequestBody @Valid CategoryRequestDTO dto) {
+        log.debug(LogMessage.CATEGORY_CREATE_START);
 
         categoryService.createCategory(dto);
 
-        log.info(LogMessage.logSuccessCreateCategory);
+        log.info(LogMessage.CATEGORY_CREATE_SUCCESS);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ResponseObject.builder()
+                .body(ApiResponse.builder()
                         .statusCode(HttpStatus.CREATED.value())
                         .message(ResponseMessage.msgSuccess)
                         .build()
@@ -69,15 +69,15 @@ public class CategoryController {
     }
 
     @PutMapping("/admin/{id}")
-    public ResponseEntity<ResponseObject> updateCategory(@PathVariable Integer id, @RequestBody @Valid CategoryUpdateRequestDTO dto) {
-        log.info(LogMessage.logStartUpdateCategory);
+    public ResponseEntity<ApiResponse> updateCategory(@PathVariable Integer id, @RequestBody @Valid CategoryUpdateRequestDTO dto) {
+        log.debug(LogMessage.CATEGORY_UPDATE_START);
 
         categoryService.updateCategory(id, dto);
 
-        log.info(LogMessage.logSuccessUpdateCategory);
+        log.info(LogMessage.CATEGORY_UPDATE_SUCCESS);
 
         return ResponseEntity.ok(
-                ResponseObject.builder()
+                ApiResponse.builder()
                         .statusCode(HttpStatus.OK.value())
                         .message(ResponseMessage.msgSuccess)
                         .build()
@@ -85,15 +85,15 @@ public class CategoryController {
     }
 
     @DeleteMapping("/admin/{id}")
-    public ResponseEntity<ResponseObject> deleteCategory(@PathVariable Integer id) {
-        log.info(LogMessage.logStartDeleteCategory);
+    public ResponseEntity<ApiResponse> deleteCategory(@PathVariable Integer id) {
+        log.debug(LogMessage.CATEGORY_DELETE_START);
 
         categoryService.deleteCategory(id);
 
-        log.info(LogMessage.logSuccessDeleteCategory);
+        log.info(LogMessage.CATEGORY_DELETE_SUCCESS);
 
         return ResponseEntity.ok(
-                ResponseObject.builder()
+                ApiResponse.builder()
                         .statusCode(HttpStatus.OK.value())
                         .message(ResponseMessage.msgSuccess)
                         .build()

@@ -9,11 +9,11 @@ import lombok.Data;
 @Data
 public class LoginRequestDTO {
 
-    @NotBlank(message = ValidateMessage.EMAIL_NULL)
-    @Email(message = ValidateMessage.INVALID_EMAIL_ADDRESS)
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid email format")
     private String email;
 
-    @NotBlank(message = ValidateMessage.PASSWORD_NULL)
+    @NotBlank(message = "Password is required")
     @Size(min = 1, max = 100, message = "Password must be between 6 and 100 characters")
     private String password;
 }
