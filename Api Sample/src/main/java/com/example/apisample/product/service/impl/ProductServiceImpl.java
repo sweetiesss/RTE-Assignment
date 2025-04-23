@@ -35,6 +35,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public APIPageableResponseDTO<ProductResponseDTO> getALlFeaturedProduct(int pageNo, int pageSize, String search, String sortField){
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortField).descending());
+
+        Page<Product> page = productRepository.findByDeletedFalseAndFeaturedTrue(pageable);
+        Page<ProductResponseDTO> productDtoPage = page.map(ProductMapper::productToDTO);
+
+        return new APIPageableResponseDTO<>(productDtoPage);
+    }
+
+    @Override
     public ProductResponseDTO getProductById(Integer id) {
         Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
 
