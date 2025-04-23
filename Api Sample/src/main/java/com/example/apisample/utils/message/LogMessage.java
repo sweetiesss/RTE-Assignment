@@ -40,10 +40,7 @@ public class LogMessage {
     public static final String USER_DELETE_SUCCESS = "User deleted successfully!";
     public static final String USER_RESTORE_START = "Restoring user";
     public static final String USER_RESTORE_SUCCESS = "User restored successfully!";
-    public static final String USER_GET_IMAGE_START = "Getting user profile image";
-    public static final String USER_GET_IMAGE_SUCCESS = "User profile image get successfully!";
-    public static final String USER_UPLOAD_IMAGE_START = "Uploading user profile image";
-    public static final String USER_UPLOAD_IMAGE_SUCCESS = "User profile image upload successfully!";
+
     public static final String USER_GET_BY_EMAIL_START = "Getting user by email";
     public static final String USER_GET_BY_EMAIL_SUCCESS = "User get successfully!";
     public static final String USER_GET_BY_ID_START = "Getting user by id";
@@ -64,6 +61,10 @@ public class LogMessage {
     public static final String PRODUCT_RESTORE_SUCCESS = "Successfully restored product";
     public static final String PRODUCT_GET_BY_ID_START = "Start fetching product by ID";
     public static final String PRODUCT_GET_BY_ID_SUCCESS = "Successfully fetched product by ID";
+    public static final String PRODUCT_UPLOAD_IMAGE_START = "Uploading user profile image";
+    public static final String PRODUCT_UPLOAD_IMAGE_SUCCESS = "User profile image upload successfully!";
+    public static final String PRODUCT_GET_IMAGE_START = "Getting user profile image";
+    public static final String PRODUCT_GET_IMAGE_SUCCESS = "User profile image get successfully!";
 
     // Rating Logs
     public static final String RATING_CREATE_START = "Start creating rating";

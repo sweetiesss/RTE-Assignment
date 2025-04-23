@@ -33,8 +33,8 @@ public class Product {
     @Column(name = "price", nullable = false)
     private Long price;
 
-    @Size(max = 100)
-    @Column(name = "image", length = 100)
+    @Size(max = 200)
+    @Column(name = "image", length = 200)
     private String image;
 
     @NotNull
