@@ -1,5 +1,6 @@
 package com.example.apisample.product.controller;
 
+import com.example.apisample.product.entity.Product;
 import com.example.apisample.product.model.dto.ProductCreateDTO;
 import com.example.apisample.product.model.dto.ProductResponseDTO;
 import com.example.apisample.product.model.dto.ProductUpdateDTO;
@@ -12,8 +13,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
@@ -122,6 +125,40 @@ public class ProductController {
                 ApiResponse.builder()
                         .statusCode(HttpStatus.OK.value())
                         .message(ResponseMessage.msgSuccess)
+                        .build()
+        );
+    }
+
+    @GetMapping("/get-image/{id}")
+    public ResponseEntity<ApiResponse> getUserImage(@PathVariable("id") Integer productId) throws Exception{
+        log.debug(LogMessage.PRODUCT_GET_IMAGE_START);
+
+        ProductResponseDTO product = productService.getProductById(productId);
+
+        log.info(LogMessage.PRODUCT_GET_IMAGE_SUCCESS);
+
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message(ResponseMessage.msgSuccess)
+                        .data(product.getImage())
+                        .build()
+        );
+    }
+
+    @PostMapping(value = "/admin/image/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
+    public ResponseEntity<ApiResponse> updateUserProfileImage(@PathVariable("id") Integer productId, @RequestParam("file") MultipartFile file) throws Exception{
+        log.debug(LogMessage.PRODUCT_UPLOAD_IMAGE_START);
+
+        String imageURL = productService.uploadProductImage(productId, file);
+
+        log.info(LogMessage.PRODUCT_UPLOAD_IMAGE_SUCCESS);
+
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message(ResponseMessage.msgSuccess)
+                        .data(imageURL)
                         .build()
         );
     }
