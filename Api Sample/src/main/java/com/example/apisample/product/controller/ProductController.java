@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/products")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:5173", maxAge = 3600)
 @Slf4j
 public class ProductController {
     private final ProductService productService;
@@ -27,11 +27,19 @@ public class ProductController {
     final String DEFAULT_PAGE_SIZE = "8";
 
     @GetMapping()
-    public APIPageableResponseDTO<ProductResponseDTO> getUser(@RequestParam(defaultValue = DEFAULT_PAGE, name = "page") Integer pageNo,
+    public APIPageableResponseDTO<ProductResponseDTO> getAllProduct(@RequestParam(defaultValue = DEFAULT_PAGE, name = "page") Integer pageNo,
                                                               @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, name = "size") Integer pageSize,
                                                               @RequestParam(defaultValue = "", name = "search") String search,
                                                               @RequestParam(defaultValue = "createOn", name= "sort") String sort) {
         return productService.getALlProduct(pageNo, pageSize, search, sort);
+    }
+
+    @GetMapping("/featured")
+    public APIPageableResponseDTO<ProductResponseDTO> getAllFeaturedProduct(@RequestParam(defaultValue = DEFAULT_PAGE, name = "page") Integer pageNo,
+                                                                    @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, name = "size") Integer pageSize,
+                                                                    @RequestParam(defaultValue = "", name = "search") String search,
+                                                                    @RequestParam(defaultValue = "createOn", name= "sort") String sort) {
+        return productService.getALlFeaturedProduct(pageNo, pageSize, search, sort);
     }
 
     @GetMapping("/{id}")
