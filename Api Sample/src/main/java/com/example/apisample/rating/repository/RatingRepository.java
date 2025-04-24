@@ -10,9 +10,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-
+// findAllByProduct_IdAndDeletedFalse
 public interface RatingRepository extends JpaRepository<Rating, Integer> {
     Page<Rating> findAllByDeletedFalse(Pageable pageable);
-
+    Page<Rating> findAllByProduct_IdAndDeletedFalse(Integer productId, Pageable pageable);
     Optional<Rating> findTopByUserAndProduct(User user, Product product);
 }

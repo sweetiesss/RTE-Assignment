@@ -8,7 +8,8 @@ import com.example.apisample.user.exception.UserDoesNotExistException;
 import com.example.apisample.utils.pagination.APIPageableResponseDTO;
 
 public interface RatingService {
-    RatingResponseDTO createRating(RatingRequestDTO request);
+    APIPageableResponseDTO<RatingResponseDTO> getRatingsByProductId(Integer productId, int pageNo, int pageSize, String sort);
+    void createRating(RatingRequestDTO request);
     RatingResponseDTO getRatingById(Integer id);
     APIPageableResponseDTO<RatingResponseDTO> getAllRating(int pageNo, int pageSize, String search, String sortField);
     void updateRating(Integer id, RatingRequestDTO request);

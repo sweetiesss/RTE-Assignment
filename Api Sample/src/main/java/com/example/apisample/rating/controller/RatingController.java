@@ -26,11 +26,23 @@ public class RatingController {
     final String DEFAULT_PAGE = "0";
     final String DEFAULT_PAGE_SIZE = "8";
 
+    @GetMapping("/product/{productId}")
+    public ResponseEntity<APIPageableResponseDTO<RatingResponseDTO>> getProductRatings(
+            @PathVariable Integer productId,
+            @RequestParam(defaultValue = DEFAULT_PAGE) int pageNo,
+            @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize,
+            @RequestParam(defaultValue = "createOn") String sort
+    ) {
+        return ResponseEntity.ok(ratingService.getRatingsByProductId(productId, pageNo, pageSize, sort));
+    }
+
+
+
     @PostMapping()
     public ResponseEntity<ApiResponse> createRating(@RequestBody @Valid RatingRequestDTO ratingRequest) {
         log.debug(LogMessage.RATING_CREATE_START);
 
-        RatingResponseDTO ratingResponse = ratingService.createRating(ratingRequest);
+        ratingService.createRating(ratingRequest);
 
         log.info(LogMessage.RATING_CREATE_SUCCESS);
 
@@ -38,7 +50,7 @@ public class RatingController {
                 ApiResponse.builder()
                         .statusCode(HttpStatus.CREATED.value())
                         .message(ResponseMessage.msgSuccess)
-                        .data(ratingResponse)
+                        .data(ResponseMessage.msgSuccess)
                         .build()
         );
     }

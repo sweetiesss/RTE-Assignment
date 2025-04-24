@@ -130,7 +130,7 @@ public class ProductController {
     }
 
     @GetMapping("/get-image/{id}")
-    public ResponseEntity<ApiResponse> getUserImage(@PathVariable("id") Integer productId) throws Exception{
+    public ResponseEntity<ApiResponse> getProductImage(@PathVariable("id") Integer productId) throws Exception{
         log.debug(LogMessage.PRODUCT_GET_IMAGE_START);
 
         ProductResponseDTO product = productService.getProductById(productId);
@@ -147,7 +147,7 @@ public class ProductController {
     }
 
     @PostMapping(value = "/admin/image/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
-    public ResponseEntity<ApiResponse> updateUserProfileImage(@PathVariable("id") Integer productId, @RequestParam("file") MultipartFile file) throws Exception{
+    public ResponseEntity<ApiResponse> updateUserProductImage(@PathVariable("id") Integer productId, @RequestParam("file") MultipartFile file) throws Exception{
         log.debug(LogMessage.PRODUCT_UPLOAD_IMAGE_START);
 
         String imageURL = productService.uploadProductImage(productId, file);
