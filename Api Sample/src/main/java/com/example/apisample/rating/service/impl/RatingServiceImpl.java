@@ -17,14 +17,12 @@ import com.example.apisample.user.exception.UserDoesNotExistException;
 import com.example.apisample.user.repository.UserRepository;
 import com.example.apisample.utils.pagination.APIPageableResponseDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -36,8 +34,23 @@ public class RatingServiceImpl implements RatingService {
     private final ProductRepository productRepository;
 
     @Override
+    @Transactional(readOnly = true)
+    public APIPageableResponseDTO<RatingResponseDTO> getRatingsByProductId(Integer productId, int pageNo, int pageSize, String sort) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).descending()); // or ascending
+        Page<Rating> ratingPage = ratingRepository.findAllByProduct_IdAndDeletedFalse(productId, pageable);
+
+        List<RatingResponseDTO> dtoList = ratingPage.getContent().stream()
+                .map(RatingMapper::ratingToDTO)
+                .toList();
+
+        Page<RatingResponseDTO> dtoPage = new PageImpl<>(dtoList, pageable, ratingPage.getTotalElements());
+        return new APIPageableResponseDTO<>(dtoPage);
+    }
+
+
+    @Override
     @Transactional
-    public RatingResponseDTO createRating(RatingRequestDTO request) {
+    public void createRating(RatingRequestDTO request) {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(UserDoesNotExistException::new);
         Product product = productRepository.findById(request.getProductId())
@@ -58,7 +71,6 @@ public class RatingServiceImpl implements RatingService {
                 .build();
 
         ratingRepository.save(rating);
-        return RatingMapper.ratingToDTO(rating);
     }
 
     @Override
