@@ -12,6 +12,7 @@ import com.example.apisample.productcategory.entity.ProductCategoryId;
 import com.example.apisample.productcategory.exception.ProductCategoryNotFoundException;
 import com.example.apisample.productcategory.model.dto.ProductCategoryRequestDTO;
 import com.example.apisample.productcategory.model.dto.ProductCategoryResponseDTO;
+import com.example.apisample.productcategory.model.mapper.ProductCategoryMapper;
 import com.example.apisample.productcategory.repository.ProductCategoryRepository;
 import com.example.apisample.productcategory.service.ProductCategoryService;
 import com.example.apisample.utils.pagination.APIPageableResponseDTO;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -69,35 +71,42 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     @Override
     @Transactional
     public APIPageableResponseDTO<ProductCategoryResponseDTO> getAllProductCategories(int pageNo, int pageSize, String search, String sort) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
+        Pageable pageable = createPageable(pageNo, pageSize, sort);
 
         Page<ProductCategory> page = productCategoryRepository.findAll(pageable);
 
+        List<ProductCategoryResponseDTO> dtoList = mergeProductCategories(page.getContent());
+
+        Page<ProductCategoryResponseDTO> dtoPage = new PageImpl<>(dtoList, pageable, page.getTotalElements());
+        return new APIPageableResponseDTO<>(dtoPage);
+    }
+
+    private Pageable createPageable(int pageNo, int pageSize, String sort) {
+        return PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
+    }
+
+    private List<ProductCategoryResponseDTO> mergeProductCategories(List<ProductCategory> productCategories) {
         Map<Integer, ProductCategoryResponseDTO> productMap = new HashMap<>();
 
-        for (ProductCategory productCategory : page.getContent()) {
-            ProductCategoryResponseDTO responseDTO = productMap.computeIfAbsent(
-                    productCategory.getProduct().getId(),
-                    id -> new ProductCategoryResponseDTO() {{
-                        setProductId(id);
-                        setProductName(productCategory.getProduct().getName());
-                        setCategories(new ArrayList<>());
-                    }}
-            );
+        productCategories.forEach(productCategory -> {
+            int productId = productCategory.getProduct().getId();
 
-            responseDTO.getCategories().add(CategoryResponseDTO.builder()
+            productMap.computeIfAbsent(productId, id -> {
+                ProductCategoryResponseDTO dto = ProductCategoryMapper.productCategoryToDTO(productCategory);
+                dto.setCategories(new ArrayList<>()); // Reset to avoid duplicate first category
+                return dto;
+            });
+
+            productMap.get(productId).getCategories().add(CategoryResponseDTO.builder()
                     .id(productCategory.getCategory().getId())
                     .name(productCategory.getCategory().getName())
                     .description(productCategory.getCategory().getDescription())
                     .build());
-        }
+        });
 
-        List<ProductCategoryResponseDTO> productCategoryList = new ArrayList<>(productMap.values());
-
-        Page<ProductCategoryResponseDTO> dtoPage = new PageImpl<>(productCategoryList, pageable, page.getTotalElements());
-
-        return new APIPageableResponseDTO<>(dtoPage);
+        return new ArrayList<>(productMap.values());
     }
+
 
     @Override
     @Transactional
@@ -108,23 +117,19 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
             throw new ProductCategoryNotFoundException();
         }
 
-        ProductCategoryResponseDTO responseDTO = new ProductCategoryResponseDTO();
-        responseDTO.setProductId(productId);
-        responseDTO.setProductName(productCategories.get(0).getProduct().getName());
+        ProductCategoryResponseDTO responseDTO = ProductCategoryMapper.productCategoryToDTO(productCategories.get(0));
 
-        List<CategoryResponseDTO> categories = new ArrayList<>();
-        for (ProductCategory productCategory : productCategories) {
-            categories.add(CategoryResponseDTO.builder()
-                    .id(productCategory.getCategory().getId())
-                    .name(productCategory.getCategory().getName())
-                    .description(productCategory.getCategory().getDescription())
-                    .build());
-        }
+        List<CategoryResponseDTO> categories = productCategories.stream()
+                .map(pc -> CategoryResponseDTO.builder()
+                        .id(pc.getCategory().getId())
+                        .name(pc.getCategory().getName())
+                        .description(pc.getCategory().getDescription())
+                        .build())
+                .toList();
 
         responseDTO.setCategories(categories);
 
         return responseDTO;
     }
-
 
 }
