@@ -1,6 +1,5 @@
 package com.example.apisample.product.controller;
 
-import com.example.apisample.product.entity.Product;
 import com.example.apisample.product.model.dto.ProductCreateDTO;
 import com.example.apisample.product.model.dto.ProductResponseDTO;
 import com.example.apisample.product.model.dto.ProductUpdateDTO;
@@ -15,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

@@ -1,6 +1,5 @@
 package com.example.apisample.auth.dto;
 
-import com.example.apisample.utils.message.ValidateMessage;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

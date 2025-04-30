@@ -9,6 +9,7 @@ import com.example.apisample.rating.exception.RatingHasBeenRestoreException;
 import com.example.apisample.rating.exception.RatingNotFoundException;
 import com.example.apisample.rating.model.dto.RatingRequestDTO;
 import com.example.apisample.rating.model.dto.RatingResponseDTO;
+import com.example.apisample.rating.model.dto.RatingUpdateRequestDTO;
 import com.example.apisample.rating.model.mapper.RatingMapper;
 import com.example.apisample.rating.repository.RatingRepository;
 import com.example.apisample.rating.service.RatingService;
@@ -21,7 +22,6 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,6 +45,20 @@ public class RatingServiceImpl implements RatingService {
 
         Page<RatingResponseDTO> dtoPage = new PageImpl<>(dtoList, pageable, ratingPage.getTotalElements());
         return new APIPageableResponseDTO<>(dtoPage);
+    }
+
+    @Override
+    public Double calculateAverageRating(Integer productId) {
+        List<Rating> ratings = ratingRepository.findAllByProduct_IdAndDeletedFalse(productId);
+
+        if (ratings.isEmpty()) return 0.0;
+
+        double sum = 0.0;
+        for (Rating rating : ratings) {
+            sum += rating.getPoint();
+        }
+
+        return sum / ratings.size();
     }
 
 
@@ -97,7 +111,7 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     @Transactional
-    public void updateRating(Integer id, RatingRequestDTO request) {
+    public void updateRating(Integer id, RatingUpdateRequestDTO request) {
         Rating rating = ratingRepository.findById(id)
                 .orElseThrow(RatingNotFoundException::new);
 

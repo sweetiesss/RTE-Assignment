@@ -1,11 +1,7 @@
 package com.example.apisample.user.service;
 
 
-import com.example.apisample.auth.exception.EmailCannotBeSendException;
-import com.example.apisample.role.exception.RoleDoesNotExistException;
 import com.example.apisample.user.entity.User;
-import com.example.apisample.user.exception.UserAlreadyExistsException;
-import com.example.apisample.user.exception.UserDoesNotExistException;
 import com.example.apisample.user.model.dto.UserRegisterRequestDTO;
 import com.example.apisample.user.model.dto.UserResponseDTO;
 import com.example.apisample.user.model.dto.UserUpdateRequestDTO;

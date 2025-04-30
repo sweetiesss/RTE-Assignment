@@ -2,6 +2,7 @@ package com.example.apisample.rating.controller;
 
 import com.example.apisample.rating.model.dto.RatingRequestDTO;
 import com.example.apisample.rating.model.dto.RatingResponseDTO;
+import com.example.apisample.rating.model.dto.RatingUpdateRequestDTO;
 import com.example.apisample.rating.service.RatingService;
 import com.example.apisample.utils.ApiResponse;
 import com.example.apisample.utils.message.LogMessage;
@@ -87,7 +88,7 @@ public class RatingController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse> updateRating(@PathVariable Integer id, @RequestBody @Valid RatingRequestDTO ratingRequest) {
+    public ResponseEntity<ApiResponse> updateRating(@PathVariable Integer id, @RequestBody @Valid RatingUpdateRequestDTO ratingRequest) {
         log.debug(LogMessage.RATING_UPDATE_START);
 
         ratingService.updateRating(id, ratingRequest);

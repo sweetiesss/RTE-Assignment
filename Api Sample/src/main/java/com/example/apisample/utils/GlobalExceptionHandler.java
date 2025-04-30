@@ -364,4 +364,16 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(apiResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<?> BaseRuntimeException(RuntimeException ex) {
+        String errorMessage = ex.getMessage();
+        logger.error(errorMessage, ex);
+        ApiResponse apiResponse = ApiResponse.builder()
+                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .message(errorMessage)
+                .build();
+        return new ResponseEntity<>(apiResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
 }

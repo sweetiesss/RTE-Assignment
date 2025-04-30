@@ -24,6 +24,7 @@ public class ResponseMessage {
     public static final String msgEmailCannotSend = "Email cannot be sent!";
     public static final String msgProductNotFound = "Product not found!";
     public static final String msgProductDeleted = "Product deleted!";
+    public static final String msgProductNotDeleted = "Product deleted!";
     public static final String msgRatingDeleted = "Rating deleted!";
     public static final String msgRatingHasBeenMade = "Rating on this product has been made!";
     public static final String msgRatingHasBeenRestore = "Rating has been restore!";

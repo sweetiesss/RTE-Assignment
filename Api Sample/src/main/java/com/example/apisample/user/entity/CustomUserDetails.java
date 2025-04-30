@@ -1,6 +1,5 @@
 package com.example.apisample.user.entity;
 
-import com.example.apisample.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
