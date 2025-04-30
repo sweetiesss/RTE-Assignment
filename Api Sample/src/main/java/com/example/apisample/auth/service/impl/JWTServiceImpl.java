@@ -1,10 +1,8 @@
 package com.example.apisample.auth.service.impl;
 
-import com.example.apisample.auth.exception.InvalidateException;
 import com.example.apisample.auth.exception.TokenExpiredException;
 import com.example.apisample.auth.service.JWTService;
 import com.example.apisample.user.entity.User;
-import com.example.apisample.user.exception.UserDoesNotExistException;
 import com.example.apisample.user.service.UserService;
 import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.Claims;
@@ -39,6 +37,7 @@ public class JWTServiceImpl implements JWTService {
     private static final String SECRET_KEY = dotenv.get("JWT_SECRET");
     private static final String REFRESH_TOKEN_COOKIE_NAME = "refresh-token";
     private static final String CLAIM_NAME_TOKEN_VERSION = "token-version";
+    private static final String CLAIM_NAME_USER_ID = "userId";
     private static final String CLAIM_NAME_ROLE = "role";
     private static final String CLAIM_NAME_JTI = "jti";
     private static final String JWT_TYPE_NAME = "typ";
@@ -70,6 +69,7 @@ public class JWTServiceImpl implements JWTService {
                 .claim(CLAIM_NAME_ROLE, user.getRole().getRoleName())
                 .claim(CLAIM_NAME_JTI, UUID.randomUUID().toString())
                 .claim(CLAIM_NAME_TOKEN_VERSION, user.getTokenVersion())
+                .claim(CLAIM_NAME_USER_ID, user.getId())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpirationMs))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)

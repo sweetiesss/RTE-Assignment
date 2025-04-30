@@ -1,6 +1,7 @@
 package com.example.apisample.productcategory.controller;
 
 import com.example.apisample.product.exception.ProductNotFoundException;
+import com.example.apisample.product.model.dto.ProductResponseDTO;
 import com.example.apisample.productcategory.model.dto.ProductCategoryRequestDTO;
 import com.example.apisample.productcategory.model.dto.ProductCategoryResponseDTO;
 import com.example.apisample.productcategory.service.ProductCategoryService;
@@ -83,4 +84,17 @@ public class ProductCategoryController {
 
         return ResponseEntity.ok(productCategory);
     }
+
+    @GetMapping("/products-by-category/{categoryId}")
+    public ResponseEntity<APIPageableResponseDTO<ProductResponseDTO>> getProductsByCategory(
+            @PathVariable Integer categoryId,
+            @RequestParam(defaultValue = DEFAULT_PAGE, name = "page") Integer pageNo,
+            @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, name = "size") Integer pageSize,
+            @RequestParam(defaultValue = "Product", name = "sort") String sort
+    ) {
+        APIPageableResponseDTO<ProductResponseDTO> response =
+                productCategoryService.getProductsByCategory(categoryId, pageNo, pageSize, sort);
+        return ResponseEntity.ok(response);
+    }
+
 }

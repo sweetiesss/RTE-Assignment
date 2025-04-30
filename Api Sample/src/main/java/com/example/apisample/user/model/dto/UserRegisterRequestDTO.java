@@ -7,11 +7,6 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 @Data
 public class UserRegisterRequestDTO {
     @NotBlank(message = "Email is required")
