@@ -5,14 +5,7 @@ import type React from "react";
 import { useState, useEffect } from "react";
 import { api } from "../api";
 import Navbar from "../components/Navbar";
-
-type Product = {
-  id: string;
-  name: string;
-  description: string;
-  imageUrl?: string;
-  averageRating?: number;
-};
+import { Product } from "../types/Product";
 
 export default function AdminDashboard() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -38,7 +31,7 @@ export default function AdminDashboard() {
     if (editingProduct) {
       setName(editingProduct.name);
       setDescription(editingProduct.description);
-      setImageUrl(editingProduct.imageUrl || "");
+      setImageUrl(editingProduct.image || "");
     } else {
       resetForm();
     }
@@ -82,20 +75,6 @@ export default function AdminDashboard() {
     setSubmitSuccess(false);
 
     try {
-      const productData = {
-        name,
-        description,
-        imageUrl: imageUrl || undefined,
-      };
-
-      if (editingProduct) {
-        // Update existing product
-        await api.products.update(editingProduct.id, productData);
-      } else {
-        // Create new product
-        await api.products.create(productData);
-      }
-
       // Reset form
       resetForm();
       setEditingProduct(null);
@@ -129,15 +108,6 @@ export default function AdminDashboard() {
       setDeleteConfirm(productId);
       return;
     }
-
-    // try {
-    //   await api.products.delete(productId);
-    //   setDeleteConfirm(null);
-    //   fetchProducts();
-    // } catch (err) {
-    //   console.error("Failed to delete product:", err);
-    //   setError("Failed to delete product");
-    // }
   };
 
   return (
@@ -298,9 +268,9 @@ export default function AdminDashboard() {
                   >
                     <div className="flex items-start">
                       <div className="flex-shrink-0 h-12 w-12 bg-gray-100 rounded-md overflow-hidden">
-                        {product.imageUrl ? (
+                        {product.image ? (
                           <img
-                            src={product.imageUrl || "/placeholder.svg"}
+                            src={product.image || "/placeholder.svg"}
                             alt={product.name}
                             className="h-full w-full object-cover"
                           />

@@ -12,9 +12,9 @@ import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 import AuthVerification from "./components/AuthVerification";
-import ProductPage from "./pages/ProductPage"; // This is the new all products page
-import ProductDetailPage from "./pages/ProductDetailPage"; // Already renamed
-
+import ProductPage from "./pages/ProductPage";
+import ProductDetailPage from "./pages/ProductDetailPage";
+import CategoryManagementPage from "./pages/CategoryPage";
 function App() {
   return (
     <Router>
@@ -60,7 +60,14 @@ function App() {
               </AdminRoute>
             }
           />
-
+          <Route
+            path="/admin/categories"
+            element={
+              <AdminRoute>
+                <CategoryManagementPage />
+              </AdminRoute>
+            }
+          />
           {/* Redirect any unknown routes to home */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
