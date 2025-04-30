@@ -2,7 +2,7 @@ package com.example.apisample.auth.service.impl;
 
 import com.example.apisample.auth.dto.ResetPasswordRequestDTO;
 import com.example.apisample.auth.enums.OtpType;
-import com.example.apisample.auth.exception.*;
+import com.example.apisample.auth.exception.InvalidCredentialsException;
 import com.example.apisample.auth.service.AuthService;
 import com.example.apisample.auth.service.OtpService;
 import com.example.apisample.user.entity.User;

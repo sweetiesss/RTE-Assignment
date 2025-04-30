@@ -5,14 +5,12 @@ import com.example.apisample.role.exception.RoleDoesNotExistException;
 import com.example.apisample.role.repository.RoleRepository;
 import com.example.apisample.role.service.RoleService;
 import com.example.apisample.user.entity.User;
-import com.example.apisample.user.exception.UserDoesNotExistException;
 import com.example.apisample.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

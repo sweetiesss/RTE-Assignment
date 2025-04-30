@@ -1,9 +1,7 @@
 package com.example.apisample.auth.service;
 
-import com.example.apisample.auth.exception.InvalidateException;
 import com.example.apisample.auth.exception.TokenExpiredException;
 import com.example.apisample.user.entity.User;
-import com.example.apisample.user.exception.UserDoesNotExistException;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

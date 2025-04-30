@@ -21,4 +21,5 @@ public class ProductResponseDTO {
     private String deleted;
     private Instant createOn;
     private Instant lastUpdateOn;
+    private Double averageRating;
 }

@@ -1,7 +1,6 @@
 package com.example.apisample.user.service.impl;
 
 
-import com.example.apisample.auth.exception.EmailCannotBeSendException;
 import com.example.apisample.auth.service.EmailService;
 import com.example.apisample.role.entity.Role;
 import com.example.apisample.role.exception.RoleDoesNotExistException;
@@ -28,12 +27,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.security.SecureRandom;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

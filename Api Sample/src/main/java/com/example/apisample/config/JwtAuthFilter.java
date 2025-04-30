@@ -1,7 +1,6 @@
 package com.example.apisample.config;
 
 import com.example.apisample.auth.service.JWTService;
-import com.example.apisample.user.exception.UserDoesNotExistException;
 import com.example.apisample.user.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
