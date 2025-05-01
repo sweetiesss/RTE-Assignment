@@ -61,7 +61,7 @@ function App() {
             }
           />
           <Route
-            path="/admin/categories"
+            path="/categories"
             element={
               <AdminRoute>
                 <CategoryManagementPage />

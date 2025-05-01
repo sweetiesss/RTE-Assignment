@@ -256,68 +256,92 @@ export default function ProductPage() {
             </div>
 
             {/* Products Grid */}
-            <div
-              className={`grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ${
-                isLoading ? "min-h-[400px]" : "" // Ensure a minimum height during loading to prevent layout shift
-              }`}
-            >
-              {isLoading ? (
-                // Show skeleton loaders while loading
-                Array.from({ length: 8 }).map((_, index) => (
-                  <div
-                    key={index}
-                    className="animate-pulse flex flex-col gap-4 p-4 border rounded-lg shadow-sm bg-white"
-                  >
-                    <div className="bg-gray-300 h-48 rounded-md" />
-                    <div className="h-4 bg-gray-300 rounded w-3/4" />
-                    <div className="h-4 bg-gray-300 rounded w-1/2" />
-                  </div>
-                ))
-              ) : products.length > 0 ? (
-                products.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    onUpdate={fetchProducts} // Pass fetchProducts as the callback
-                  />
-                ))
-              ) : (
-                // No products found
-                <div className="col-span-full text-center text-gray-500">
-                  No products found.
-                </div>
-              )}
-            </div>
-
-            {/* Pagination Controls */}
-            <div className="flex justify-center items-center mt-8 space-x-2">
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 0}
-                className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 disabled:opacity-50"
+            {/* Products Grid */}
+            <div>
+              <div
+                className="space-y-4 overflow-hidden"
+                style={{
+                  height: `${
+                    products.length < 8
+                      ? 300 * 2
+                      : Math.ceil(products.length / 4) * 300
+                  }px`, // Dynamically adjust height
+                }}
               >
-                Previous
-              </button>
-              {Array.from({ length: totalPages }).map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => handlePageChange(index)}
-                  className={`px-4 py-2 rounded-md ${
-                    currentPage === index
-                      ? "bg-indigo-600 text-white"
-                      : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                  }`}
+                <div
+                  className={`grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4`}
                 >
-                  {index + 1}
+                  {isLoading ? (
+                    // Show skeleton loaders while loading
+                    Array.from({ length: 8 }).map((_, index) => (
+                      <div
+                        key={index}
+                        className="animate-pulse flex flex-col gap-4 p-4 border rounded-lg shadow-sm bg-white"
+                      >
+                        <div className="bg-gray-300 h-48 rounded-md" />
+                        <div className="h-4 bg-gray-300 rounded w-3/4" />
+                        <div className="h-4 bg-gray-300 rounded w-1/2" />
+                      </div>
+                    ))
+                  ) : products.length > 0 ? (
+                    products.map((product) => (
+                      <ProductCard
+                        key={product.id}
+                        product={product}
+                        onUpdate={fetchProducts} // Pass fetchProducts as the callback
+                      />
+                    ))
+                  ) : (
+                    // No products found
+                    <div className="col-span-full text-center text-gray-500">
+                      No products found.
+                    </div>
+                  )}
+
+                  {/* Add empty divs to fill space if there are fewer items */}
+                  {products.length < 8 &&
+                    Array.from({ length: 8 - products.length }).map(
+                      (_, index) => (
+                        <div
+                          key={`placeholder-${index}`}
+                          className="bg-gray-100 border rounded-lg p-4 shadow-sm flex justify-between items-center"
+                          style={{ visibility: "hidden" }} // Hide placeholders visually
+                        ></div>
+                      )
+                    )}
+                </div>
+              </div>
+
+              {/* Pagination Controls */}
+              <div className="flex justify-center items-center mt-8 space-x-2">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 0}
+                  className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 disabled:opacity-50"
+                >
+                  Previous
                 </button>
-              ))}
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages - 1}
-                className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 disabled:opacity-50"
-              >
-                Next
-              </button>
+                {Array.from({ length: totalPages }).map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handlePageChange(index)}
+                    className={`px-4 py-2 rounded-md ${
+                      currentPage === index
+                        ? "bg-indigo-600 text-white"
+                        : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                    }`}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages - 1}
+                  className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 disabled:opacity-50"
+                >
+                  Next
+                </button>
+              </div>
             </div>
           </div>
         </div>
