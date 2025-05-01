@@ -212,74 +212,96 @@ export default function CategoryManagementPage() {
                 <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-indigo-600 border-r-transparent"></div>
                 <p className="mt-4 text-gray-600">Loading categories...</p>
               </div>
-            ) : categories.length > 0 ? (
-              <div className="space-y-4">
-                {categories.map((category) => (
-                  <div
-                    key={category.id}
-                    className="bg-white border rounded-lg p-4 shadow-sm flex justify-between items-center"
-                  >
-                    <div>
-                      <h3 className="text-lg font-medium">{category.name}</h3>
-                      <p className="text-sm text-gray-500">
-                        {category.description}
-                      </p>
-                    </div>
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => handleEdit(category)}
-                        className="inline-flex items-center justify-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(category.id)}
-                        className="inline-flex items-center justify-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-100"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
             ) : (
-              <div className="text-center py-12 bg-white border rounded-lg">
-                <p className="text-gray-500">No categories available</p>
+              <div className="space-y-4">
+                {/* Fixed height container for category list */}
+                <div
+                  className="space-y-4 overflow-hidden"
+                  style={{
+                    height: `${
+                      categories.length < 5 ? 80 * 5 : categories.length * 80
+                    }px`,
+                  }} // Dynamically adjust height
+                >
+                  {categories.map((category) => (
+                    <div
+                      key={category.id}
+                      className="bg-white border rounded-lg p-4 shadow-sm flex justify-between items-center"
+                    >
+                      <div>
+                        <h3 className="text-lg font-medium">{category.name}</h3>
+                        <p className="text-sm text-gray-500">
+                          {category.description}
+                        </p>
+                      </div>
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => handleEdit(category)}
+                          className="inline-flex items-center justify-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(category.id)}
+                          className="inline-flex items-center justify-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-100"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* Add empty divs to fill space if there are fewer items */}
+                  {categories.length < 5 &&
+                    Array.from({ length: 5 - categories.length }).map(
+                      (_, index) => (
+                        <div
+                          key={`placeholder-${index}`}
+                          className="bg-gray-100 border rounded-lg p-4 shadow-sm flex justify-between items-center"
+                          style={{ visibility: "hidden" }} // Hide placeholders visually
+                        ></div>
+                      )
+                    )}
+                </div>
+
+                {/* Pagination Controls */}
+                <div className="flex justify-center items-center mt-8 space-x-2">
+                  <button
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.max(prev - 1, 0))
+                    }
+                    disabled={currentPage === 0}
+                    className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 disabled:opacity-50"
+                  >
+                    Previous
+                  </button>
+                  {Array.from({ length: totalPages }).map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentPage(index)}
+                      className={`px-4 py-2 rounded-md ${
+                        currentPage === index
+                          ? "bg-indigo-600 text-white"
+                          : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                      }`}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() =>
+                      setCurrentPage((prev) =>
+                        Math.min(prev + 1, totalPages - 1)
+                      )
+                    }
+                    disabled={currentPage === totalPages - 1}
+                    className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 disabled:opacity-50"
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
             )}
-
-            {/* Pagination Controls */}
-            <div className="flex justify-center items-center mt-8 space-x-2">
-              <button
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
-                disabled={currentPage === 0}
-                className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 disabled:opacity-50"
-              >
-                Previous
-              </button>
-              {Array.from({ length: totalPages }).map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentPage(index)}
-                  className={`px-4 py-2 rounded-md ${
-                    currentPage === index
-                      ? "bg-indigo-600 text-white"
-                      : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                  }`}
-                >
-                  {index + 1}
-                </button>
-              ))}
-              <button
-                onClick={() =>
-                  setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1))
-                }
-                disabled={currentPage === totalPages - 1}
-                className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 disabled:opacity-50"
-              >
-                Next
-              </button>
-            </div>
           </div>
         </div>
       </main>

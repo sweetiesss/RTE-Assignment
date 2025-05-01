@@ -213,17 +213,17 @@ export const api = {
     getByProductId: (productId: string) =>
       fetchWithAuth(`/product-categories/${productId}`),
     create: (categoryData: { name: string; description: string }) =>
-      fetchWithAuth("/categories", {
+      fetchWithAuth("/categories/admin", {
         method: "POST",
         body: JSON.stringify(categoryData),
       }),
     update: (id: number, categoryData: { name: string; description: string }) =>
-      fetchWithAuth(`/categories/${id}`, {
+      fetchWithAuth(`/categories/admin/${id}`, {
         method: "PUT",
         body: JSON.stringify(categoryData),
       }),
     delete: (id: number) =>
-      fetchWithAuth(`/categories/${id}`, {
+      fetchWithAuth(`/categories/admin/${id}`, {
         method: "DELETE",
       }),
   },

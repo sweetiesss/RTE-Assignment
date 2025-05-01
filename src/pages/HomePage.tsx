@@ -213,44 +213,6 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* Categories Section */}
-      <section className="py-12 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-8 text-center">
-            Shop by Category
-          </h2>
-
-          {isLoadingCategories ? (
-            <div className="flex items-center justify-center h-64">
-              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-indigo-600 border-r-transparent"></div>
-            </div>
-          ) : categories.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {categories.map((category) => (
-                <div
-                  key={category.id}
-                  onClick={() => handleCategoryClick(category.id)} // Handle category click
-                  className="flex flex-col items-center justify-between h-48 p-6 rounded-xl bg-indigo-50 border border-indigo-100 hover:bg-indigo-100 transition cursor-pointer"
-                >
-                  <div className="text-center">
-                    <div className="text-indigo-700 text-xl font-semibold mb-2 capitalize truncate">
-                      {category.name}
-                    </div>
-                    <p className="text-gray-600 text-sm line-clamp-3">
-                      {category.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12 bg-white rounded-lg">
-              <p className="text-gray-500">No categories available</p>
-            </div>
-          )}
-        </div>
-      </section>
-
       {/* Popular Products Section */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
