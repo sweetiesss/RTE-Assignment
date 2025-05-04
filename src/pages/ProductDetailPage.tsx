@@ -22,8 +22,16 @@ export default function ProductPage() {
   const { user } = useAuth();
   const [ratingError, setRatingError] = useState("");
   const [commentError, setCommentError] = useState("");
-  const [categories, setCategories] = useState<Category[] | null>(null); // State for categories
-
+  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+  const [productCategories, setProductCategories] = useState<Category[] | null>(
+    null
+  );
+  const [popupCategories, setPopupCategories] = useState<Category[]>([]);
+  const [isPopupLoading, setIsPopupLoading] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       if (!id) return;
@@ -35,13 +43,11 @@ export default function ProductPage() {
 
         const ratingResponse = await api.ratings.getByProductId(id);
         setRatings(ratingResponse.content || []);
-
-        // Fetch categories for the product
         try {
           const categoryResponse = await api.categories.getByProductId(id);
-          setCategories(categoryResponse.categories || []);
+          setProductCategories(categoryResponse.categories || []);
         } catch {
-          setCategories(null); // Handle cases where no categories are returned
+          setProductCategories(null);
         }
       } catch (err) {
         setError("Failed to fetch product details.");
@@ -53,6 +59,38 @@ export default function ProductPage() {
 
     fetchData();
   }, [id]);
+
+  const fetchCategories = async (page: number = 0, search: string = "") => {
+    setIsPopupLoading(true);
+    try {
+      const response = await api.categories.getAll({
+        page,
+        size: 5,
+        sort: "name",
+        search,
+      });
+      setPopupCategories(response.content);
+      setTotalPages(response.pageable.totalPages);
+    } catch (error) {
+      console.error("Failed to fetch categories:", error);
+    } finally {
+      setIsPopupLoading(false);
+    }
+  };
+
+  const handleOpenPopup = () => {
+    setIsPopupOpen(true);
+    setSelectedCategories(productCategories?.map((cat) => cat.id) || []);
+    fetchCategories();
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+    setSearchInput("");
+    setPopupCategories([]);
+    setSelectedCategories([]);
+    setCurrentPage(0);
+  };
 
   const averageRating =
     ratings.length > 0
@@ -79,13 +117,11 @@ export default function ProductPage() {
     if (hasError) return;
 
     try {
-      // Check if it's an update or a new review
       const existingRating = ratings.find(
         (rating) => rating.userEmail === user?.email
       );
 
       if (existingRating) {
-        // Update existing review
         await api.ratings.update(existingRating.id, {
           point: reviewRating,
           description: reviewText,
@@ -144,6 +180,43 @@ export default function ProductPage() {
     }
   };
 
+  const handleCategorySelect = (categoryId: number) => {
+    setSelectedCategories((prev) =>
+      prev.includes(categoryId)
+        ? prev.filter((id) => id !== categoryId)
+        : [...prev, categoryId]
+    );
+  };
+
+  const handleAssignCategories = async () => {
+    if (!id) return;
+
+    try {
+      await api.products.assignCategoriesToProduct(
+        Number(id),
+        selectedCategories
+      );
+
+      const categoryResponse = await api.categories.getByProductId(id);
+      setProductCategories(categoryResponse.categories || []);
+
+      handleClosePopup();
+    } catch (error) {
+      console.error("Failed to assign categories:", error);
+      alert("Failed to assign categories. Please try again.");
+    }
+  };
+  // Handle pagination
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    fetchCategories(page, searchInput);
+  };
+
+  // Handle search
+  const handleSearch = () => {
+    fetchCategories(0, searchInput);
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -165,8 +238,56 @@ export default function ProductPage() {
                     className="w-full object-cover"
                   />
                 ) : (
-                  <div className="h-64 bg-gray-100 flex items-center justify-center">
-                    <span className="text-gray-400">No image available</span>
+                  <div className="h-64 bg-gray-100 flex flex-col items-center justify-center">
+                    <span className="text-gray-400 mb-4">
+                      No image available
+                    </span>
+                    {user?.role === "ADMIN" && (
+                      <>
+                        <label
+                          htmlFor="upload-image"
+                          className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 cursor-pointer"
+                        >
+                          Upload Image
+                        </label>
+                        <input
+                          type="file"
+                          id="upload-image"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={async (e) => {
+                            if (e.target.files && e.target.files[0]) {
+                              const file = e.target.files[0];
+
+                              try {
+                                const response = await api.products.uploadImage(
+                                  product.id,
+                                  file
+                                );
+
+                                if (response.ok) {
+                                  const data = await response.json();
+                                  alert("Image uploaded successfully!");
+                                  setProduct((prev) =>
+                                    prev ? { ...prev, image: data.data } : prev
+                                  ); // Update the product image
+                                } else {
+                                  const errorData = await response.json();
+                                  alert(
+                                    `Failed to upload image: ${errorData.message}`
+                                  );
+                                }
+                              } catch (error) {
+                                console.error("Error uploading image:", error);
+                                alert(
+                                  "An error occurred while uploading the image."
+                                );
+                              }
+                            }
+                          }}
+                        />
+                      </>
+                    )}
                   </div>
                 )}
               </div>
@@ -175,7 +296,6 @@ export default function ProductPage() {
                 <h1 className="text-4xl font-bold text-gray-900">
                   {product.name}
                 </h1>
-
                 <div className="flex items-center">
                   <StarRating rating={averageRating} />
                   <span className="ml-3 text-sm text-gray-600">
@@ -186,21 +306,18 @@ export default function ProductPage() {
                       : "No ratings yet"}
                   </span>
                 </div>
-
                 <p className="text-2xl font-semibold text-blue-600">
                   ${product.price}
                 </p>
-
                 <p className="text-gray-700 text-lg">{product.description}</p>
-
                 {/* Categories */}
-                {categories && categories.length > 0 ? (
+                {productCategories && productCategories.length > 0 ? (
                   <div>
                     <h3 className="text-lg font-semibold text-gray-800 mb-2">
                       Categories
                     </h3>
                     <div className="flex flex-wrap gap-2">
-                      {categories.map((category) => (
+                      {productCategories.map((category) => (
                         <span
                           key={category.id}
                           className="inline-block bg-indigo-100 text-indigo-800 text-sm font-medium px-3 py-1 rounded-full shadow-sm hover:bg-indigo-200 transition-colors"
@@ -213,9 +330,140 @@ export default function ProductPage() {
                 ) : (
                   <p className="text-gray-500">No categories available</p>
                 )}
+                {/* Assign Categories Button */}
+                {user?.role === "ADMIN" && (
+                  <button
+                    onClick={handleOpenPopup}
+                    className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                  >
+                    Assign Categories
+                  </button>
+                )}
+
+                {/* Popup Modal */}
+                {isPopupOpen && (
+                  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+                      <h2 className="text-xl font-bold mb-4">
+                        Assign Categories
+                      </h2>
+
+                      {/* Search Bar */}
+                      <div className="flex gap-2 mb-4">
+                        <input
+                          type="text"
+                          placeholder="Search categories..."
+                          value={searchInput}
+                          onChange={(e) => setSearchInput(e.target.value)}
+                          className="flex-grow px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        />
+                        <button
+                          onClick={handleSearch}
+                          className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                        >
+                          Search
+                        </button>
+                      </div>
+
+                      {/* Categories List */}
+                      <div
+                        className="space-y-2 overflow-hidden"
+                        style={{
+                          height: "250px",
+                        }}
+                      >
+                        <div
+                          className="space-y-2 overflow-hidden"
+                          style={{
+                            height: "250px", // Dynamically set the height for 5 items (5 * 50px)
+                          }}
+                        >
+                          {isPopupLoading ? (
+                            <p>Loading categories...</p>
+                          ) : (
+                            <>
+                              {popupCategories.map((category) => (
+                                <label
+                                  key={category.id}
+                                  className="flex items-center space-x-2 h-10"
+                                >
+                                  <input
+                                    type="checkbox"
+                                    value={category.id}
+                                    checked={selectedCategories.includes(
+                                      category.id
+                                    )} // Check if the category is in selectedCategories
+                                    onChange={() =>
+                                      handleCategorySelect(category.id)
+                                    } // Toggle selection
+                                    className="form-checkbox"
+                                  />
+                                  <span>{category.name}</span>
+                                </label>
+                              ))}
+                              {/* Add placeholders to fill the remaining space */}
+                              {popupCategories.length < 5 &&
+                                Array.from({
+                                  length: 5 - popupCategories.length,
+                                }).map((_, index) => (
+                                  <div
+                                    key={`placeholder-${index}`}
+                                    className="h-10"
+                                  />
+                                ))}
+                            </>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Pagination Controls */}
+                      <div className="flex justify-between items-center mt-4">
+                        <button
+                          type="button"
+                          onClick={() => handlePageChange(currentPage - 1)}
+                          disabled={currentPage === 0}
+                          className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 disabled:opacity-50"
+                        >
+                          Previous
+                        </button>
+                        <span>
+                          Page {currentPage + 1} of {totalPages}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => handlePageChange(currentPage + 1)}
+                          disabled={currentPage === totalPages - 1}
+                          className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 disabled:opacity-50"
+                        >
+                          Next
+                        </button>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex justify-end gap-4 mt-6">
+                        <button
+                          onClick={handleClosePopup}
+                          className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          onClick={handleAssignCategories}
+                          disabled={selectedCategories.length === 0}
+                          className={`px-4 py-2 rounded-md ${
+                            selectedCategories.length > 0
+                              ? "bg-indigo-600 text-white hover:bg-indigo-700"
+                              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                          }`}
+                        >
+                          Assign
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
-
             <div>
               <h2 className="text-2xl font-semibold text-gray-800 mb-6">
                 Customer Reviews

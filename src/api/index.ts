@@ -168,14 +168,39 @@ export const api = {
       ),
     getByCategory: (
       categoryId: number,
-      { page, size, sort }: { page: number; size: number; sort: string }
+      {
+        page,
+        size,
+        sort,
+        search,
+      }: { page: number; size: number; sort: string; search?: string }
     ) =>
       fetchWithAuth(
-        `/product-categories/products-by-category/${categoryId}?pageNo=${page}&pageSize=${size}&sort=${sort}`
+        `/product-categories/products-by-category/${categoryId}?pageNo=${page}&pageSize=${size}&sort=${sort}&search=${search}`
       ),
+    uploadImage: (productId: string, file: File) => {
+      const formData = new FormData();
+      formData.append("file", file); // Add the file to the form data
+
+      return fetch(`${API_BASE_URL}/products/admin/image/${productId}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`, // Include the token
+        },
+        body: formData, // Send the form data
+      });
+    },
+    assignCategoriesToProduct: (productId: number, categoryIds: number[]) => {
+      return fetchWithAuth(`/product-categories/admin`, {
+        method: "POST",
+        body: JSON.stringify({
+          productId,
+          categoryId: categoryIds,
+        }),
+      });
+    },
   },
 
-  // Ratings related endpoints
   // Ratings related endpoints
   ratings: {
     getByProductId: (productId: string) =>
@@ -205,11 +230,16 @@ export const api = {
       page,
       size,
       sort,
+      search,
     }: {
       page: number;
       size: number;
       sort: string;
-    }) => fetchWithAuth(`/categories?page=${page}&size=${size}&sort=${sort}`),
+      search?: string;
+    }) =>
+      fetchWithAuth(
+        `/categories?page=${page}&size=${size}&search=${search}&sort=${sort}`
+      ),
     getByProductId: (productId: string) =>
       fetchWithAuth(`/product-categories/${productId}`),
     create: (categoryData: { name: string; description: string }) =>
@@ -226,5 +256,39 @@ export const api = {
       fetchWithAuth(`/categories/admin/${id}`, {
         method: "DELETE",
       }),
+  },
+
+  users: {
+    getAll: async ({
+      page,
+      size,
+      sort,
+      search,
+    }: {
+      page: number;
+      size: number;
+      sort: string;
+      search?: string;
+    }) =>
+      fetchWithAuth(
+        `/users/admin/?page=${page}&size=${size}&sort=${sort}&search=${search}`
+      ), // Fetch all users with pagination and sorting
+
+    getById: async (userId: number) => fetchWithAuth(`/users/admin/${userId}`), // Fetch a single user's details
+
+    update: async (userId: number, userData: any) =>
+      fetchWithAuth(`/users/${userId}`, {
+        method: "PUT",
+        body: JSON.stringify(userData),
+      }),
+
+    delete: async (userId: number) =>
+      fetchWithAuth(`/users/admin/${userId}`, {
+        method: "DELETE",
+      }),
+    restore: async (userId: number) =>
+      fetchWithAuth(`/users/admin/restore/${userId}`, {
+        method: "POST",
+      }), // Restore a soft-deleted user
   },
 };

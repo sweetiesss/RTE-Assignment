@@ -6,8 +6,10 @@ import Footer from "../components/Footer";
 import { useAuth } from "../context/AuthContext";
 import { Product } from "../types/Product";
 import { Category } from "../types/Category";
+import { useLocation } from "react-router-dom";
 
 export default function ProductPage() {
+  const location = useLocation();
   const { user } = useAuth();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -15,7 +17,7 @@ export default function ProductPage() {
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null); // Selected category ID
   const [searchInput, setSearchInput] = useState(""); // User typing here
   const [searchTerm, setSearchTerm] = useState(""); // Actual search term
-  const [sortBy, setSortBy] = useState("Product"); // Backend expects 'createOn'
+  const [sortBy, setSortBy] = useState("Product");
   const [isCreating, setIsCreating] = useState(false); // Modal visibility
   const [newProduct, setNewProduct] = useState({
     name: "",
@@ -23,24 +25,26 @@ export default function ProductPage() {
     price: 0,
     featured: false,
   });
-
+  const [categorySearchInput, setCategorySearchInput] = useState("");
+  const key = location.search; // Use query parameters as the key
   // Pagination state for products
-  const [currentPage, setCurrentPage] = useState(0); // Current page number
-  const [totalPages, setTotalPages] = useState(1); // Total number of pages
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
 
   // Pagination state for categories
-  const [currentCategoryPage, setCurrentCategoryPage] = useState(0); // Current category page number
-  const [totalCategoryPages, setTotalCategoryPages] = useState(1); // Total number of category pages
-
+  const [currentCategoryPage, setCurrentCategoryPage] = useState(0);
+  const [totalCategoryPages, setTotalCategoryPages] = useState(1);
   // Fetch all categories
   const fetchCategories = async () => {
     try {
       const res = await api.categories.getAll({
         page: currentCategoryPage,
-        size: 5, // Number of categories per page
-        sort: "name",
+        size: 8,
+        sort: "id",
+        search: categorySearchInput, // Use the search input here
       });
-      setCategories(res.content);
+      console.log("category search: " + categorySearchInput);
+      setCategories(res.content); // Update the categories list
       setTotalCategoryPages(res.pageable.totalPages); // Update total category pages
     } catch (error) {
       console.error("Failed to fetch categories:", error);
@@ -52,13 +56,20 @@ export default function ProductPage() {
     setIsLoading(true);
     try {
       let res;
-      if (selectedCategory) {
+      const params = new URLSearchParams(location.search);
+      const categoryId = params.get("category");
+      if (selectedCategory || categoryId) {
+        console.log("categoryId inside: " + categoryId);
         // Fetch products by category
-        res = await api.products.getByCategory(selectedCategory, {
-          page: currentPage,
-          size: 8,
-          sort: sortBy,
-        });
+        res = await api.products.getByCategory(
+          selectedCategory || Number(categoryId),
+          {
+            page: currentPage,
+            size: 8,
+            sort: sortBy,
+            search: searchTerm,
+          }
+        );
       } else {
         // Fetch all products
         res = await api.products.getAll({
@@ -93,6 +104,11 @@ export default function ProductPage() {
     setSearchTerm(searchInput); // Trigger the actual search
   };
 
+  const handleCategorySearch = () => {
+    setCurrentCategoryPage(0); // Reset to the first page
+    fetchCategories(); // Trigger category search
+  };
+
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSortBy(e.target.value);
   };
@@ -111,15 +127,30 @@ export default function ProductPage() {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
+  useEffect(() => {
     fetchCategories(); // Fetch categories when category page changes
   }, [currentCategoryPage]);
 
   useEffect(() => {
-    fetchProducts(); // Fetch products when category, sort, search, or page changes
+    const params = new URLSearchParams(location.search);
+    const categoryId = params.get("category");
+    if (categoryId) {
+      setSelectedCategory(Number(categoryId)); // Set the selected category
+      setCurrentPage(0); // Reset to the first page
+    } else {
+      setSelectedCategory(null); // Reset if no category is selected
+    }
+  }, [location.search]);
+
+  useEffect(() => {
+    fetchProducts();
   }, [selectedCategory, sortBy, searchTerm, currentPage]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div key={key} className="min-h-screen flex flex-col bg-gray-50">
       <Navbar />
       <main className="flex-1 container mx-auto px-4 py-12">
         {/* Hero Section */}
@@ -134,15 +165,33 @@ export default function ProductPage() {
         </section>
 
         <div className="flex gap-8">
-          {/* Left: Categories */}
-          <aside className="w-1/4 hidden md:block">
+          <aside className="w-1/4 hidden md:block overflow-hidden">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">
               Categories
             </h3>
+
+            {/* Category Search Bar */}
+            <div className="flex gap-2 mb-4 w-full">
+              <input
+                type="text"
+                placeholder="Search categories..."
+                value={categorySearchInput}
+                onChange={(e) => setCategorySearchInput(e.target.value)}
+                className="flex-grow min-w-0 px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <button
+                onClick={handleCategorySearch}
+                className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-all flex-shrink-0"
+              >
+                Search
+              </button>
+            </div>
+
+            {/* Categories List */}
             <ul className="space-y-2">
               <li>
                 <button
-                  onClick={() => handleCategorySelect(null)} // Show all products
+                  onClick={() => handleCategorySelect(null)}
                   className={`w-full text-left px-4 py-2 rounded-md ${
                     selectedCategory === null
                       ? "bg-indigo-600 text-white"
@@ -168,7 +217,7 @@ export default function ProductPage() {
               ))}
             </ul>
 
-            {/* Category Pagination Controls */}
+            {/* Pagination Controls */}
             <div className="flex justify-center items-center mt-4 space-x-2">
               <button
                 onClick={() =>
@@ -256,15 +305,14 @@ export default function ProductPage() {
             </div>
 
             {/* Products Grid */}
-            {/* Products Grid */}
             <div>
               <div
                 className="space-y-4 overflow-hidden"
                 style={{
                   height: `${
                     products.length < 8
-                      ? 300 * 2
-                      : Math.ceil(products.length / 4) * 300
+                      ? 300 * 2 + 140
+                      : Math.ceil(products.length / 4) * 300 + 140
                   }px`, // Dynamically adjust height
                 }}
               >

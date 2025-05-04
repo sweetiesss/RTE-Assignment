@@ -37,6 +37,7 @@ export default function CategoryManagementPage() {
         page: currentPage,
         size: 5,
         sort: "name",
+        search: "",
       });
       setCategories(response.content);
       setTotalPages(response.pageable.totalPages);
@@ -219,7 +220,7 @@ export default function CategoryManagementPage() {
                   className="space-y-4 overflow-hidden"
                   style={{
                     height: `${
-                      categories.length < 5 ? 80 * 5 : categories.length * 80
+                      categories.length < 4 ? 80 * 5 : categories.length * 80
                     }px`,
                   }} // Dynamically adjust height
                 >

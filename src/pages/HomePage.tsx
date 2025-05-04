@@ -96,8 +96,9 @@ export default function HomePage() {
     try {
       const response = await api.categories.getAll({
         page: 0,
-        size: 8,
-        sort: "id",
+        size: 12, // Adjust the number of categories to display
+        sort: "name",
+        search: "",
       });
       setCategories(response.content);
     } catch (err) {
@@ -251,7 +252,41 @@ export default function HomePage() {
           )}
         </div>
       </section>
+      {/* Browse by Category Section */}
+      <section className="py-12 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-3xl font-bold">Browse by Category</h2>
+          </div>
 
+          {isLoadingCategories ? (
+            <div className="flex items-center justify-center h-64">
+              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-indigo-600 border-r-transparent"></div>
+            </div>
+          ) : categories.length > 0 ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+              {categories.map((category) => (
+                <div
+                  key={category.id}
+                  onClick={() => handleCategoryClick(category.id)}
+                  className="cursor-pointer bg-gray-100 hover:bg-gray-200 transition-colors p-4 rounded-lg shadow-sm text-center"
+                >
+                  <h3 className="text-lg font-semibold text-gray-800">
+                    {category.name}
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    {category.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 bg-gray-50 rounded-lg">
+              <p className="text-gray-500">No categories available</p>
+            </div>
+          )}
+        </div>
+      </section>
       <Footer />
     </div>
   );
