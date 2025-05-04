@@ -15,6 +15,8 @@ import AuthVerification from "./components/AuthVerification";
 import ProductPage from "./pages/ProductPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import CategoryManagementPage from "./pages/CategoryPage";
+import UserManagementPage from "./pages/UserPage";
+
 function App() {
   return (
     <Router>
@@ -65,6 +67,15 @@ function App() {
             element={
               <AdminRoute>
                 <CategoryManagementPage />
+              </AdminRoute>
+            }
+          />
+          {/* Other routes */}
+          <Route
+            path="/users"
+            element={
+              <AdminRoute>
+                <UserManagementPage />
               </AdminRoute>
             }
           />

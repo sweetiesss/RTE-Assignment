@@ -1,17 +1,19 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom"; // Import useLocation
 import { useAuth } from "../context/AuthContext";
-import { ShoppingCart, User, Menu, X, Heart, Search } from "react-feather";
+import { User, Menu, X, Search } from "react-feather";
 import { api } from "../api";
 
 export default function Navbar() {
   const { user, isAuthenticated, logout: contextLogout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State to control dropdown visibility
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [dropdownTimeout, setDropdownTimeout] = useState<NodeJS.Timeout | null>(
     null
-  ); // Timeout for dropdown
+  );
+
+  const location = useLocation(); // Get the current route
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -33,17 +35,19 @@ export default function Navbar() {
 
   const handleMouseEnter = () => {
     if (dropdownTimeout) {
-      clearTimeout(dropdownTimeout); // Clear any existing timeout
+      clearTimeout(dropdownTimeout);
     }
-    setIsDropdownOpen(true); // Show the dropdown
+    setIsDropdownOpen(true);
   };
 
   const handleMouseLeave = () => {
     const timeout = setTimeout(() => {
-      setIsDropdownOpen(false); // Hide the dropdown after a delay
-    }, 200); // Adjust the delay as needed (200ms in this case)
+      setIsDropdownOpen(false);
+    }, 200);
     setDropdownTimeout(timeout);
   };
+
+  const isActive = (path: string) => location.pathname === path; // Check if the current route matches the path
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
@@ -58,34 +62,48 @@ export default function Navbar() {
           <nav className="hidden md:flex items-center space-x-8">
             <Link
               to="/"
-              className="text-sm font-medium hover:text-indigo-600 transition-colors"
+              className={`text-sm font-medium transition-colors ${
+                isActive("/")
+                  ? "text-indigo-600 font-bold"
+                  : "hover:text-indigo-600"
+              }`}
             >
               Home
             </Link>
             <Link
               to="/products"
-              className="text-sm font-medium hover:text-indigo-600 transition-colors"
+              className={`text-sm font-medium transition-colors ${
+                isActive("/products")
+                  ? "text-indigo-600 font-bold"
+                  : "hover:text-indigo-600"
+              }`}
             >
               Products
             </Link>
-            <Link
-              to="/categories"
-              className="text-sm font-medium hover:text-indigo-600 transition-colors"
-            >
-              Categories
-            </Link>
-            <Link
-              to="/about"
-              className="text-sm font-medium hover:text-indigo-600 transition-colors"
-            >
-              About
-            </Link>
-            <Link
-              to="/contact"
-              className="text-sm font-medium hover:text-indigo-600 transition-colors"
-            >
-              Contact
-            </Link>
+            {user?.role === "ADMIN" && (
+              <>
+                <Link
+                  to="/categories"
+                  className={`text-sm font-medium transition-colors ${
+                    isActive("/categories")
+                      ? "text-indigo-600 font-bold"
+                      : "hover:text-indigo-600"
+                  }`}
+                >
+                  Categories
+                </Link>
+                <Link
+                  to="/users"
+                  className={`text-sm font-medium transition-colors ${
+                    isActive("/users")
+                      ? "text-indigo-600 font-bold"
+                      : "hover:text-indigo-600"
+                  }`}
+                >
+                  Users
+                </Link>
+              </>
+            )}
           </nav>
 
           {/* Actions */}
@@ -99,31 +117,12 @@ export default function Navbar() {
               <Search size={20} />
             </button>
 
-            {/* Wishlist */}
-            <Link
-              to="/wishlist"
-              className="p-2 text-gray-600 hover:text-indigo-600 transition-colors"
-            >
-              <Heart size={20} />
-            </Link>
-
-            {/* Cart */}
-            <Link
-              to="/cart"
-              className="p-2 text-gray-600 hover:text-indigo-600 transition-colors relative"
-            >
-              <ShoppingCart size={20} />
-              <span className="absolute -top-1 -right-1 bg-indigo-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                3
-              </span>
-            </Link>
-
             {/* User Menu */}
             {isAuthenticated ? (
               <div
                 className="relative"
-                onMouseEnter={handleMouseEnter} // Show dropdown on hover
-                onMouseLeave={handleMouseLeave} // Hide dropdown after a delay
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
               >
                 <button className="flex items-center space-x-1 p-2 text-gray-600 hover:text-indigo-600 transition-colors">
                   <User size={20} />
@@ -131,28 +130,8 @@ export default function Navbar() {
                     {user?.email}
                   </span>
                 </button>
-                {isDropdownOpen && ( // Show dropdown if isDropdownOpen is true
+                {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
-                    <Link
-                      to="/profile"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Profile
-                    </Link>
-                    <Link
-                      to="/orders"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Orders
-                    </Link>
-                    {user?.role === "ADMIN" && (
-                      <Link
-                        to="/admin"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      >
-                        Admin Dashboard
-                      </Link>
-                    )}
                     <button
                       onClick={logout}
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
