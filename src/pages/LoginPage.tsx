@@ -1,6 +1,4 @@
-import type React from "react";
-
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../api";
 
@@ -9,6 +7,15 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isRegistering, setIsRegistering] = useState(false); // For popup visibility
+  const [registerData, setRegisterData] = useState({
+    email: "",
+    firstName: "",
+    lastName: "",
+    phone: "",
+  });
+  const [registerError, setRegisterError] = useState<string | null>(null);
+  const [isRegisterLoading, setIsRegisterLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSendOtp = async (e: React.FormEvent) => {
@@ -35,15 +42,48 @@ export default function LoginPage() {
     }
   };
 
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsRegisterLoading(true);
+    setRegisterError(null);
+
+    try {
+      const response = await api.auth.register(registerData);
+
+      if (response.statusCode === 200) {
+        alert(
+          "Registration successful! Please check your email for the password."
+        );
+        setIsRegistering(false); // Close the popup
+      } else {
+        setRegisterError(
+          response.message || "Failed to register. Please try again."
+        );
+      }
+    } catch (err) {
+      setRegisterError("An unexpected error occurred. Please try again.");
+      console.error(err);
+    } finally {
+      setIsRegisterLoading(false);
+    }
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8 bg-white p-8 rounded-lg shadow-sm">
+        {/* Welcome Text */}
+        <div className="text-center">
+          <h1 className="text-3xl font-extrabold text-indigo-600">
+            Welcome to ShopEase
+          </h1>
+        </div>
+
         <div>
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
             Sign in to your account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Enter your credentials to receive a one-time password
+            Enter your email to receive a one-time password
           </p>
         </div>
 
@@ -112,7 +152,130 @@ export default function LoginPage() {
             </button>
           </div>
         </form>
+
+        <div className="text-center mt-4">
+          <p className="text-sm text-gray-600">Don't have an account?</p>
+          <button
+            onClick={() => setIsRegistering(true)}
+            className="mt-2 text-sm font-medium text-indigo-600 hover:text-indigo-500 bg-transparent border-none shadow-none"
+          >
+            Register a new account
+          </button>
+        </div>
       </div>
+
+      {/* Registration Popup */}
+      {isRegistering && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h2 className="text-xl font-bold mb-4">Register</h2>
+            {registerError && (
+              <div className="rounded-md bg-red-50 p-4 mb-4">
+                <p className="text-sm text-red-700">{registerError}</p>
+              </div>
+            )}
+            <form
+              onSubmit={(e) => {
+                handleRegister(e);
+                setRegisterData({
+                  email: "",
+                  firstName: "",
+                  lastName: "",
+                  phone: "",
+                });
+              }}
+              className="space-y-4"
+            >
+              <input
+                type="email"
+                placeholder="Email"
+                value={registerData.email}
+                onChange={(e) =>
+                  setRegisterData({ ...registerData, email: e.target.value })
+                }
+                className="w-full px-4 py-2 border rounded-md"
+                required
+                disabled={isRegisterLoading}
+              />
+
+              <input
+                type="text"
+                placeholder="First Name"
+                value={registerData.firstName}
+                onChange={(e) =>
+                  setRegisterData({
+                    ...registerData,
+                    firstName: e.target.value,
+                  })
+                }
+                className="w-full px-4 py-2 border rounded-md"
+                required
+                disabled={isRegisterLoading}
+              />
+
+              <input
+                type="text"
+                placeholder="Last Name"
+                value={registerData.lastName}
+                onChange={(e) =>
+                  setRegisterData({ ...registerData, lastName: e.target.value })
+                }
+                className="w-full px-4 py-2 border rounded-md"
+                required
+                disabled={isRegisterLoading}
+              />
+
+              <input
+                type="text"
+                placeholder="Phone"
+                value={registerData.phone}
+                onChange={(e) => {
+                  const value = e.target.value.replace(/\D/g, "");
+                  setRegisterData({ ...registerData, phone: value });
+                }}
+                className="w-full px-4 py-2 border rounded-md"
+                required
+                disabled={isRegisterLoading}
+                pattern="\d{10}"
+                title="Phone number must be exactly 10 digits"
+              />
+              <div className="flex justify-end gap-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsRegistering(false);
+                    setRegisterData({
+                      email: "",
+                      firstName: "",
+                      lastName: "",
+                      phone: "",
+                    });
+                  }}
+                  disabled={isRegisterLoading}
+                  className={`px-4 py-2 rounded-md ${
+                    isRegisterLoading
+                      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      : "bg-gray-300 text-gray-800 hover:bg-gray-400"
+                  }`}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isRegisterLoading}
+                  className={`px-4 py-2 rounded-md ${
+                    isRegisterLoading
+                      ? "bg-green-400 text-white cursor-not-allowed"
+                      : "bg-green-600 text-white hover:bg-green-700"
+                  }`}
+                >
+                  {isRegisterLoading ? "Registering..." : "Register"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

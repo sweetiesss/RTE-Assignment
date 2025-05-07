@@ -6,61 +6,64 @@ import Footer from "../components/Footer";
 import { useAuth } from "../context/AuthContext";
 import { Product } from "../types/Product";
 import { Category } from "../types/Category";
+import { useLocation } from "react-router-dom";
 
 export default function ProductPage() {
+  const location = useLocation();
   const { user } = useAuth();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null); // Selected category ID
-  const [searchInput, setSearchInput] = useState(""); // User typing here
-  const [searchTerm, setSearchTerm] = useState(""); // Actual search term
-  const [sortBy, setSortBy] = useState("Product"); // Backend expects 'createOn'
-  const [isCreating, setIsCreating] = useState(false); // Modal visibility
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [searchInput, setSearchInput] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState("Product");
+  const [isCreating, setIsCreating] = useState(false);
   const [newProduct, setNewProduct] = useState({
     name: "",
     description: "",
     price: 0,
     featured: false,
   });
-
-  // Pagination state for products
-  const [currentPage, setCurrentPage] = useState(0); // Current page number
-  const [totalPages, setTotalPages] = useState(1); // Total number of pages
-
-  // Pagination state for categories
-  const [currentCategoryPage, setCurrentCategoryPage] = useState(0); // Current category page number
-  const [totalCategoryPages, setTotalCategoryPages] = useState(1); // Total number of category pages
-
-  // Fetch all categories
+  const [categorySearchInput, setCategorySearchInput] = useState("");
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentCategoryPage, setCurrentCategoryPage] = useState(0);
+  const [totalCategoryPages, setTotalCategoryPages] = useState(1);
   const fetchCategories = async () => {
     try {
       const res = await api.categories.getAll({
         page: currentCategoryPage,
-        size: 5, // Number of categories per page
-        sort: "name",
+        size: 8,
+        sort: "id",
+        search: categorySearchInput,
       });
+      console.log("category search: " + categorySearchInput);
       setCategories(res.content);
-      setTotalCategoryPages(res.pageable.totalPages); // Update total category pages
+      setTotalCategoryPages(res.pageable.totalPages);
     } catch (error) {
       console.error("Failed to fetch categories:", error);
     }
   };
-
-  // Fetch products (all or by category)
   const fetchProducts = async () => {
     setIsLoading(true);
     try {
       let res;
-      if (selectedCategory) {
-        // Fetch products by category
-        res = await api.products.getByCategory(selectedCategory, {
-          page: currentPage,
-          size: 8,
-          sort: sortBy,
-        });
+      const params = new URLSearchParams(location.search);
+      const categoryId = params.get("category");
+
+      if ((selectedCategory || categoryId) && selectedCategory !== -1) {
+        res = await api.products.getByCategory(
+          selectedCategory || Number(categoryId),
+          {
+            page: currentPage,
+            size: 8,
+            sort: sortBy,
+            search: searchTerm,
+          }
+        );
       } else {
-        // Fetch all products
         res = await api.products.getAll({
           page: currentPage,
           size: 8,
@@ -69,7 +72,8 @@ export default function ProductPage() {
         });
       }
       setProducts(res.content);
-      setTotalPages(res.pageable.totalPages); // Update total pages
+      console.log("Updated Products:", res.content);
+      setTotalPages(res.pageable.totalPages);
     } catch (error) {
       console.error("Failed to fetch products:", error);
     } finally {
@@ -82,7 +86,7 @@ export default function ProductPage() {
       await api.products.create(newProduct);
       alert("Product created successfully!");
       setIsCreating(false);
-      fetchProducts(); // Refresh the product list
+      fetchProducts();
     } catch (error) {
       console.error("Error creating product:", error);
       alert("Failed to create product.");
@@ -90,7 +94,12 @@ export default function ProductPage() {
   };
 
   const handleSearch = () => {
-    setSearchTerm(searchInput); // Trigger the actual search
+    setSearchTerm(searchInput);
+  };
+
+  const handleCategorySearch = () => {
+    setCurrentCategoryPage(0);
+    fetchCategories();
   };
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -98,24 +107,39 @@ export default function ProductPage() {
   };
 
   const handleCategorySelect = (categoryId: number | null) => {
-    setSelectedCategory(categoryId); // Update selected category
-    setCurrentPage(0); // Reset to the first page
+    setSelectedCategory(categoryId);
+    setCurrentPage(0);
   };
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page); // Update the current page
+    setCurrentPage(page);
   };
 
   const handleCategoryPageChange = (page: number) => {
-    setCurrentCategoryPage(page); // Update the current category page
+    setCurrentCategoryPage(page);
   };
 
   useEffect(() => {
-    fetchCategories(); // Fetch categories when category page changes
+    window.scrollTo(0, 0);
+  }, [location]);
+
+  useEffect(() => {
+    fetchCategories();
   }, [currentCategoryPage]);
 
   useEffect(() => {
-    fetchProducts(); // Fetch products when category, sort, search, or page changes
+    const params = new URLSearchParams(location.search);
+    const categoryId = params.get("category");
+    if (categoryId) {
+      setSelectedCategory(Number(categoryId));
+      setCurrentPage(0);
+    } else {
+      setSelectedCategory(null);
+    }
+  }, [location.search]);
+
+  useEffect(() => {
+    fetchProducts();
   }, [selectedCategory, sortBy, searchTerm, currentPage]);
 
   return (
@@ -134,17 +158,35 @@ export default function ProductPage() {
         </section>
 
         <div className="flex gap-8">
-          {/* Left: Categories */}
-          <aside className="w-1/4 hidden md:block">
+          <aside className="w-1/4 hidden md:block overflow-hidden">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">
               Categories
             </h3>
+
+            {/* Category Search Bar */}
+            <div className="flex gap-2 mb-4 w-full">
+              <input
+                type="text"
+                placeholder="Search categories..."
+                value={categorySearchInput}
+                onChange={(e) => setCategorySearchInput(e.target.value)}
+                className="flex-grow min-w-0 px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <button
+                onClick={handleCategorySearch}
+                className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-all flex-shrink-0"
+              >
+                Search
+              </button>
+            </div>
+
+            {/* Categories List */}
             <ul className="space-y-2">
               <li>
                 <button
-                  onClick={() => handleCategorySelect(null)} // Show all products
+                  onClick={() => handleCategorySelect(-1)}
                   className={`w-full text-left px-4 py-2 rounded-md ${
-                    selectedCategory === null
+                    selectedCategory === -1
                       ? "bg-indigo-600 text-white"
                       : "bg-gray-100 text-gray-800 hover:bg-gray-200"
                   }`}
@@ -168,7 +210,7 @@ export default function ProductPage() {
               ))}
             </ul>
 
-            {/* Category Pagination Controls */}
+            {/* Pagination Controls */}
             <div className="flex justify-center items-center mt-4 space-x-2">
               <button
                 onClick={() =>
@@ -256,15 +298,14 @@ export default function ProductPage() {
             </div>
 
             {/* Products Grid */}
-            {/* Products Grid */}
             <div>
               <div
                 className="space-y-4 overflow-hidden"
                 style={{
                   height: `${
                     products.length < 8
-                      ? 300 * 2
-                      : Math.ceil(products.length / 4) * 300
+                      ? 300 * 2 + 140
+                      : Math.ceil(products.length / 4) * 300 + 140
                   }px`, // Dynamically adjust height
                 }}
               >
@@ -349,42 +390,41 @@ export default function ProductPage() {
         {/* Modal for Creating Products */}
         {isCreating && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-              <h2 className="text-xl font-bold mb-4">Create New Product</h2>
-              <div className="space-y-4">
-                <input
-                  type="text"
-                  placeholder="Product Name"
-                  value={newProduct.name}
-                  onChange={(e) =>
-                    setNewProduct({ ...newProduct, name: e.target.value })
-                  }
-                  className="w-full px-4 py-2 border rounded-md"
-                />
-                <textarea
-                  placeholder="Product Description"
-                  value={newProduct.description}
-                  onChange={(e) =>
-                    setNewProduct({
-                      ...newProduct,
-                      description: e.target.value,
-                    })
-                  }
-                  className="w-full px-4 py-2 border rounded-md"
-                />
-                <input
-                  type="number"
-                  placeholder="Price"
-                  value={newProduct.price}
-                  onChange={(e) =>
-                    setNewProduct({
-                      ...newProduct,
-                      price: parseFloat(e.target.value),
-                    })
-                  }
-                  className="w-full px-4 py-2 border rounded-md"
-                />
-                <label className="flex items-center gap-2">
+            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
+              <h2 className="text-2xl font-bold mb-6">Create New Product</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Product Name
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Product Name"
+                    value={newProduct.name}
+                    onChange={(e) =>
+                      setNewProduct({ ...newProduct, name: e.target.value })
+                    }
+                    className="w-full px-4 py-2 border rounded-md"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Price
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="Price"
+                    value={newProduct.price}
+                    onChange={(e) =>
+                      setNewProduct({
+                        ...newProduct,
+                        price: parseFloat(e.target.value),
+                      })
+                    }
+                    className="w-full px-4 py-2 border rounded-md"
+                  />
+                </div>
+                <div className="flex items-center gap-2">
                   <input
                     type="checkbox"
                     checked={newProduct.featured}
@@ -395,19 +435,38 @@ export default function ProductPage() {
                       })
                     }
                   />
-                  Featured
-                </label>
+                  <label className="text-sm font-medium text-gray-700">
+                    Featured
+                  </label>
+                </div>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Product Description
+                  </label>
+                  <textarea
+                    placeholder="Product Description"
+                    value={newProduct.description}
+                    onChange={(e) =>
+                      setNewProduct({
+                        ...newProduct,
+                        description: e.target.value,
+                      })
+                    }
+                    className="w-full px-4 py-2 border rounded-md"
+                    rows={6}
+                  />
+                </div>
               </div>
-              <div className="flex justify-end gap-4 mt-4">
+              <div className="flex justify-end gap-4 mt-6">
                 <button
                   onClick={() => setIsCreating(false)}
-                  className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400"
+                  className="px-6 py-3 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleCreateProduct}
-                  className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+                  className="px-6 py-3 bg-green-600 text-white rounded-md hover:bg-green-700"
                 >
                   Save
                 </button>

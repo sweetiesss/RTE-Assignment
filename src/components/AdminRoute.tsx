@@ -12,12 +12,10 @@ export default function AdminRoute({ children }: AdminRouteProps) {
   const location = useLocation();
 
   if (isLoading) {
-    // You could render a loading spinner here
     return <div>Loading...</div>;
   }
 
   if (!isAuthenticated || user?.role !== "ADMIN") {
-    // Redirect to home page if not authenticated or not an admin
     return <Navigate to="/" state={{ from: location }} replace />;
   }
 

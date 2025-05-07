@@ -16,12 +16,10 @@ export default function AuthVerification() {
       const isAuthPage = currentPath === "/login" || currentPath === "/verify";
 
       if (isAuthenticated) {
-        // If on login or verify and already logged in, go to home
         if (currentPath === "/login" || currentPath === "/verify") {
           navigate("/");
         }
       } else {
-        // Not authenticated, only protect non-auth routes
         if (!isAuthPage) {
           navigate("/login");
         }
@@ -32,7 +30,7 @@ export default function AuthVerification() {
   }, [isAuthenticated, isLoading, location, navigate]);
 
   if (isLoading || checkingAuth) {
-    return null; // You could show a spinner here if desired
+    return null;
   }
 
   return null;

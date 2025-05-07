@@ -1,7 +1,7 @@
-import { User } from "./User";
+import { UserAuth } from "./UserAuth";
 
 export type AuthContextType = {
-  user: User | null;
+  user: UserAuth | null;
   isLoading: boolean;
   isAuthenticated: boolean;
   logout: () => void;

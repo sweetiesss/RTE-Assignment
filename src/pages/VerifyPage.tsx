@@ -13,8 +13,6 @@ export default function VerifyPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { checkAuth } = useAuth();
-
-  // Get email from URL query parameters
   const searchParams = new URLSearchParams(location.search);
   const email = searchParams.get("email") || "";
 
@@ -34,10 +32,8 @@ export default function VerifyPage() {
       const response = await api.auth.verifyOtp(email, otp);
 
       if (response.statusCode === 200) {
-        // Store token in localStorage
         localStorage.setItem("accessToken", response.data.accessToken);
-        checkAuth(); // re-check user in context
-        // Redirect to home page
+        checkAuth();
         navigate("/");
       } else {
         setError(response.message || "Invalid OTP. Please try again.");
@@ -51,8 +47,6 @@ export default function VerifyPage() {
   };
 
   const handleResendOtp = () => {
-    // Redirect back to login page for resending OTP
-    // This is because we need the password to request a new OTP
     navigate(`/login?email=${encodeURIComponent(email)}`);
   };
 

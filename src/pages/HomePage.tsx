@@ -4,37 +4,11 @@ import { Link } from "react-router-dom";
 import { api } from "../api";
 import Navbar from "../components/Navbar";
 import { ChevronLeft, ChevronRight, Search, ArrowRight } from "react-feather";
-import { Star, StarHalf, Star as StarEmpty } from "lucide-react";
 import ProductCard from "../components/ProductCard";
 import { useNavigate } from "react-router-dom";
 import StarRating from "../components/StarRating";
-
-type Product = {
-  id: string;
-  name: string;
-  description: string;
-  image?: string;
-  averageRating?: number;
-  createdAt: string;
-  price?: number;
-  featured: boolean;
-};
-
-type Category = {
-  id: number;
-  name: string;
-  description: string;
-};
-
-type CategoryResponse = {
-  content: Category[];
-  pageable: {
-    pageNumber: number;
-    pageSize: number;
-    totalElements: number;
-    totalPages: number;
-  };
-};
+import { Product } from "../types/Product";
+import { Category } from "../types/Category";
 
 export default function HomePage() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
@@ -96,8 +70,9 @@ export default function HomePage() {
     try {
       const response = await api.categories.getAll({
         page: 0,
-        size: 8,
-        sort: "id",
+        size: 100,
+        sort: "name",
+        search: "",
       });
       setCategories(response.content);
     } catch (err) {
@@ -118,7 +93,6 @@ export default function HomePage() {
   };
 
   const handleCategoryClick = (categoryId: number) => {
-    // Redirect to ProductPage with the selected category ID as a query parameter
     navigate(`/products?category=${categoryId}`);
   };
   return (
@@ -240,7 +214,7 @@ export default function HomePage() {
                 <ProductCard
                   key={product.id}
                   product={product}
-                  onUpdate={fetchProducts} // Pass fetchProducts as the callback
+                  onUpdate={fetchProducts}
                 />
               ))}
             </div>
@@ -251,7 +225,41 @@ export default function HomePage() {
           )}
         </div>
       </section>
+      {/* Browse by Category Section */}
+      <section className="py-12 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-3xl font-bold">Browse by Category</h2>
+          </div>
 
+          {isLoadingCategories ? (
+            <div className="flex items-center justify-center h-64">
+              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-indigo-600 border-r-transparent"></div>
+            </div>
+          ) : categories.length > 0 ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+              {categories.map((category) => (
+                <div
+                  key={category.id}
+                  onClick={() => handleCategoryClick(category.id)}
+                  className="cursor-pointer bg-gray-100 hover:bg-gray-200 transition-colors p-4 rounded-lg shadow-sm text-center"
+                >
+                  <h3 className="text-lg font-semibold text-gray-800">
+                    {category.name}
+                  </h3>
+                  <p className="text-sm text-gray-600 break-words line-clamp-1 overflow-hidden">
+                    {category.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 bg-gray-50 rounded-lg">
+              <p className="text-gray-500">No categories available</p>
+            </div>
+          )}
+        </div>
+      </section>
       <Footer />
     </div>
   );

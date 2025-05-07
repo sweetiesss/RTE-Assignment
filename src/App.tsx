@@ -8,13 +8,14 @@ import { AuthProvider } from "./context/AuthContext";
 import LoginPage from "./pages/LoginPage";
 import VerifyPage from "./pages/VerifyPage";
 import HomePage from "./pages/HomePage";
-import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 import AuthVerification from "./components/AuthVerification";
 import ProductPage from "./pages/ProductPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import CategoryManagementPage from "./pages/CategoryPage";
+import UserManagementPage from "./pages/UserPage";
+
 function App() {
   return (
     <Router>
@@ -50,21 +51,20 @@ function App() {
               </ProtectedRoute>
             }
           />
-
-          {/* Admin routes */}
-          <Route
-            path="/admin"
-            element={
-              <AdminRoute>
-                <AdminDashboard />
-              </AdminRoute>
-            }
-          />
           <Route
             path="/categories"
             element={
               <AdminRoute>
                 <CategoryManagementPage />
+              </AdminRoute>
+            }
+          />
+          {/* Other routes */}
+          <Route
+            path="/users"
+            element={
+              <AdminRoute>
+                <UserManagementPage />
               </AdminRoute>
             }
           />

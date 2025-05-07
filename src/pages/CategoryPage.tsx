@@ -2,18 +2,13 @@ import React, { useState, useEffect } from "react";
 import { api } from "../api";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-
-type Category = {
-  id: number;
-  name: string;
-  description: string;
-};
+import { Category } from "../types/Category";
 
 export default function CategoryManagementPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  const [searchInput, setSearchInput] = useState("");
   // Form state
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [name, setName] = useState("");
@@ -30,13 +25,14 @@ export default function CategoryManagementPage() {
     fetchCategories();
   }, [currentPage]);
 
-  const fetchCategories = async () => {
+  const fetchCategories = async (search: string = "") => {
     setIsLoading(true);
     try {
       const response = await api.categories.getAll({
         page: currentPage,
         size: 5,
         sort: "name",
+        search: searchInput, // Pass the search parameter to the API
       });
       setCategories(response.content);
       setTotalPages(response.pageable.totalPages);
@@ -206,9 +202,31 @@ export default function CategoryManagementPage() {
           {/* Categories List */}
           <div>
             <h2 className="text-xl font-semibold mb-4">Categories</h2>
-
+            <div className="mb-4 flex items-center">
+              <input
+                type="text"
+                placeholder="Search categories"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                className="flex-1 px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <button
+                onClick={() => {
+                  setCurrentPage(0); // Reset to the first page
+                  fetchCategories(searchInput); // Fetch categories with the search input
+                }}
+                className="ml-2 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+              >
+                Search
+              </button>
+            </div>
             {isLoading ? (
-              <div className="text-center py-12">
+              <div
+                className="space-y-4 overflow-hidden"
+                style={{
+                  height: `${536}px`,
+                }} // Dynamically adjust height
+              >
                 <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-indigo-600 border-r-transparent"></div>
                 <p className="mt-4 text-gray-600">Loading categories...</p>
               </div>
@@ -219,7 +237,9 @@ export default function CategoryManagementPage() {
                   className="space-y-4 overflow-hidden"
                   style={{
                     height: `${
-                      categories.length < 5 ? 80 * 5 : categories.length * 80
+                      categories.length < 4
+                        ? 80 * 6
+                        : (categories.length + 1) * 80
                     }px`,
                   }} // Dynamically adjust height
                 >
