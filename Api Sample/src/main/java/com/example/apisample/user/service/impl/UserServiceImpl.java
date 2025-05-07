@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public APIPageableResponseDTO<UserResponseDTO> getALlUser(int pageNo, int pageSize, String search, String sortField) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortField).ascending());
 
-        Page<User> page = userRepository.findByEmailContaining(pageable, search);
+        Page<User> page = userRepository.findByEmailContainingAndRole_Id(search, 2, pageable);
         Page<UserResponseDTO> userDtoPage = page.map(UserMapper::userToDTO);
 
         return new APIPageableResponseDTO<>(userDtoPage);

@@ -3,11 +3,15 @@ package com.example.apisample.user.model.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserUpdateRequestDTO {
 
     @Email(message = "Invalid email format")

@@ -1,6 +1,8 @@
 package com.example.apisample.user.repository;
 
 import com.example.apisample.user.entity.User;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,5 +17,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findById(Integer id);
 
-    Page<User> findByEmailContaining(Pageable pageable, String search);
+    Page<User> findByEmailContainingAndRole_Id(String search, Integer roleId, Pageable pageable);
 }

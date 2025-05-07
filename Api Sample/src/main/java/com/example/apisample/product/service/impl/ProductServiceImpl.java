@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -40,7 +41,6 @@ public class ProductServiceImpl implements ProductService {
     private static final String SORTFIELD_PRICE = "price";
     private static final String SORTFIELD_PRICE_DESC = "priceDesc";
     private static final String SORTFIELD_RATING = "rating";
-    private static final String SORTFIELD_DEFAULT = "createOn";
 
     @Value("${aws.s3.bucket.url}")
     String S3URL;
@@ -52,46 +52,62 @@ public class ProductServiceImpl implements ProductService {
     private BucketConfiguration s3Bucket;
 
     @Override
-    public APIPageableResponseDTO<ProductResponseDTO> getALlProduct(int pageNo, int pageSize, String search, String sortField) {
-        Sort sort = switch (sortField) {
-            case SORTFIELD_PRICE -> Sort.by(Sort.Direction.ASC, SORTFIELD_PRICE);
-            case SORTFIELD_PRICE_DESC -> Sort.by(Sort.Direction.DESC, SORTFIELD_PRICE);
-            default -> Sort.by(Sort.Direction.DESC, SORTFIELD_DEFAULT);
-        };
+    public APIPageableResponseDTO<ProductResponseDTO> getAllProduct(
+            int pageNo,
+            int pageSize,
+            String search,
+            String sortField
+    ) {
+        List<Product> products = productRepository
+                .findByNameContainingIgnoreCaseAndDeletedFalse(search);
 
-        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-
-        Page<Product> page = productRepository.findByNameContainingAndDeletedFalse(pageable, search);
-
-        List<ProductResponseDTO> productList = page.getContent().stream()
+        List<ProductResponseDTO> productDTOs = products.stream()
                 .map(product -> {
                     Double avgRating = ratingService.calculateAverageRating(product.getId());
                     return ProductMapper.productToDTO(product, avgRating);
                 })
-                .collect(Collectors.toList());
+                .toList();
 
-        if (sortField.equals(SORTFIELD_RATING)) {
-            productList.sort((a, b) -> Double.compare(
-                    b.getAverageRating() != null ? b.getAverageRating() : 0,
-                    a.getAverageRating() != null ? a.getAverageRating() : 0
-            ));
-        }
+        // Comparator based on sortField
+        Comparator<ProductResponseDTO> comparator = getComparator(sortField);
+        List<ProductResponseDTO> sorted = productDTOs.stream()
+                .sorted(comparator)
+                .toList();
 
-        Page<ProductResponseDTO> sortedProductPage = new PageImpl<>(
-                productList,
-                pageable,
-                page.getTotalElements()
-        );
+        // Manual pagination
+        int total = sorted.size();
+        int start = pageNo * pageSize;
+        int end = Math.min(start + pageSize, total);
+        List<ProductResponseDTO> pageContent = (start >= total) ? List.of() : sorted.subList(start, end);
 
-        return new APIPageableResponseDTO<>(sortedProductPage);
+        Page<ProductResponseDTO> page = new PageImpl<>(pageContent, PageRequest.of(pageNo, pageSize), total);
+        return new APIPageableResponseDTO<>(page);
     }
 
-
-
+    private Comparator<ProductResponseDTO> getComparator(String sortField) {
+        return switch (sortField) {
+            case SORTFIELD_PRICE -> Comparator.comparing(
+                    ProductResponseDTO::getPrice,
+                    Comparator.nullsLast(Long::compareTo)
+            );
+            case SORTFIELD_PRICE_DESC -> Comparator.comparing(
+                    ProductResponseDTO::getPrice,
+                    Comparator.nullsLast(Long::compareTo)
+            ).reversed();
+            case SORTFIELD_RATING -> Comparator.comparing(
+                    ProductResponseDTO::getAverageRating,
+                    Comparator.nullsLast(Double::compareTo)
+            ).reversed();
+            default -> Comparator.comparing(
+                    ProductResponseDTO::getCreateOn,
+                    Comparator.nullsLast(Comparable::compareTo)
+            ).reversed();
+        };
+    }
 
     @Override
-    public APIPageableResponseDTO<ProductResponseDTO> getALlFeaturedProduct(int pageNo, int pageSize, String search, String sortField) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortField).descending());
+    public APIPageableResponseDTO<ProductResponseDTO> getALlFeaturedProduct(int pageNo, int pageSize, String search, String sort) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).descending());
 
         Page<Product> page = productRepository.findByDeletedFalseAndFeaturedTrue(pageable);
 

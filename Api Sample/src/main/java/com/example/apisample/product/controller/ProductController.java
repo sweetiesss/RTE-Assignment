@@ -4,6 +4,7 @@ import com.example.apisample.product.model.dto.ProductCreateDTO;
 import com.example.apisample.product.model.dto.ProductResponseDTO;
 import com.example.apisample.product.model.dto.ProductUpdateDTO;
 import com.example.apisample.product.service.ProductService;
+import com.example.apisample.productcategory.service.ProductCategoryService;
 import com.example.apisample.utils.ApiResponse;
 import com.example.apisample.utils.message.LogMessage;
 import com.example.apisample.utils.message.ResponseMessage;
@@ -20,24 +21,24 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/products")
 @CrossOrigin(origins = "http://localhost:5173", maxAge = 3600)
 @Slf4j
 public class ProductController {
     private final ProductService productService;
+    private final ProductCategoryService productCategoryService;
 
     final String DEFAULT_PAGE = "0";
     final String DEFAULT_PAGE_SIZE = "8";
 
-    @GetMapping()
+    @GetMapping("/products")
     public APIPageableResponseDTO<ProductResponseDTO> getAllProduct(@RequestParam(defaultValue = DEFAULT_PAGE, name = "page") Integer pageNo,
                                                               @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, name = "size") Integer pageSize,
                                                               @RequestParam(defaultValue = "", name = "search") String search,
                                                               @RequestParam(defaultValue = "createOn", name= "sort") String sort) {
-        return productService.getALlProduct(pageNo, pageSize, search, sort);
+        return productService.getAllProduct(pageNo, pageSize, search, sort);
     }
 
-    @GetMapping("/featured")
+    @GetMapping("/products/featured")
     public APIPageableResponseDTO<ProductResponseDTO> getAllFeaturedProduct(@RequestParam(defaultValue = DEFAULT_PAGE, name = "page") Integer pageNo,
                                                                     @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, name = "size") Integer pageSize,
                                                                     @RequestParam(defaultValue = "", name = "search") String search,
@@ -45,7 +46,7 @@ public class ProductController {
         return productService.getALlFeaturedProduct(pageNo, pageSize, search, sort);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/products/{id}")
     public ResponseEntity<ApiResponse> getProductById(@PathVariable Integer id) {
         log.debug(LogMessage.PRODUCT_GET_BY_ID_START);
 
@@ -62,7 +63,7 @@ public class ProductController {
         );
     }
 
-    @PostMapping("/admin")
+    @PostMapping("/products/admin")
     public ResponseEntity<ApiResponse> createProduct(@RequestBody @Valid ProductCreateDTO dto) {
         log.debug(LogMessage.PRODUCT_CREATE_START);
 
@@ -78,10 +79,10 @@ public class ProductController {
         );
     }
 
-    @PutMapping("/admin/{id}")
+    @PutMapping("/admin/products/{id}")
     public ResponseEntity<ApiResponse> updateProduct(
             @PathVariable Integer id,
-            @RequestBody @Valid ProductUpdateDTO dto) throws Exception {
+            @RequestBody @Valid ProductUpdateDTO dto) {
 
         log.debug(LogMessage.PRODUCT_UPDATE_START);
 
@@ -97,7 +98,7 @@ public class ProductController {
         );
     }
 
-    @DeleteMapping("/admin/{id}")
+    @DeleteMapping("/admin/products/{id}")
     public ResponseEntity<ApiResponse> deleteProduct(@PathVariable Integer id) {
         log.debug(LogMessage.PRODUCT_DELETE_START);
 
@@ -113,7 +114,7 @@ public class ProductController {
         );
     }
 
-    @PostMapping("/admin/restore/{id}")
+    @PatchMapping("/admin/products/{id}/restore")
     public ResponseEntity<ApiResponse> restoreProduct(@PathVariable Integer id) {
         log.debug(LogMessage.PRODUCT_RESTORE_START);
 
@@ -129,8 +130,8 @@ public class ProductController {
         );
     }
 
-    @GetMapping("/get-image/{id}")
-    public ResponseEntity<ApiResponse> getProductImage(@PathVariable("id") Integer productId) throws Exception{
+    @GetMapping("/products/{id}/image")
+    public ResponseEntity<ApiResponse> getProductImage(@PathVariable("id") Integer productId){
         log.debug(LogMessage.PRODUCT_GET_IMAGE_START);
 
         ProductResponseDTO product = productService.getProductById(productId);
@@ -146,7 +147,7 @@ public class ProductController {
         );
     }
 
-    @PostMapping(value = "/admin/image/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
+    @PostMapping(value = "/admin/products/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
     public ResponseEntity<ApiResponse> updateUserProductImage(@PathVariable("id") Integer productId, @RequestParam("file") MultipartFile file) throws Exception{
         log.debug(LogMessage.PRODUCT_UPLOAD_IMAGE_START);
 
@@ -161,6 +162,19 @@ public class ProductController {
                         .data(imageURL)
                         .build()
         );
+    }
+
+    @GetMapping("/categories/{categoryId}/products")
+    public ResponseEntity<APIPageableResponseDTO<ProductResponseDTO>> getProductsByCategory(
+            @PathVariable Integer categoryId,
+            @RequestParam(defaultValue = DEFAULT_PAGE, name = "page") Integer pageNo,
+            @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, name = "size") Integer pageSize,
+            @RequestParam(defaultValue = "Produc t", name = "sort") String sort,
+            @RequestParam(defaultValue = "", name = "search") String search
+    ) {
+        APIPageableResponseDTO<ProductResponseDTO> response =
+                productCategoryService.getProductsByCategory(categoryId, pageNo, pageSize, sort, search);
+        return ResponseEntity.ok(response);
     }
 
 }

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/ratings")
 @CrossOrigin(origins = "*")
 @Slf4j
 public class RatingController {
@@ -27,7 +26,7 @@ public class RatingController {
     final String DEFAULT_PAGE = "0";
     final String DEFAULT_PAGE_SIZE = "8";
 
-    @GetMapping("/product/{productId}")
+    @GetMapping("/products/{productId}/ratings")
     public ResponseEntity<APIPageableResponseDTO<RatingResponseDTO>> getProductRatings(
             @PathVariable Integer productId,
             @RequestParam(defaultValue = DEFAULT_PAGE) int pageNo,
@@ -39,7 +38,7 @@ public class RatingController {
 
 
 
-    @PostMapping()
+    @PostMapping("/ratings")
     public ResponseEntity<ApiResponse> createRating(@RequestBody @Valid RatingRequestDTO ratingRequest) {
         log.debug(LogMessage.RATING_CREATE_START);
 
@@ -56,7 +55,7 @@ public class RatingController {
         );
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/ratings/{id}")
     public ResponseEntity<ApiResponse> getRatingById(@PathVariable Integer id) {
         log.debug(LogMessage.RATING_GET_BY_ID_START);
 
@@ -73,7 +72,7 @@ public class RatingController {
         );
     }
 
-    @GetMapping()
+    @GetMapping("/ratings")
     public APIPageableResponseDTO<RatingResponseDTO> getAllRatings(@RequestParam(defaultValue = DEFAULT_PAGE, name = "page") Integer pageNo,
                                                                    @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, name = "size") Integer pageSize,
                                                                    @RequestParam(defaultValue = "", name = "search") String search,
@@ -87,7 +86,7 @@ public class RatingController {
         return result;
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/ratings/{id}")
     public ResponseEntity<ApiResponse> updateRating(@PathVariable Integer id, @RequestBody @Valid RatingUpdateRequestDTO ratingRequest) {
         log.debug(LogMessage.RATING_UPDATE_START);
 
@@ -103,7 +102,7 @@ public class RatingController {
         );
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/ratings/{id}")
     public ResponseEntity<ApiResponse> deleteRating(@PathVariable Integer id) {
         log.debug(LogMessage.RATING_DELETE_START);
 
@@ -119,7 +118,7 @@ public class RatingController {
         );
     }
 
-    @PostMapping("/admin/restore/{id}")
+    @PostMapping("/admin/ratings/restore/{id}")
     public ResponseEntity<ApiResponse> restoreRating(@PathVariable Integer id) {
         log.debug(LogMessage.RATING_RESTORE_START);
 
