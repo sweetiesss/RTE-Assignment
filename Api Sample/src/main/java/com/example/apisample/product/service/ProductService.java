@@ -10,8 +10,13 @@ import java.io.IOException;
 import java.io.Serializable;
 
 public interface ProductService {
-    APIPageableResponseDTO<ProductResponseDTO> getALlProduct(int pageNo, int pageSize, String search, String sortField);
-    APIPageableResponseDTO<ProductResponseDTO> getALlFeaturedProduct(int pageNo, int pageSize, String search, String sortField);
+    APIPageableResponseDTO<ProductResponseDTO> getAllProduct(
+            int pageNo,
+            int pageSize,
+            String search,
+            String sortField
+    );
+    APIPageableResponseDTO<ProductResponseDTO> getALlFeaturedProduct(int pageNo, int pageSize, String search, String sort);
     ProductResponseDTO getProductById(Integer id);
     void createProduct(ProductCreateDTO dto);
     void updateProduct(Integer id, ProductUpdateDTO dto);

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/product-categories")
 @CrossOrigin(origins = "*")
 @Slf4j
 public class ProductCategoryController {
@@ -28,7 +27,7 @@ public class ProductCategoryController {
     final String DEFAULT_PAGE = "0";
     final String DEFAULT_PAGE_SIZE = "8";
 
-    @PostMapping("/admin")
+    @PostMapping("/admin/product-categories")
     public ResponseEntity<ApiResponse> addCategoryToProduct(@RequestBody @Valid ProductCategoryRequestDTO dto) {
         log.debug(LogMessage.PRODUCT_CATEGORY_CREATE_START);
 
@@ -44,23 +43,7 @@ public class ProductCategoryController {
                 );
     }
 
-    @DeleteMapping("/admin/product/{productId}/category/{categoryId}")
-    public ResponseEntity<ApiResponse> removeCategoryFromProduct(@PathVariable Integer productId, @PathVariable Integer categoryId) {
-        log.debug(LogMessage.PRODUCT_CATEGORY_DELETE_START);
-
-        productCategoryService.removeCategoryFromProduct(productId, categoryId);
-
-        log.info(LogMessage.PRODUCT_CATEGORY_DELETE_SUCCESS);
-
-        return ResponseEntity.ok(
-                ApiResponse.builder()
-                        .statusCode(HttpStatus.OK.value())
-                        .message(ResponseMessage.msgSuccess)
-                        .build()
-        );
-    }
-
-    @GetMapping()
+    @GetMapping("/product-categories")
     public APIPageableResponseDTO<ProductCategoryResponseDTO> getAllCategory(@RequestParam(defaultValue = DEFAULT_PAGE, name = "page") Integer pageNo,
                                                                              @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, name = "size") Integer pageSize,
                                                                              @RequestParam(defaultValue = "", name = "search") String search,
@@ -74,7 +57,7 @@ public class ProductCategoryController {
         return result;
     }
 
-    @GetMapping("/{productId}")
+    @GetMapping("/product-categories/{productId}")
     public ResponseEntity<ProductCategoryResponseDTO> getProductCategoryByIds(@PathVariable Integer productId) {
         log.debug(LogMessage.PRODUCT_CATEGORY_GET_BY_IDS_START);
 
@@ -83,18 +66,6 @@ public class ProductCategoryController {
         log.info(LogMessage.PRODUCT_CATEGORY_GET_BY_IDS_SUCCESS);
 
         return ResponseEntity.ok(productCategory);
-    }
-
-    @GetMapping("/products-by-category/{categoryId}")
-    public ResponseEntity<APIPageableResponseDTO<ProductResponseDTO>> getProductsByCategory(
-            @PathVariable Integer categoryId,
-            @RequestParam(defaultValue = DEFAULT_PAGE, name = "page") Integer pageNo,
-            @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, name = "size") Integer pageSize,
-            @RequestParam(defaultValue = "Product", name = "sort") String sort
-    ) {
-        APIPageableResponseDTO<ProductResponseDTO> response =
-                productCategoryService.getProductsByCategory(categoryId, pageNo, pageSize, sort);
-        return ResponseEntity.ok(response);
     }
 
 }

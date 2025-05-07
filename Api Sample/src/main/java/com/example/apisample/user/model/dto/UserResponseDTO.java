@@ -1,13 +1,17 @@
 package com.example.apisample.user.model.dto;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
 @Builder
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserResponseDTO {
     private Integer id;
     private String email;

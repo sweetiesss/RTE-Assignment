@@ -17,13 +17,13 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/roles")
+@RequestMapping("/admin")
 @CrossOrigin(origins = "*")
 @Slf4j
 public class RoleController {
     private final RoleService roleService;
 
-    @GetMapping("/admin")
+    @GetMapping("/roles")
     public ResponseEntity<ApiResponse> getAllRoles() {
         log.debug(LogMessage.ROLE_GET_ALL_START);
 
@@ -40,7 +40,7 @@ public class RoleController {
         );
     }
 
-    @GetMapping("/admin/{id}")
+    @GetMapping("/roles/{id}")
     public ResponseEntity<ApiResponse> getRoleById(@PathVariable int id) {
         log.debug(LogMessage.ROLE_GET_BY_ID_START);
 
@@ -57,7 +57,7 @@ public class RoleController {
         );
     }
 
-    @PostMapping("/admin/assign-role")
+    @PostMapping("/users/{id}/roles")
     public ResponseEntity<ApiResponse> assignRole(@RequestBody @Valid AssignRoleRequestDTO dto) {
         log.debug(LogMessage.ROLE_ASSIGN_START);
 
