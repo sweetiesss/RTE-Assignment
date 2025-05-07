@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/admin")
 @CrossOrigin(origins = "*")
 @Slf4j
 public class UserController {
@@ -26,7 +26,7 @@ public class UserController {
     final String DEFAULT_PAGE = "0";
     final String DEFAULT_PAGE_SIZE = "8";
 
-    @GetMapping("/admin/")
+    @GetMapping("/users")
     public APIPageableResponseDTO<UserResponseDTO> getUser(@RequestParam(defaultValue = DEFAULT_PAGE, name = "page") Integer pageNo,
                                                            @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, name = "size") Integer pageSize,
                                                            @RequestParam(defaultValue = "", name = "search") String search,
@@ -34,7 +34,7 @@ public class UserController {
         return userService.getALlUser(pageNo,pageSize,search,sort);
     }
 
-    @GetMapping("/admin/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<ApiResponse> getUserById(@PathVariable Integer id) {
         log.debug(LogMessage.USER_GET_BY_ID_START);
 
@@ -51,24 +51,7 @@ public class UserController {
         );
     }
 
-    @GetMapping("/admin/get-email")
-    public ResponseEntity<ApiResponse> getUserByEmail(@RequestBody String email) {
-        log.debug(LogMessage.USER_GET_BY_EMAIL_START);
-
-        UserResponseDTO user = UserMapper.userToDTO(userService.getUserByEmail(email));
-
-        log.info(LogMessage.USER_GET_BY_EMAIL_SUCCESS);
-
-        return ResponseEntity.ok(
-                ApiResponse.builder()
-                        .statusCode(HttpStatus.OK.value())
-                        .message(ResponseMessage.msgSuccess)
-                        .data(user)
-                        .build()
-        );
-    }
-
-    @PutMapping("/{id}")
+    @PutMapping("/users/{id}")
     public ResponseEntity<ApiResponse> updateUser(@PathVariable Integer id, @RequestBody @Valid UserUpdateRequestDTO updateUser) {
         log.debug(LogMessage.USER_UPDATE_START);
 
@@ -84,7 +67,7 @@ public class UserController {
         );
     }
 
-    @DeleteMapping("/admin/{id}")
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<ApiResponse> deleteUSer(@PathVariable Integer id) {
         log.debug(LogMessage.USER_DELETE_START);
 
@@ -100,7 +83,7 @@ public class UserController {
         );
     }
 
-    @PostMapping("/admin/restore/{id}")
+    @PatchMapping("/users/{id}/restore")
     public ResponseEntity<ApiResponse> restoreUSer(@PathVariable Integer id) {
         log.debug(LogMessage.USER_RESTORE_START);
 

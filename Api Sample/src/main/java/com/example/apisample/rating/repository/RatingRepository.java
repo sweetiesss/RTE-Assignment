@@ -16,5 +16,5 @@ public interface RatingRepository extends JpaRepository<Rating, Integer> {
     Page<Rating> findAllByDeletedFalse(Pageable pageable);
     Page<Rating> findAllByProduct_IdAndDeletedFalse(Integer productId, Pageable pageable);
     List<Rating> findAllByProduct_IdAndDeletedFalse(Integer productId);
-    Optional<Rating> findTopByUserAndProduct(User user, Product product);
+    Optional<Rating> findTopByUserAndProductAndDeletedFalse(User user, Product product);
 }

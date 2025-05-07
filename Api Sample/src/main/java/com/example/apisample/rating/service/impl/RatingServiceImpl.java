@@ -36,7 +36,7 @@ public class RatingServiceImpl implements RatingService {
     @Override
     @Transactional(readOnly = true)
     public APIPageableResponseDTO<RatingResponseDTO> getRatingsByProductId(Integer productId, int pageNo, int pageSize, String sort) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).descending()); // or ascending
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).descending());
         Page<Rating> ratingPage = ratingRepository.findAllByProduct_IdAndDeletedFalse(productId, pageable);
 
         List<RatingResponseDTO> dtoList = ratingPage.getContent().stream()
@@ -70,7 +70,7 @@ public class RatingServiceImpl implements RatingService {
         Product product = productRepository.findById(request.getProductId())
                 .orElseThrow(RatingNotFoundException::new);
 
-        Optional<Rating> optionalRating = ratingRepository.findTopByUserAndProduct(user, product);
+        Optional<Rating> optionalRating = ratingRepository.findTopByUserAndProductAndDeletedFalse(user, product);
 
         if(optionalRating.isPresent()) {
             throw new RatingHasBeenMadeException();

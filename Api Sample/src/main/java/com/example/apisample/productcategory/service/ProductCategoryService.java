@@ -10,5 +10,5 @@ public interface ProductCategoryService {
     void removeCategoryFromProduct(Integer productId, Integer categoryId);
     APIPageableResponseDTO<ProductCategoryResponseDTO> getAllProductCategories(int pageNo, int pageSize, String search, String sort);
     ProductCategoryResponseDTO getProductCategoriesByProductId(Integer productId);
-    APIPageableResponseDTO<ProductResponseDTO> getProductsByCategory(Integer categoryId, int pageNo, int pageSize, String sort);
+    APIPageableResponseDTO<ProductResponseDTO> getProductsByCategory(Integer categoryId, int pageNo, int pageSize, String sort, String search);
 }

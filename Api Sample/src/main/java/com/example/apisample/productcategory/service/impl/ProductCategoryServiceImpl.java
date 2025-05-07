@@ -46,6 +46,10 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         Product product = productRepository.findById(requestDTO.getProductId())
                 .orElseThrow(ProductNotFoundException::new);
 
+        // Step 1: Delete existing category relations for the product
+        productCategoryRepository.deleteByProduct_Id(product.getId());
+
+        // Step 2: Map the new category IDs to ProductCategory entities
         List<ProductCategory> productCategories = requestDTO.getCategoryId().stream()
                 .map(categoryId -> {
                     Category category = categoryRepository.findById(categoryId)
@@ -57,8 +61,10 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
                             .build();
                 }).collect(Collectors.toList());
 
+        // Step 3: Save the new category associations
         productCategoryRepository.saveAll(productCategories);
     }
+
 
     @Override
     @Transactional
@@ -82,30 +88,31 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     @Override
     @Transactional
     public APIPageableResponseDTO<ProductResponseDTO> getProductsByCategory(
-            Integer categoryId, int pageNo, int pageSize, String sortField) {
+            Integer categoryId, int pageNo, int pageSize, String sortField, String search) {
 
         Pageable pageable = PageRequest.of(pageNo, pageSize); // sorting will be manual
-        Page<ProductCategory> page = productCategoryRepository.findAllByCategory_Id(categoryId, pageable);
+        List<ProductCategory> productCategories = productCategoryRepository.findAllByCategory_Id(categoryId);
 
-        List<ProductResponseDTO> dtoList = page.getContent().stream()
-                .map(pc -> {
-                    Product product = pc.getProduct();
-                    return ProductResponseDTO.builder()
-                            .id(product.getId())
-                            .name(product.getName())
-                            .description(product.getDescription())
-                            .price(product.getPrice())
-                            .image(product.getImage())
-                            .featured(product.getFeatured())
-                            .createOn(product.getCreateOn())
-                            .lastUpdateOn(product.getLastUpdateOn())
-                            .averageRating(ratingService.calculateAverageRating(product.getId()))
-                            .build();
+        List<ProductResponseDTO> dtoList = productCategories.stream()
+                .map(ProductCategory::getProduct)
+                .filter(product -> {
+                    if (search == null || search.isBlank()) return true;
+                    return product.getName().toLowerCase().contains(search.toLowerCase());
                 })
+                .map(product -> ProductResponseDTO.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .description(product.getDescription())
+                        .price(product.getPrice())
+                        .image(product.getImage())
+                        .featured(product.getFeatured())
+                        .createOn(product.getCreateOn())
+                        .lastUpdateOn(product.getLastUpdateOn())
+                        .averageRating(ratingService.calculateAverageRating(product.getId()))
+                        .build())
                 .distinct()
                 .collect(Collectors.toList());
 
-        // Manual sorting
         switch (sortField) {
             case SORTFIELD_PRICE -> dtoList.sort(Comparator.comparing(ProductResponseDTO::getPrice));
             case SORTFIELD_PRICE_DESC -> dtoList.sort(Comparator.comparing(ProductResponseDTO::getPrice).reversed());

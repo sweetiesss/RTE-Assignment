@@ -70,7 +70,7 @@ public class CategoryServiceImpl implements CategoryService {
     public APIPageableResponseDTO<CategoryResponseDTO> getAllCategories(int pageNo, int pageSize, String search, String sort) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
 
-        Page<Category> page = categoryRepository.findAll(pageable);
+        Page<Category> page = categoryRepository.findAllByNameContainingIgnoreCase(search, pageable);
         Page<CategoryResponseDTO> dtoPage = page.map(CategoryMapper::categoryToDTO);
 
         return new APIPageableResponseDTO<>(dtoPage);

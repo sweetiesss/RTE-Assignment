@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/categories")
 @CrossOrigin(origins = "*")
 @Slf4j
 public class CategoryController {
@@ -27,7 +26,7 @@ public class CategoryController {
     final String DEFAULT_PAGE = "0";
     final String DEFAULT_PAGE_SIZE = "8";
 
-    @GetMapping()
+    @GetMapping("/categories")
     public APIPageableResponseDTO<CategoryResponseDTO> getAllCategory(@RequestParam(defaultValue = DEFAULT_PAGE, name = "page") Integer pageNo,
                                                                       @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, name = "size") Integer pageSize,
                                                                       @RequestParam(defaultValue = "", name = "search") String search,
@@ -35,7 +34,7 @@ public class CategoryController {
         return categoryService.getAllCategories(pageNo, pageSize, search, sort);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/categories/{id}")
     public ResponseEntity<ApiResponse> getCategoryById(@PathVariable Integer id) {
         log.debug(LogMessage.CATEGORY_GET_BY_ID_START);
 
@@ -52,7 +51,7 @@ public class CategoryController {
         );
     }
 
-    @PostMapping("/admin/create")
+    @PostMapping("/admin/categories")
     public ResponseEntity<ApiResponse> createCategory(@RequestBody @Valid CategoryRequestDTO dto) {
         log.debug(LogMessage.CATEGORY_CREATE_START);
 
@@ -68,7 +67,7 @@ public class CategoryController {
                 );
     }
 
-    @PutMapping("/admin/{id}")
+    @PutMapping("/admin/categories/{id}")
     public ResponseEntity<ApiResponse> updateCategory(@PathVariable Integer id, @RequestBody @Valid CategoryUpdateRequestDTO dto) {
         log.debug(LogMessage.CATEGORY_UPDATE_START);
 
@@ -84,7 +83,7 @@ public class CategoryController {
         );
     }
 
-    @DeleteMapping("/admin/{id}")
+    @DeleteMapping("/admin/categories/{id}")
     public ResponseEntity<ApiResponse> deleteCategory(@PathVariable Integer id) {
         log.debug(LogMessage.CATEGORY_DELETE_START);
 
