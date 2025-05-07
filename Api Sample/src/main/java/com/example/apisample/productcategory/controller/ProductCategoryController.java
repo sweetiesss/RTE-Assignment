@@ -1,7 +1,6 @@
 package com.example.apisample.productcategory.controller;
 
 import com.example.apisample.product.exception.ProductNotFoundException;
-import com.example.apisample.product.model.dto.ProductResponseDTO;
 import com.example.apisample.productcategory.model.dto.ProductCategoryRequestDTO;
 import com.example.apisample.productcategory.model.dto.ProductCategoryResponseDTO;
 import com.example.apisample.productcategory.service.ProductCategoryService;

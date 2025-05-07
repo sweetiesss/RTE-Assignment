@@ -2,7 +2,6 @@ package com.example.apisample.user.controller;
 
 import com.example.apisample.user.model.dto.UserResponseDTO;
 import com.example.apisample.user.model.dto.UserUpdateRequestDTO;
-import com.example.apisample.user.model.mapper.UserMapper;
 import com.example.apisample.user.service.UserService;
 import com.example.apisample.utils.ApiResponse;
 import com.example.apisample.utils.message.LogMessage;

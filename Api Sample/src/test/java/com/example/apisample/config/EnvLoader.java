@@ -2,7 +2,6 @@ package com.example.apisample.config;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.TestInstance;
 
 public class EnvLoader {
     @BeforeAll

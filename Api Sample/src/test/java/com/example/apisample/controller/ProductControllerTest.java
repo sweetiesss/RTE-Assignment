@@ -1,18 +1,17 @@
 package com.example.apisample.controller;
 
 import com.example.apisample.product.controller.ProductController;
-import com.example.apisample.product.model.dto.*;
+import com.example.apisample.product.model.dto.ProductCreateDTO;
+import com.example.apisample.product.model.dto.ProductResponseDTO;
+import com.example.apisample.product.model.dto.ProductUpdateDTO;
 import com.example.apisample.product.service.ProductService;
-import com.example.apisample.productcategory.service.ProductCategoryService;
 import com.example.apisample.utils.pagination.APIPageableResponseDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -23,7 +22,8 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class ProductControllerTest {
 
