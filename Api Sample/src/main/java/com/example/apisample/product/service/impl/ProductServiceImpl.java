@@ -11,7 +11,6 @@ import com.example.apisample.product.model.mapper.ProductMapper;
 import com.example.apisample.product.repository.ProductRepository;
 import com.example.apisample.product.service.ProductService;
 import com.example.apisample.product.service.S3Service;
-import com.example.apisample.rating.repository.RatingRepository;
 import com.example.apisample.rating.service.RatingService;
 import com.example.apisample.user.exception.NotImageFileException;
 import com.example.apisample.utils.pagination.APIPageableResponseDTO;
@@ -25,11 +24,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -43,7 +40,7 @@ public class ProductServiceImpl implements ProductService {
     private static final String SORTFIELD_RATING = "rating";
 
     @Value("${aws.s3.bucket.url}")
-    String S3URL;
+    private String S3URL;
 
     @Autowired
     private S3Service s3Service;

@@ -1,8 +1,6 @@
 package com.example.apisample.category.repository;
 
 import com.example.apisample.category.entity.Category;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

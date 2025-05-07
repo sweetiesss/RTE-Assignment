@@ -103,7 +103,7 @@ public class JWTServiceImpl implements JWTService {
         return generateToken(new HashMap<>(), user);
     }
 
-    private Key getSignInKey() {
+    public Key getSignInKey() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
     }
 

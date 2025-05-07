@@ -177,14 +177,6 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         return new ArrayList<>(productMap.values());
     }
 
-    private List<ProductCategoryResponseDTO> mapProductCategoriesFlat(List<ProductCategory> productCategories) {
-        return productCategories.stream().map(pc -> {
-            ProductCategoryResponseDTO dto = ProductCategoryMapper.productCategoryToDTO(pc);
-            dto.setCategories(List.of(mapCategoryToDTO(pc)));
-            return dto;
-        }).collect(Collectors.toList());
-    }
-
     private CategoryResponseDTO mapCategoryToDTO(ProductCategory pc) {
         return CategoryResponseDTO.builder()
                 .id(pc.getCategory().getId())

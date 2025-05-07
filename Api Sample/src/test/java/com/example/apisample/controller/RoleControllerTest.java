@@ -5,8 +5,6 @@ import com.example.apisample.role.controller.RoleController;
 import com.example.apisample.role.entity.Role;
 import com.example.apisample.role.model.dto.AssignRoleRequestDTO;
 import com.example.apisample.role.service.RoleService;
-import com.example.apisample.utils.ApiResponse;
-import com.example.apisample.utils.message.LogMessage;
 import com.example.apisample.utils.message.ResponseMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +19,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class RoleControllerTest {
 

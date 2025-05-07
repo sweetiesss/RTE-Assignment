@@ -185,6 +185,14 @@
                 <configuration>
                     <excludes>
                         <exclude>com/example/apisample/config/**</exclude>
+                        <exclude>com/example/apisample/utils/**</exclude>
+                        <exclude>com/example/apisample/auth/dto/**</exclude>
+                        <exclude>com/example/apisample/category/model/**</exclude>
+                        <exclude>com/example/apisample/product/model/**</exclude>
+                        <exclude>com/example/apisample/productcategory/model/**</exclude>
+                        <exclude>com/example/apisample/rating/model/**</exclude>
+                        <exclude>com/example/apisample/role/model/**</exclude>
+                        <exclude>com/example/apisample/user/model/**</exclude>
                     </excludes>
                 </configuration>
 
